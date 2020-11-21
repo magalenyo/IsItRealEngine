@@ -31,10 +31,6 @@ update_status ModuleTexture::Update()
 
 bool ModuleTexture::LoadTexture(const char* imagePath)
 {
-
-	// hay que llamar al iluFlipImage antes de coger el data
-
-	
 	ILuint newImageId;
 	ILboolean success;
 	GLuint newTextureId;
@@ -51,8 +47,14 @@ bool ModuleTexture::LoadTexture(const char* imagePath)
 			/* Error occured */
 			return false;
 		}
+		
+		ILinfo imageInfo;
+		iluGetImageInfo(&imageInfo);
+		// if origin needs to be flipped, flip it
+		if(imageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
+			iluFlipImage();
+		}
 		// STORES IN GPU
-		iluFlipImage();
 		glGenTextures(1, &newTextureId); /* Texture name generation */
 		glBindTexture(GL_TEXTURE_2D, newTextureId); /* Binding of texture name */
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
