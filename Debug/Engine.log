@@ -1,9 +1,14 @@
-﻿  Application.cpp
-  Main.cpp
-  Mesh.cpp
-  Model.cpp
-  ModuleEditor.cpp
-  ModuleInput.cpp
-  ModuleRender.cpp
+﻿  ModuleCamera.cpp
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(22,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(177,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(183,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(200,110): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(206,111): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(212,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(219,67): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(247,68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(252,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\ModuleCamera.cpp(257,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  ModuleTexture.cpp
   Generating Code...
   Engine.vcxproj -> C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\Debug\EngineMaster.exe

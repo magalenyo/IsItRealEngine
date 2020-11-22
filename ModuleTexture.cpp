@@ -40,7 +40,7 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 	if (success) /* If no error occured: */
 	{
 		
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
+		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE); /* Convert every colour component into
 		  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
 		if (!success)
 		{
