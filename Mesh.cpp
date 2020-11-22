@@ -14,6 +14,7 @@ Mesh::Mesh(const aiMesh* mesh)
 	LoadVBO(mesh);
 	LoadEBO(mesh);
 	CreateVAO();
+	SetMaterialIndex(mesh->mMaterialIndex);
 }
 
 Mesh::~Mesh()
@@ -70,6 +71,7 @@ void Mesh::LoadEBO(const aiMesh* mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	unsigned index_size = sizeof(unsigned) * mesh->mNumFaces * 3;
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, nullptr, GL_STATIC_DRAW);
+	// if it's GL_MAP_WRITE_BIT it won't let it load, needs to be READ_ONLY
 	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_ONLY));
 	for (unsigned i = 0; i < mesh->mNumFaces; ++i)
 	{
@@ -94,12 +96,18 @@ void Mesh::CreateVAO()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVertices));
 }
 
+void Mesh::SetMaterialIndex(unsigned int newMaterialIndex)
+{
+	materialIndex = newMaterialIndex;
+}
+
 void Mesh::Draw(const std::vector<unsigned>& model_textures)
 {
 	unsigned program = App->renderer->GetDefaultProgram();
 	const float4x4& view = App->camera->GetViewMatrix();
 	const float4x4& proj = App->camera->GetProjectionMatrix();
 	float4x4 model = float4x4::identity;
+
 	glUseProgram(program);
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);

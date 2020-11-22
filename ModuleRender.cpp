@@ -38,7 +38,10 @@ void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLe
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	//if (tmp_severity != "notification") {
+		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	//}
+	
 }
 
 ModuleRender::ModuleRender()
@@ -95,7 +98,7 @@ bool ModuleRender::Init()
 	unsigned fragmentShaderTexture = App->program->CompileShader(GL_FRAGMENT_SHADER, "./shaders/FragmentShaderTexture.glsl");
 	defaultProgram = App->program->CreateProgram(vertexShaderTexture, fragmentShaderTexture);
 
-	bakerHouse = Model("./resources/models/BakerHouse.fbx");
+	bakerHouse = new Model("./resources/models/BakerHouse.fbx");
 
 	return true;
 }
@@ -115,7 +118,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	
+	bakerHouse->Draw();
 
 	return UPDATE_CONTINUE;
 }

@@ -41,11 +41,11 @@ update_status ModuleEditor::Update()
 {
     static bool show_console = true;
 
-    if (show_console) {
+   /* if (show_console) {
         DrawConsole(&show_console, "hola");
     }
 
-    ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();*/
     return UPDATE_CONTINUE;
 }
 

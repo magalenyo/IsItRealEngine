@@ -44,7 +44,7 @@ bool ModuleRenderExercise::CleanUp()
 
 update_status ModuleRenderExercise::Update()
 {
-	//RenderVBO(vbo);
+	RenderVBO(vbo);
 	RenderVBOTexture(vboTexture);
 	return UPDATE_CONTINUE;
 }
@@ -137,7 +137,7 @@ void ModuleRenderExercise::RenderVBOTexture(unsigned _vbo)
 
 	glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_2D, App->textures->GetTextureID());
-	glUniform1i(glGetUniformLocation(programTexture, "mytexture"), 0);
+	glUniform1i(glGetUniformLocation(programTexture, "diffuse"), 0);
 	glUseProgram(programTexture);
 	// 1 triangle to draw = 3 vertices
 	glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -13,12 +13,13 @@ public:
 	void LoadVBO(const aiMesh* mesh);
 	void LoadEBO(const aiMesh* mesh);
 	void CreateVAO();
+	void SetMaterialIndex(unsigned int newMaterialIndex);
 	void Draw(const std::vector<unsigned>& model_textures);
 
 	bool CleanUp();
 
 private:
-	int materialIndex;
+	unsigned int materialIndex;
 	int numVertices = 0;
 	int numIndices = 0;
 

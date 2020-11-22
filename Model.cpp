@@ -40,10 +40,17 @@ bool Model::CleanUp()
 {
 	//TODO
 
-	for (Mesh mesh : meshes) {
-		mesh.CleanUp();
+	for (Mesh* mesh : meshes) {
+		mesh->CleanUp();
 	}
 	return true;
+}
+
+void Model::Draw()
+{
+	for (Mesh* mesh : meshes) {
+		mesh->Draw(textures);
+	}
 }
 
 void Model::LoadMaterials(const aiScene* scene)
@@ -67,7 +74,7 @@ void Model::LoadMeshes(const aiScene* scene)
 	meshes.reserve(scene->mNumMeshes);
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
-		meshes.push_back(Mesh(scene->mMeshes[i]));
+		meshes.push_back(new Mesh(scene->mMeshes[i]));
 	}
 }
 

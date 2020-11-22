@@ -14,12 +14,12 @@ public:
 
 	void Load(const char* file_name);
 	bool CleanUp();
-	
+	void Draw();
 
 private:
 
 	std::vector<unsigned int> textures; // Texture mesh
-	std::vector<Mesh> meshes;	// Mesh array
+	std::vector<Mesh*> meshes;	// Mesh array
 	
 	void LoadMaterials(const aiScene* scene);
 	void LoadMeshes(const aiScene* scene);

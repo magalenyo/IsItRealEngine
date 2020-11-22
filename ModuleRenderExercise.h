@@ -23,6 +23,5 @@ private:
 	unsigned vboTexture;
 	unsigned program;
 	unsigned programTexture;
-	
 };
 

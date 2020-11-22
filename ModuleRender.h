@@ -28,5 +28,5 @@ private:
 	
 	void* context;
 	unsigned int defaultProgram;
-	Model bakerHouse;
+	Model* bakerHouse;
 };
