@@ -102,6 +102,8 @@ std::string Model::GetProcessedPath(const std::string &path)
 	return "";
 }
 
+// fastest way to check if a file exists:
+// source: https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
 bool Model::ExistsTexture(const std::string& path) {
 	struct stat buffer;
 	return (stat(path.c_str(), &buffer) == 0);
