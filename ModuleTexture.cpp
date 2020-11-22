@@ -29,7 +29,7 @@ update_status ModuleTexture::Update()
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleTexture::LoadTexture(const char* imagePath)
+int ModuleTexture::LoadTexture(const char* imagePath)
 {
 	ILuint newImageId;
 	ILboolean success;
@@ -45,7 +45,7 @@ bool ModuleTexture::LoadTexture(const char* imagePath)
 		if (!success)
 		{
 			/* Error occured */
-			return false;
+			return TEXTURE_ERROR;
 		}
 		
 		ILinfo imageInfo;
@@ -68,17 +68,10 @@ bool ModuleTexture::LoadTexture(const char* imagePath)
 	else
 	{
 		/* Error occured */
-		return false;
+		return TEXTURE_ERROR;
 	}
 	ilDeleteImages(1, &newTextureId); /* Because we have already copied image data into texture data
 	  we can release memory used by image. */
 
-	// THIS NEEDS TO BE RETURNED
-	textureId = newTextureId;
-	//return newTextureId;
-}
-
-GLuint ModuleTexture::GetTextureID() const
-{
-	return textureId;
+	return newTextureId;
 }

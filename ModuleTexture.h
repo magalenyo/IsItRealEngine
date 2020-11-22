@@ -5,16 +5,14 @@
 class ModuleTexture : public Module
 {
 public:
+    static const int TEXTURE_ERROR = -1;
+
     ModuleTexture();
     ~ModuleTexture();
 
     bool Init();
     update_status Update();
 
-    bool LoadTexture(const char* imagePath);
-    GLuint GetTextureID() const;
-
-private:
-    GLuint textureId;
+    int LoadTexture(const char* imagePath);
 };
 

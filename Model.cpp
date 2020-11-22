@@ -6,9 +6,16 @@
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
 
+const std::string PATH_TEXTURES = "./resources/textures/"; 
+
 Model::Model()
 {
 
+}
+
+Model::Model(const char* file_name)
+{
+	Load(file_name);
 }
 
 Model::~Model()
@@ -20,8 +27,8 @@ void Model::Load(const char* file_name)
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
 	{
-		// TODO: LoadTextures(scene->mMaterials, scene->mNumMaterials);
-		// TODO: LoadMeshes(scene->mMeshes, scene->mNumMeshes);
+		LoadMaterials(scene);
+		LoadMeshes(scene);
 	}
 	else
 	{ 
@@ -29,15 +36,42 @@ void Model::Load(const char* file_name)
 	}
 }
 
+bool Model::CleanUp()
+{
+	//TODO
+
+	for (Mesh mesh : meshes) {
+		mesh.CleanUp();
+	}
+	return true;
+}
+
 void Model::LoadMaterials(const aiScene* scene)
 {
 	aiString file;
-	materials.reserve(scene->mNumMaterials);
+	textures.reserve(scene->mNumMaterials);
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
 		if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file) == AI_SUCCESS)
 		{
-			materials.push_back(App->textures->LoadTexture(file.data));
+			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());
+			if (textureId != ModuleTexture::TEXTURE_ERROR) {
+				textures.push_back(textureId);
+			}
 		}
 	}
+}
+
+void Model::LoadMeshes(const aiScene* scene)
+{
+	meshes.reserve(scene->mNumMeshes);
+	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
+	{
+		meshes.push_back(Mesh(scene->mMeshes[i]));
+	}
+}
+
+std::string Model::GetProcessedPath(std::string path)
+{
+	return PATH_TEXTURES.c_str() + path;
 }
