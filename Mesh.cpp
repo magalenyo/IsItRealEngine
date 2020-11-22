@@ -44,23 +44,43 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	//numVertices = mesh->mNumVertices;
 
 
+	//glGenBuffers(1, &vbo);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//// float, float, float -> v0
+	//// uv, uv			   -> uv0
+	//unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2);
+	//unsigned buffer_size = vertex_size * mesh->mNumVertices;
+	//glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
+	//unsigned position_size = sizeof(float) * 3 * mesh->mNumVertices;
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, position_size, mesh->mVertices);
+	//unsigned uv_offset = position_size;
+	//unsigned uv_size = sizeof(float) * 2 * mesh->mNumVertices;
+	//float2* uvs = (float2*)(glMapBufferRange(GL_ARRAY_BUFFER, uv_offset, uv_size, GL_MAP_WRITE_BIT));
+	//for (unsigned i = 0; i < mesh->mNumVertices; ++i)
+	//{
+	//	uvs[i] = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+	//}
+	//glUnmapBuffer(GL_ARRAY_BUFFER);
+	//numVertices = mesh->mNumVertices;
+
+
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	// float, float, float -> v0
 	// uv, uv			   -> uv0
 	unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2);
 	unsigned buffer_size = vertex_size * mesh->mNumVertices;
-	glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
-	unsigned position_size = sizeof(float) * 3 * mesh->mNumVertices;
-	glBufferSubData(GL_ARRAY_BUFFER, 0, position_size, mesh->mVertices);
-	unsigned uv_offset = position_size;
-	unsigned uv_size = sizeof(float) * 2 * mesh->mNumVertices;
-	float2* uvs = (float2*)(glMapBufferRange(GL_ARRAY_BUFFER, uv_offset, uv_size, GL_MAP_WRITE_BIT));
+	float* vertices = new float[buffer_size];
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
-		uvs[i] = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
-	}
-	glUnmapBuffer(GL_ARRAY_BUFFER);
+		vertices[i] = mesh->mVertices[i].x;
+		vertices[i + 1] = mesh->mVertices[i].y;
+		vertices[i + 2] = mesh->mVertices[i].z;
+		vertices[i + 3] = mesh->mTextureCoords[0][i].x;
+		vertices[i + 4] = mesh->mTextureCoords[0][i].y;
+	} 
+	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	numVertices = mesh->mNumVertices;
 }
 
@@ -91,9 +111,9 @@ void Mesh::CreateVAO()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float) * 5), (void*)0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVertices));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (sizeof(float) * 5), (void*)(sizeof(float) * 3));
 }
 
 void Mesh::SetMaterialIndex(unsigned int newMaterialIndex)
@@ -117,6 +137,9 @@ void Mesh::Draw(const std::vector<unsigned>& model_textures)
 	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
+	//glDrawArrays(GL_TRIANGLES, 0, numIndices);
+
+
 }
 
 bool Mesh::CleanUp()
