@@ -7,6 +7,7 @@
 #include "assimp/postprocess.h"	// for aiProcessPreset
 
 const std::string PATH_TEXTURES = "./resources/textures/"; 
+const std::string PATH_MODELS = "./resources/models/";
 
 Model::Model()
 {
@@ -78,7 +79,30 @@ void Model::LoadMeshes(const aiScene* scene)
 	}
 }
 
-std::string Model::GetProcessedPath(std::string path)
+std::string Model::GetProcessedPath(const std::string &path)
 {
-	return PATH_TEXTURES.c_str() + path;
+	std::string currentPath = path;
+	if (ExistsTexture(currentPath)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in default path", path.c_str());
+
+	if (ExistsTexture(currentPath = PATH_MODELS + path)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in models path", path.c_str());
+
+	if (ExistsTexture(currentPath = PATH_TEXTURES + path)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s not found", path);
+	return "";
+}
+
+bool Model::ExistsTexture(const std::string& path) {
+	struct stat buffer;
+	return (stat(path.c_str(), &buffer) == 0);
 }

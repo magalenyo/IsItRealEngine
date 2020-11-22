@@ -24,6 +24,7 @@ private:
 	void LoadMaterials(const aiScene* scene);
 	void LoadMeshes(const aiScene* scene);
 
-	std::string GetProcessedPath(std::string path);
+	std::string GetProcessedPath(const std::string& path);
+	bool ExistsTexture(const std::string& path);
 };
 
