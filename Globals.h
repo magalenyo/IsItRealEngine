@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
-#define PI 3.14159265359
-#define DEGTORAD PI/180
-#define RADTODEG 180/PI
+#define OWN_PI 3.14159265359
+#define DEGTORAD OWN_PI/180
+#define RADTODEG 180/OWN_PI
 
 void log(const char file[], int line, const char* format, ...);
 

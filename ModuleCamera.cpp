@@ -30,8 +30,7 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
-	glLoadIdentity();
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);		// to set white lines
+	glLoadIdentity();		// TODO: -> might not be necessary. Make changes and try
 
 	//frustum;
 	float4x4 projectionGL = frustum.ProjectionMatrix().Transposed(); //<-- Important to transpose!
@@ -44,44 +43,6 @@ update_status ModuleCamera::Update()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(*projectionGL.v);
-
-
-	glLineWidth(1.0f);
-	float d = 200.0f;			// grid w
-	glBegin(GL_LINES);			// grid creation
-	for (float i = -d; i <= d; i += 1.0f)
-	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
-	}
-	glEnd();
-
-	glLineWidth(2.0f);
-	glBegin(GL_LINES);			// this is to start writting lines
-	// red X
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-	// green Y
-	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-
-	// blue Z
-	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-	glEnd();				// this is to end writing lines
-	glLineWidth(1.0f);
-
-	// SEND THE PROJECTIONMATRIX AND VIEWMATRIX
 
 	/* START CAMERA SETTINGS */
 	if (App->input->GetWindowEvent(ModuleInput::EventWindow::WE_RESIZED)) {

@@ -3,11 +3,16 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
+#include "ModuleCamera.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry/Frustum.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
+
+#include "Math/float4x4.h"
+#include "ModuleDebugDraw.h"
+#include "debugdraw.h" 
 
 
 void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
@@ -118,6 +123,12 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	dd::axisTriad(float4x4::identity, 0.1f, 2.0f);
+	dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, dd::colors::White);
+	int w, h;
+	App->window->GetWindowSize(w, h);
+	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), w, h);
+
 	bakerHouse->Draw();
 
 	return UPDATE_CONTINUE;

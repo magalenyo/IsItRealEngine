@@ -14,6 +14,7 @@ class ModuleCamera;
 class ModuleTime;
 class ModuleTexture;
 class ModuleEditor;
+class ModuleDebugDraw;
 
 class Application
 {
@@ -36,6 +37,7 @@ public:
 	ModuleTexture* textures = nullptr;
 	ModuleRenderExercise* exercise = nullptr;
 	ModuleEditor* editor = nullptr;
+	ModuleDebugDraw* debugDraw = nullptr;
 
 private:
 
