@@ -70,17 +70,18 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	// uv, uv			   -> uv0
 	unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2);
 	unsigned buffer_size = vertex_size * mesh->mNumVertices;
-	float* vertices = new float[buffer_size];
+	glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
+	//float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_MAP_WRITE_BIT));
+	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
-		vertices[i] = mesh->mVertices[i].x;
-		vertices[i + 1] = mesh->mVertices[i].y;
-		vertices[i + 2] = mesh->mVertices[i].z;
-		vertices[i + 3] = mesh->mTextureCoords[0][i].x;
-		vertices[i + 4] = mesh->mTextureCoords[0][i].y;
+		*(vertices++) = mesh->mVertices[i].x;
+		*(vertices++) = mesh->mVertices[i].y;
+		*(vertices++) = mesh->mVertices[i].z;
+		*(vertices++) = mesh->mTextureCoords[0][i].x;
+		*(vertices++) = mesh->mTextureCoords[0][i].y;
 	} 
-	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glUnmapBuffer(GL_ARRAY_BUFFER);
 	numVertices = mesh->mNumVertices;
 }
 
@@ -92,7 +93,7 @@ void Mesh::LoadEBO(const aiMesh* mesh)
 	unsigned index_size = sizeof(unsigned) * mesh->mNumFaces * 3;
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, nullptr, GL_STATIC_DRAW);
 	// if it's GL_MAP_WRITE_BIT it won't let it load, needs to be READ_ONLY
-	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_ONLY));
+	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 	for (unsigned i = 0; i < mesh->mNumFaces; ++i)
 	{
 		assert(mesh->mFaces[i].mNumIndices == 3); // note: assume triangles = 3 indices per face
