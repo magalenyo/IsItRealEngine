@@ -19,7 +19,9 @@ public:
 	bool CleanUp();
 
 private:
-	unsigned int materialIndex;
+	static const int BIND_VERTEX_ARRAY_END = 0;
+
+	unsigned int materialIndex = 0;
 	int numVertices = 0;
 	int numIndices = 0;
 
