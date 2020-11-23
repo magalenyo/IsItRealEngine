@@ -1,6 +1,9 @@
 #pragma once
 #include "Module.h"
-#include <string>
+#include "UIComponent.h"
+#include <vector>
+
+class UIConsole;
 
 class ModuleEditor : public Module
 {
@@ -15,8 +18,12 @@ public:
 	update_status PreUpdate();
 
 
-	void DrawConsole(bool* p_open, std::string logText);
+	//void DrawConsole(bool* p_open, std::string logText);
 	bool isReady = false;
 
+	UIConsole* console = nullptr;
+
+private:
+	std::vector<UIComponent*> components;
 };
 

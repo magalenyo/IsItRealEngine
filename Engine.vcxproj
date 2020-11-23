@@ -244,6 +244,8 @@
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="UIComponent.h" />
+    <ClInclude Include="UIConsole.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -309,6 +311,7 @@
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="UIConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\shaders\FragmentShader.glsl" />

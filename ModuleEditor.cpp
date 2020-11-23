@@ -3,10 +3,15 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 
+#include "UIComponent.h"
+#include "UIConsole.h"
+
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 #include <string>
+
+using namespace std;
 
 ModuleEditor::ModuleEditor()
 {
@@ -25,6 +30,8 @@ bool ModuleEditor::Init()
     ImGui_ImplOpenGL3_Init(glsl_version);
     isReady = true;
 
+    components.push_back(console = new UIConsole());
+
     return true;
 }
 
@@ -40,6 +47,10 @@ bool ModuleEditor::CleanUp()
 update_status ModuleEditor::Update()
 {
     static bool show_console = true;
+
+    if (show_console) {
+        console->Draw();
+    }
 
    /* if (show_console) {
         DrawConsole(&show_console, "hola");
@@ -59,19 +70,16 @@ update_status ModuleEditor::PreUpdate()
     return UPDATE_CONTINUE;
 }
 
-void ModuleEditor::DrawConsole(bool* p_open, std::string logText)
-{
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Console", p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    ImGui::Text(logText.c_str());
-
-    ImGui::End();
-
-
-
-}
+//void ModuleEditor::DrawConsole(bool* p_open, std::string logText)
+//{
+//    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+//    if (!ImGui::Begin("Console", p_open))
+//    {
+//        ImGui::End();
+//        return;
+//    }
+//
+//    ImGui::Text(logText.c_str());
+//
+//    ImGui::End();
+//}

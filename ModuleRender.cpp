@@ -43,9 +43,9 @@ void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLe
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	//if (tmp_severity != "notification") {
+	if (tmp_severity != "notification") {
 		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
-	//}
+	}
 	
 }
 

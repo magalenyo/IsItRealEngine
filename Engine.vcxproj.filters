@@ -160,6 +160,9 @@
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="UIConsole.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -432,6 +435,12 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h" />
+    <ClInclude Include="UIComponent.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIConsole.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">
@@ -457,6 +466,9 @@
     </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{ac58fd32-c79e-4891-a8e2-234e0d45d0ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{bc3e85e6-4ccd-4b04-a926-97d33e5bf6b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

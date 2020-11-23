@@ -1,2 +1,5 @@
-﻿  Model.cpp
+﻿  UIConsole.cpp
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(28,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(28,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(29,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Engine.vcxproj -> C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\Debug\EngineMaster.exe
