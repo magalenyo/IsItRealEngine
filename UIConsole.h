@@ -24,6 +24,6 @@ private:
     bool                  ScrollToBottom;
 
     int                   defaultWidth = SCREEN_WIDTH;
-    int                   defaultHeight = 200;
+    int                   defaultHeight = 120;
 };
 

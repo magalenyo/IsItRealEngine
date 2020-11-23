@@ -23,11 +23,24 @@ void UIConsole::Draw()
 {
     int width, height;
     App->window->GetWindowSize(width, height);
+
+    ImGuiWindowFlags window_flags = 0;
+    window_flags |= ImGuiWindowFlags_NoCollapse;
+    window_flags |= ImGuiWindowFlags_NoResize;
+
+    ImGui::GetStyle().WindowRounding = 0.0f;// <- Set this on init or use ImGui::PushStyleVar()
+    ImGui::GetStyle().ChildRounding = 0.0f;
+    ImGui::GetStyle().FrameRounding = 0.0f;
+    ImGui::GetStyle().GrabRounding = 0.0f;
+    ImGui::GetStyle().PopupRounding = 0.0f;
+    ImGui::GetStyle().ScrollbarRounding = 0.0f;
+
     // ImGuiCond_FirstUseEver
     // ImGuiCond_None so it isn't resizable
     ImGui::SetNextWindowSize(ImVec2(width, defaultHeight), ImGuiCond_None);
     ImGui::SetNextWindowPos(ImVec2(0, height - defaultHeight));
-    if (!ImGui::Begin("Console"))
+    bool *open = false;
+    if (!ImGui::Begin("Console", open, window_flags))
     {
         ImGui::End();
         return;
@@ -122,7 +135,6 @@ void UIConsole::Draw()
 
     ImGui::PopStyleVar();
     ImGui::EndChild();
-    ImGui::Separator();
 
     // Command-line
     //bool reclaim_focus = false;
