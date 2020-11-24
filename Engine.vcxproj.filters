@@ -441,6 +441,7 @@
     <ClInclude Include="UIConsole.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="DebugLogger.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

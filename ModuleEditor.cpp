@@ -54,9 +54,9 @@ update_status ModuleEditor::Update()
 
    /* if (show_console) {
         DrawConsole(&show_console, "hola");
-    }
+    }*/
 
-    ImGui::ShowDemoWindow();*/
+    ImGui::ShowDemoWindow();
     return UPDATE_CONTINUE;
 }
 

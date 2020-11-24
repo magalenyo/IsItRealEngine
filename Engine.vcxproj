@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="DebugLogger.h" />
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />

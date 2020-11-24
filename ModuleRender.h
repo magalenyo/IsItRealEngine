@@ -11,6 +11,7 @@ class ModuleRender : public Module
 {
 public:
 
+
 	ModuleRender();
 	~ModuleRender();
 
@@ -28,5 +29,5 @@ private:
 	
 	void* context;
 	unsigned int defaultProgram;
-	Model* bakerHouse;
+	Model* bakerHouse;	
 };

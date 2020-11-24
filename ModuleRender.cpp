@@ -9,45 +9,14 @@
 #include "Geometry/Frustum.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
+#include "DebugLogger.h"
 
 #include "Math/float4x4.h"
 #include "ModuleDebugDraw.h"
 #include "debugdraw.h" 
 
+#include "Assimp/cimport.h" // aiLogStream
 
-void __stdcall OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-{
-	const char* tmp_source = "", * tmp_type = "", * tmp_severity = "";
-	switch (source) {
-	case GL_DEBUG_SOURCE_API: tmp_source = "API"; break;
-	case GL_DEBUG_SOURCE_WINDOW_SYSTEM: tmp_source = "Window System"; break;
-	case GL_DEBUG_SOURCE_SHADER_COMPILER: tmp_source = "Shader Compiler"; break;
-	case GL_DEBUG_SOURCE_THIRD_PARTY: tmp_source = "Third Party"; break;
-	case GL_DEBUG_SOURCE_APPLICATION: tmp_source = "Application"; break;
-	case GL_DEBUG_SOURCE_OTHER: tmp_source = "Other"; break;
-	};
-	switch (type) {
-	case GL_DEBUG_TYPE_ERROR: tmp_type = "Error"; break;
-	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: tmp_type = "Deprecated Behaviour"; break;
-	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: tmp_type = "Undefined Behaviour"; break;
-	case GL_DEBUG_TYPE_PORTABILITY: tmp_type = "Portability"; break;
-	case GL_DEBUG_TYPE_PERFORMANCE: tmp_type = "Performance"; break;
-	case GL_DEBUG_TYPE_MARKER: tmp_type = "Marker"; break;
-	case GL_DEBUG_TYPE_PUSH_GROUP: tmp_type = "Push Group"; break;
-	case GL_DEBUG_TYPE_POP_GROUP: tmp_type = "Pop Group"; break;
-	case GL_DEBUG_TYPE_OTHER: tmp_type = "Other"; break;
-	};
-	switch (severity) {
-	case GL_DEBUG_SEVERITY_HIGH: tmp_severity = "high"; break;
-	case GL_DEBUG_SEVERITY_MEDIUM: tmp_severity = "medium"; break;
-	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
-	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
-	};
-	if (tmp_severity != "notification") {
-		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
-	}
-	
-}
 
 ModuleRender::ModuleRender()
 {
@@ -95,9 +64,15 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr);
+	glDebugMessageCallback(&DebugLogger::GLErrorFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
 #endif
+
+	// This is to output the log from Assimp
+	struct aiLogStream stream;
+	stream.callback = DebugLogger::AssimpErrorFunction;
+	aiAttachLogStream(&stream);
+	// *************************
 
 	unsigned vertexShaderTexture = App->program->CompileShader(GL_VERTEX_SHADER, "./shaders/VertexShaderTexture.glsl");
 	unsigned fragmentShaderTexture = App->program->CompileShader(GL_FRAGMENT_SHADER, "./shaders/FragmentShaderTexture.glsl");
