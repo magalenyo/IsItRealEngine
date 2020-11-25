@@ -122,7 +122,9 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
-	delete loadedModel;
+	if (loadedModel != nullptr) {
+		delete loadedModel;
+	}
 	//Destroy window
 	SDL_GL_DeleteContext(context);
 
@@ -142,6 +144,7 @@ unsigned int ModuleRender::GetDefaultProgram()
 void ModuleRender::LoadModel(const char* path)
 {
 	delete loadedModel;
-	//loadedModel = new Model(path);
+	loadedModel = nullptr;
+	loadedModel = new Model(path);
 }
 

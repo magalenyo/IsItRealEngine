@@ -11,6 +11,8 @@
 #include "imgui_impl_opengl3.h"
 #include <string>
 
+#include "MemoryLeakDetector.h"
+
 using namespace std;
 
 ModuleEditor::ModuleEditor()
@@ -40,6 +42,11 @@ bool ModuleEditor::CleanUp()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+
+    for (UIComponent* component : components) {
+        delete component;
+    }
+    components.clear();
 
     return true;
 }

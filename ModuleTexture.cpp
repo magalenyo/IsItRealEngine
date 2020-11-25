@@ -2,6 +2,7 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 #include <GL/GL.h>
+#include "MemoryLeakDetector.h"
 
 ModuleTexture::ModuleTexture()
 {

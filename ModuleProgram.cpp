@@ -1,6 +1,8 @@
 #include "ModuleProgram.h"
 #include "GL/glew.h"
 
+#include "MemoryLeakDetector.h"
+
 unsigned CreateTriangleVBO()
 {
 	float vtx_data[] = { -1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f };
@@ -58,6 +60,7 @@ unsigned ModuleProgram::CompileShader(unsigned type, const char* fileName)
 			free(info);
 		}
 	}
+	delete source;
 	return shader_id;
 }
 

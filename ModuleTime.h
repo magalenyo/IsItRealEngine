@@ -4,6 +4,8 @@
 #include "Module.h"
 #include <ctime>
 
+#include "MemoryLeakDetector.h"
+
 class ModuleTime : public Module
 {
 public:

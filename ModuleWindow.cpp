@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
+#include "MemoryLeakDetector.h"
+
 ModuleWindow::ModuleWindow()
 {
 }

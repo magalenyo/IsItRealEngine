@@ -6,6 +6,7 @@
 #include "imgui_impl_opengl3.h"
 #include <stdio.h> 
 #include <stdlib.h>  
+#include "MemoryLeakDetector.h"
 
 static void  Strtrim(char* s) { char* str_end = s + strlen(s); while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0; }
 static char* Strdup(const char* s) { size_t len = strlen(s) + 1; void* buf = malloc(len); IM_ASSERT(buf); return (char*)memcpy(buf, (const void*)s, len); }

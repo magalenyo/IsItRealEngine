@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "GL/glew.h"
 #include "SDL.h"
+#include "MemoryLeakDetector.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
 {

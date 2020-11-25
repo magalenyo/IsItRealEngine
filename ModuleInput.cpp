@@ -5,6 +5,8 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "SDL/include/SDL.h"
+#include "MemoryLeakDetector.h"
+
 #define MAX_KEYS 300
 ModuleInput::ModuleInput()
 {
@@ -15,7 +17,9 @@ ModuleInput::ModuleInput()
 
 // Destructor
 ModuleInput::~ModuleInput()
-{}
+{
+
+}
 
 // Called before render is available
 bool ModuleInput::Init()
@@ -156,6 +160,7 @@ update_status ModuleInput::Update()
 bool ModuleInput::CleanUp()
 {
 	LOG("Quitting SDL input event subsystem");
+	delete keyboard;
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

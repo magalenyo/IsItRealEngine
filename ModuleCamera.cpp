@@ -5,6 +5,7 @@
 #include "ModuleInput.h"
 #include "ModuleTime.h"
 #include "Math/float3x3.h"
+#include "MemoryLeakDetector.h"
 
 
 ModuleCamera::ModuleCamera()
