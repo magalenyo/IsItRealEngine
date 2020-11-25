@@ -26,7 +26,7 @@ void UIConsole::Draw()
 
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_NoCollapse;
-    window_flags |= ImGuiWindowFlags_NoResize;
+    //window_flags |= ImGuiWindowFlags_NoResize;
 
     ImGui::GetStyle().WindowRounding = 0.0f;// <- Set this on init or use ImGui::PushStyleVar()
     ImGui::GetStyle().ChildRounding = 0.0f;
@@ -46,21 +46,12 @@ void UIConsole::Draw()
         return;
     }
 
-    // As a specific feature guaranteed by the library, after calling Begin() the last Item represent the title bar.
-    // So e.g. IsItemHovered() will return true when hovering the title bar.
-    // Here we create a context menu only available from the title bar.
-    if (ImGui::BeginPopupContextItem())
-    {
-        if (ImGui::MenuItem("Close Console"))
-            //*p_open = false;
-        ImGui::EndPopup();
+    // TODO: display items starting from the bottom
+    if (ImGui::Button("Clear")) { 
+        ClearLog(); 
     }
 
-    // TODO: display items starting from the bottom
-    if (ImGui::SmallButton("Clear")) { ClearLog(); }
-    //static float t = 0.0f; if (ImGui::GetTime() - t > 0.02f) { t = ImGui::GetTime(); AddLog("Spam %f", t); }
-
-    ImGui::Separator();
+    ImGui::SameLine(width - 66);    
 
     // Options menu
     if (ImGui::BeginPopup("Options"))
@@ -111,19 +102,6 @@ void UIConsole::Draw()
 
     ImGui::PopStyleVar();
     ImGui::EndChild();
-
-    // Command-line
-    //bool reclaim_focus = false;
-    //ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-    //if (ImGui::InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
-    //{
-    //    char* s = InputBuf;
-    //    Strtrim(s);
-    //    if (s[0])
-    //        ExecCommand(s);
-    //    strcpy(s, "");
-    //    reclaim_focus = true;
-    //}
 
     //// Auto-focus on window apparition
     //ImGui::SetItemDefaultFocus();

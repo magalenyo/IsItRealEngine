@@ -38,9 +38,9 @@ public:
 		case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 		};
 
-		if (!isIdExcluded(id)) {
+		//if (!isIdExcluded(id)) {
 			LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
-		}
+		//}
 	}
 
 	// This function calls the LOG function with the step from ASSIMP
