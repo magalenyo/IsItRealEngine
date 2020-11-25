@@ -20,14 +20,14 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
-	void WindowResized(unsigned width, unsigned height);
 
 	void* GetContext();
 	unsigned int GetDefaultProgram();
+	void LoadModel(const char* path);
 
 private:
 	
 	void* context;
 	unsigned int defaultProgram;
-	Model* bakerHouse;	
+	Model* loadedModel = nullptr;
 };

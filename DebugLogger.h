@@ -51,11 +51,14 @@ public:
 
 private:
 	static const int GL_ID_NOTIFICATION_USINGVIDEOMEMORY = 131185;		// The id of the "Buffer object X (bound to GL_ARRAY_BUFFER_ARB, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations"
+	static const int GL_ID_NOTIFICATION_SHADERRECOMPILED = 131218;		// The id of the "Message:Program/shader state performance warning: Vertex shader in program X is being recompiled based on GL state."
+
 
 	// returns true if idToScan is one of the IDS to exclude (not show) in the log
 	static bool isIdExcluded(int idToScan) {
 		bool result = false;
-		if (idToScan == GL_ID_NOTIFICATION_USINGVIDEOMEMORY) {
+		if (idToScan == GL_ID_NOTIFICATION_USINGVIDEOMEMORY 
+		 || idToScan == GL_ID_NOTIFICATION_SHADERRECOMPILED) {
 			result = true;
 		}
 		return result;

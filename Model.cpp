@@ -6,6 +6,8 @@
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
 
+#include "MemoryLeakDetector.h"
+
 const std::string PATH_TEXTURES = "./resources/textures/"; 
 const std::string PATH_MODELS = "./resources/models/";
 
@@ -16,11 +18,12 @@ Model::Model()
 
 Model::Model(const char* file_name)
 {
-	Load(file_name);
+ 	Load(file_name);
 }
 
 Model::~Model()
 {
+	CleanUp();
 }
 
 void Model::Load(const char* file_name)
@@ -39,11 +42,12 @@ void Model::Load(const char* file_name)
 
 bool Model::CleanUp()
 {
-	//TODO
-
 	for (Mesh* mesh : meshes) {
-		mesh->CleanUp();
+		delete mesh;
 	}
+
+	meshes.clear();
+
 	return true;
 }
 
@@ -60,7 +64,8 @@ void Model::LoadMaterials(const aiScene* scene)
 	textures.reserve(scene->mNumMaterials);
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
-		if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file) == AI_SUCCESS)
+		aiReturn returnType = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
+		if (returnType == AI_SUCCESS)
 		{
 			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());
 			if (textureId != ModuleTexture::TEXTURE_ERROR) {

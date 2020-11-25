@@ -7,6 +7,8 @@
 #pragma comment( lib, "SDL/lib/x86/SDL2.lib" )
 #pragma comment( lib, "SDL/lib/x86/SDL2main.lib" )
 
+#include "MemoryLeakDetector.h"
+
 enum main_states
 {
 	MAIN_CREATION,
@@ -85,5 +87,8 @@ int main(int argc, char ** argv)
 
 	delete App;
 	LOG("Bye :)\n");
+
+	_CrtDumpMemoryLeaks(); // show leaks with file and line where allocation was made
+
 	return main_return;
 }

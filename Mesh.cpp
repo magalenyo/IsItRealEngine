@@ -5,6 +5,8 @@
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 
+#include "MemoryLeakDetector.h"
+
 Mesh::Mesh()
 {
 }
@@ -19,6 +21,7 @@ Mesh::Mesh(const aiMesh* mesh)
 
 Mesh::~Mesh()
 {
+	CleanUp();
 }
 
 void Mesh::LoadVBO(const aiMesh* mesh)
@@ -30,7 +33,6 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2);
 	unsigned buffer_size = vertex_size * mesh->mNumVertices;
 	glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
-	//float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_MAP_WRITE_BIT));
 	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{

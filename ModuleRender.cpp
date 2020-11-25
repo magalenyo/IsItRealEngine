@@ -17,6 +17,7 @@
 
 #include "Assimp/cimport.h" // aiLogStream
 
+#include "MemoryLeakDetector.h"
 
 ModuleRender::ModuleRender()
 {
@@ -78,7 +79,7 @@ bool ModuleRender::Init()
 	unsigned fragmentShaderTexture = App->program->CompileShader(GL_FRAGMENT_SHADER, "./shaders/FragmentShaderTexture.glsl");
 	defaultProgram = App->program->CreateProgram(vertexShaderTexture, fragmentShaderTexture);
 
-	bakerHouse = new Model("./resources/models/BakerHouse.fbx");
+	loadedModel = new Model("./resources/models/BakerHouse.fbx");
 
 	return true;
 }
@@ -104,7 +105,7 @@ update_status ModuleRender::Update()
 	App->window->GetWindowSize(w, h);
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), w, h);
 
-	bakerHouse->Draw();
+	loadedModel->Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -121,15 +122,11 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
-
+	delete loadedModel;
 	//Destroy window
 	SDL_GL_DeleteContext(context);
 
 	return true;
-}
-
-void ModuleRender::WindowResized(unsigned width, unsigned height)
-{
 }
 
 void* ModuleRender::GetContext()
@@ -140,5 +137,11 @@ void* ModuleRender::GetContext()
 unsigned int ModuleRender::GetDefaultProgram()
 {
 	return defaultProgram;
+}
+
+void ModuleRender::LoadModel(const char* path)
+{
+	delete loadedModel;
+	//loadedModel = new Model(path);
 }
 

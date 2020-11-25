@@ -442,6 +442,7 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="DebugLogger.h" />
+    <ClInclude Include="MemoryLeakDetector.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

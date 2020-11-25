@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "ModuleWindow.h"
 #include "SDL/include/SDL.h"
 #define MAX_KEYS 300
 ModuleInput::ModuleInput()
@@ -127,6 +128,19 @@ update_status ModuleInput::Update()
 			else {
 				mouseWheelState = MouseWheelState::SCROLLING_IDLE;
 			}
+		}
+			break;
+		case SDL_DROPFILE: {
+			char* dropped_filedir = event.drop.file;
+			// Shows directory of dropped file
+			/*SDL_ShowSimpleMessageBox(
+				SDL_MESSAGEBOX_INFORMATION,
+				"File dropped on window",
+				dropped_filedir,
+				App->window->window
+			);*/
+			App->renderer->LoadModel(dropped_filedir);
+			SDL_free(dropped_filedir);
 		}
 			break;
 		}
