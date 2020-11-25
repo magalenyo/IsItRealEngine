@@ -205,7 +205,10 @@ void ModuleCamera::IncreaseSpeed()
 void ModuleCamera::OnWindowResized(int width, int height)
 {
 	// aspect ratio is needed so it does not 
-	frustum.SetVerticalFovAndAspectRatio(frustum.VerticalFov(), width / height);
+	//if (width > 0 && height > 0) {
+		frustum.SetVerticalFovAndAspectRatio(frustum.VerticalFov(), ((float) width) / height);
+	//}
+	
 }
 
 void ModuleCamera::SetHorizontalFov(int fov)
