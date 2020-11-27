@@ -17,8 +17,6 @@
 
 #include "Assimp/cimport.h" // aiLogStream
 
-#include "MemoryLeakDetector.h"
-
 ModuleRender::ModuleRender()
 {
 

@@ -38,6 +38,10 @@ public:
 		case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 		};
 
+		if (id == 1281) {
+			int aux = 0;
+		}
+
 		if (!isIdExcluded(id)) {
 			LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 		}

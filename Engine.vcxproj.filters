@@ -163,6 +163,7 @@
     <ClCompile Include="UIConsole.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Module.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -443,6 +444,12 @@
     </ClInclude>
     <ClInclude Include="DebugLogger.h" />
     <ClInclude Include="MemoryLeakDetector.h" />
+    <ClInclude Include="TimerMicro.h">
+      <Filter>Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerMili.h">
+      <Filter>Timers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">
@@ -471,6 +478,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{bc3e85e6-4ccd-4b04-a926-97d33e5bf6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timers">
+      <UniqueIdentifier>{89c545e7-f06a-4d9b-823f-2c192a418de4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
