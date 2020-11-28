@@ -24,4 +24,4 @@ enum update_status
 #define WINDOW_BORDERLESS false
 #define WINDOW_RESIZABLE true
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "IsItRealEngine"

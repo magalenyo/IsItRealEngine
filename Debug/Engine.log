@@ -1,8 +1,2 @@
-﻿  Application.cpp
-  Main.cpp
-  Mesh.cpp
-  ModuleEditor.cpp
-  ModuleInput.cpp
-  ModuleRender.cpp
-  Generating Code...
+﻿  ModuleEditor.cpp
   Engine.vcxproj -> C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\Debug\EngineMaster.exe

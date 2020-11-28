@@ -160,10 +160,16 @@
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="UIConsole.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Module.cpp" />
+    <ClCompile Include="UIConfiguration.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIMainMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -449,6 +455,12 @@
     </ClInclude>
     <ClInclude Include="TimerMili.h">
       <Filter>Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIConfiguration.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIMainMenu.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

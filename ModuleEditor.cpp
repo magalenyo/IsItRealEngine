@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 
 #include "UIComponent.h"
+#include "UIMainMenu.h"
 #include "UIConsole.h"
 
 #include "imgui.h"
@@ -32,6 +33,7 @@ bool ModuleEditor::Init()
     ImGui_ImplOpenGL3_Init(glsl_version);
     isReady = true;
 
+    components.push_back(mainMenu = new UIMainMenu());
     components.push_back(console = new UIConsole());
 
     return true;
@@ -53,18 +55,19 @@ bool ModuleEditor::CleanUp()
 
 update_status ModuleEditor::Update()
 {
+    static bool show_mainMenu = true;
     static bool show_console = true;
+    
+    if (show_mainMenu) {
+        mainMenu->Draw();
+    }
 
     if (show_console) {
         console->Draw();
     }
 
-   /* if (show_console) {
-        DrawConsole(&show_console, "hola");
-    }*/
-
-    ImGui::ShowDemoWindow();
-    return UPDATE_CONTINUE;
+    //ImGui::ShowDemoWindow();
+    return updateStatus;
 }
 
 
@@ -75,6 +78,13 @@ update_status ModuleEditor::PreUpdate()
     ImGui_ImplSDL2_NewFrame(App->window->window);
     ImGui::NewFrame();
     return UPDATE_CONTINUE;
+}
+
+
+void ModuleEditor::ExitApplication()
+{
+    LOG("Exiting application from Editor...");
+    updateStatus = UPDATE_STOP;
 }
 
 //void ModuleEditor::DrawConsole(bool* p_open, std::string logText)

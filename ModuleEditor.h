@@ -1,8 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "UIComponent.h"
+
 #include <vector>
 
+class UIMainMenu;
 class UIConsole;
 
 class ModuleEditor : public Module
@@ -16,14 +18,15 @@ public:
 	bool CleanUp();
 	update_status Update();
 	update_status PreUpdate();
+	void ExitApplication(); // Sets the value of updateStatus to UPDATE_STOP
 
 
-	//void DrawConsole(bool* p_open, std::string logText);
 	bool isReady = false;
-
+	UIMainMenu* mainMenu = nullptr;
 	UIConsole* console = nullptr;
 
 private:
-	std::vector<UIComponent*> components;
+	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
+	update_status updateStatus = UPDATE_CONTINUE;		// The return type for the Update function
 };
 
