@@ -27,6 +27,8 @@ public:
 
 	void GetWindowSize(int &w, int &h) const;
 
+	void TurnVSYNC(bool param);
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;

@@ -6,6 +6,7 @@
 
 class UIMainMenu;
 class UIConsole;
+class UIConfiguration;
 
 class ModuleEditor : public Module
 {
@@ -24,6 +25,7 @@ public:
 	bool isReady = false;
 	UIMainMenu* mainMenu = nullptr;
 	UIConsole* console = nullptr;
+	UIConfiguration* configuration = nullptr;
 
 private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor

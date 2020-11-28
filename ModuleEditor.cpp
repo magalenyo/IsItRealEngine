@@ -6,6 +6,7 @@
 #include "UIComponent.h"
 #include "UIMainMenu.h"
 #include "UIConsole.h"
+#include "UIConfiguration.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -35,6 +36,7 @@ bool ModuleEditor::Init()
 
     components.push_back(mainMenu = new UIMainMenu());
     components.push_back(console = new UIConsole());
+    components.push_back(configuration = new UIConfiguration());
 
     return true;
 }
@@ -57,7 +59,8 @@ update_status ModuleEditor::Update()
 {
     static bool show_mainMenu = true;
     static bool show_console = true;
-    
+    static bool show_configuration = true;
+
     if (show_mainMenu) {
         mainMenu->Draw();
     }
@@ -66,7 +69,11 @@ update_status ModuleEditor::Update()
         console->Draw();
     }
 
-    //ImGui::ShowDemoWindow();
+    if (show_configuration) {
+        configuration->Draw();
+    }
+
+    ImGui::ShowDemoWindow();
     return updateStatus;
 }
 
@@ -87,16 +94,3 @@ void ModuleEditor::ExitApplication()
     updateStatus = UPDATE_STOP;
 }
 
-//void ModuleEditor::DrawConsole(bool* p_open, std::string logText)
-//{
-//    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-//    if (!ImGui::Begin("Console", p_open))
-//    {
-//        ImGui::End();
-//        return;
-//    }
-//
-//    ImGui::Text(logText.c_str());
-//
-//    ImGui::End();
-//}

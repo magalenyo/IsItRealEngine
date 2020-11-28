@@ -48,7 +48,11 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
+		flags |= SDL_RENDERER_PRESENTVSYNC;		// this for vsync
+
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		//SDL_GL_SetSwapInterval(0);				// or this
+		TurnVSYNC(false);
 
 		if(window == NULL)
 		{
@@ -103,5 +107,10 @@ int ModuleWindow::GetWindowHeight() const
 void ModuleWindow::GetWindowSize(int &w, int &h) const
 {
 	SDL_GetWindowSize(App->window->window, &w, &h);
+}
+
+void ModuleWindow::TurnVSYNC(bool param)
+{
+	SDL_GL_SetSwapInterval(param);
 }
 
