@@ -46,11 +46,11 @@ private:
 
 	/* CONFIGURATION VARIABLES */
 	float3 gridColor;
-	bool activateAxis = true;
-	bool activateGrid = true;
-	bool activatedModel = true;
-	bool activateGLDepthTest = true;
-	bool activateGLCullFace = true;
+	bool activeAxis = true;
+	bool activeGrid = true;
+	bool activeModel = true;
+	bool activeGLDepthTest = true;
+	bool activeGLCullFace = true;
 
 	void LoadRenderConfiguration();
 	void RenderAxis();

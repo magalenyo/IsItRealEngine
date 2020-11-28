@@ -4,7 +4,13 @@
   ModuleEditor.cpp
   ModuleInput.cpp
   ModuleRender.cpp
+  ModuleWindow.cpp
   UIConfiguration.cpp
 C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConfiguration.cpp(24,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  UIConsole.cpp
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(41,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(41,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(42,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConsole.cpp(55,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
   Engine.vcxproj -> C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\Debug\EngineMaster.exe

@@ -162,70 +162,70 @@ float3 ModuleRender::GetGridColor() const
 
 bool& ModuleRender::GetAxisState()
 {
-	return activateAxis;
+	return activeAxis;
 }
 
 bool& ModuleRender::GetGridState()
 {
-	return activateGrid;
+	return activeGrid;
 }
 
 bool& ModuleRender::GetModelState()
 {
-	return activatedModel;
+	return activeModel;
 }
 
 bool& ModuleRender::GetGLDepthTestState()
 {
-	return activateGLDepthTest;
+	return activeGLDepthTest;
 }
 
 bool& ModuleRender::GetGLCullFaceState()
 {
-	return activateGLCullFace;
+	return activeGLCullFace;
 }
 
 void ModuleRender::TurnAxis(bool state)
 {
-	activateAxis = state;
+	activeAxis = state;
 }
 
 void ModuleRender::TurnGrid(bool state)
 {
-	activateGrid = state;
+	activeGrid = state;
 }
 
 void ModuleRender::RenderAxis()
 {
-	if (activateAxis) {
+	if (activeAxis) {
 		dd::axisTriad(float4x4::identity, 0.1f, 2.0f);
 	}
 }
 
 void ModuleRender::RenderGrid()
 {
-	if (activateGrid) {
+	if (activeGrid) {
 		dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, gridColor);
 	}
 }
 
 void ModuleRender::RenderModel()
 {
-	if (activatedModel) {
+	if (activeModel) {
 		loadedModel->Draw();
 	}
 }
 
 void ModuleRender::LoadRenderConfiguration()
 {
-	if (activateGLCullFace) {
+	if (activeGLCullFace) {
 		glEnable(GL_CULL_FACE); // Enable cull backward faces
 	}
 	else {
 		glDisable(GL_CULL_FACE);
 	}
 
-	if (activateGLDepthTest) {
+	if (activeGLDepthTest) {
 		glEnable(GL_DEPTH_TEST); // Enable depth test
 	}
 	else {
