@@ -32,6 +32,8 @@ public:
 	bool& GetAxisState();
 	bool& GetGridState();
 	bool& GetModelState();
+	bool& GetGLDepthTestState();
+	bool& GetGLCullFaceState();
 
 	void TurnAxis(bool state);
 	void TurnGrid(bool state);
@@ -47,7 +49,10 @@ private:
 	bool activateAxis = true;
 	bool activateGrid = true;
 	bool activatedModel = true;
+	bool activateGLDepthTest = true;
+	bool activateGLCullFace = true;
 
+	void LoadRenderConfiguration();
 	void RenderAxis();
 	void RenderGrid();
 	void RenderModel();

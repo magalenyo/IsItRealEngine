@@ -37,7 +37,7 @@ void UIConfiguration::Draw()
 
 		char title[55];
 		
-        sprintf_s(title, 25, "Framerate %.1f FPS", fps);
+        sprintf_s(title, 55, "Framerate %.1f FPS", fps);
         ImGui::PlotHistogram("##Framerate", &frames[0], frames.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100), sizeof(float));
         sprintf_s(title, 55, "Milliseconds %0.3f ms/frame", frameMillis);
         ImGui::PlotHistogram("##Milliseconds", &millis[0], millis.size(), 0, title, 0.0f, 50.0f, ImVec2(310, 100), sizeof(float));
@@ -60,6 +60,12 @@ void UIConfiguration::Draw()
 
         bool& modelActivated = App->renderer->GetModelState();
         ImGui::Checkbox("Activate Model", &modelActivated);
+
+        bool& cullFaceActivated = App->renderer->GetGLCullFaceState();
+        ImGui::Checkbox("Activate Cull Face", &cullFaceActivated);
+
+        bool& depthTestActivated = App->renderer->GetGLDepthTestState();
+        ImGui::Checkbox("Activate Depth Test", &depthTestActivated);
     }
 
     ImGui::End();

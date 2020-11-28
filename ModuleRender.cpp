@@ -100,6 +100,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	LoadRenderConfiguration();
 	RenderAxis();
 	RenderGrid();
 	int w, h;
@@ -174,6 +175,16 @@ bool& ModuleRender::GetModelState()
 	return activatedModel;
 }
 
+bool& ModuleRender::GetGLDepthTestState()
+{
+	return activateGLDepthTest;
+}
+
+bool& ModuleRender::GetGLCullFaceState()
+{
+	return activateGLCullFace;
+}
+
 void ModuleRender::TurnAxis(bool state)
 {
 	activateAxis = state;
@@ -202,6 +213,23 @@ void ModuleRender::RenderModel()
 {
 	if (activatedModel) {
 		loadedModel->Draw();
+	}
+}
+
+void ModuleRender::LoadRenderConfiguration()
+{
+	if (activateGLCullFace) {
+		glEnable(GL_CULL_FACE); // Enable cull backward faces
+	}
+	else {
+		glDisable(GL_CULL_FACE);
+	}
+
+	if (activateGLDepthTest) {
+		glEnable(GL_DEPTH_TEST); // Enable depth test
+	}
+	else {
+		glDisable(GL_DEPTH_TEST);
 	}
 }
 

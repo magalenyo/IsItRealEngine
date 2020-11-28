@@ -1,1 +1,10 @@
-﻿  Engine.vcxproj -> C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\Debug\EngineMaster.exe
+﻿  Application.cpp
+  Main.cpp
+  Mesh.cpp
+  ModuleEditor.cpp
+  ModuleInput.cpp
+  ModuleRender.cpp
+  UIConfiguration.cpp
+C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\UIConfiguration.cpp(24,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Engine.vcxproj -> C:\Users\MiguelÁngelBuenoRive\Desktop\UPC\C++ for Video Games\IsItRealEngine\Debug\EngineMaster.exe
