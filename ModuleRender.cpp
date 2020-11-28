@@ -14,6 +14,7 @@
 #include "Math/float4x4.h"
 #include "ModuleDebugDraw.h"
 #include "debugdraw.h" 
+#include "Math/float3.h"
 
 #include "Assimp/cimport.h" // aiLogStream
 
@@ -79,6 +80,8 @@ bool ModuleRender::Init()
 
 	loadedModel = new Model("./resources/models/BakerHouse.fbx");
 
+	gridColor = { 1.000000f, 1.000000f, 1.000000f };
+
 	return true;
 }
 
@@ -97,13 +100,13 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	dd::axisTriad(float4x4::identity, 0.1f, 2.0f);
-	dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, dd::colors::White);
+	RenderAxis();
+	RenderGrid();
 	int w, h;
 	App->window->GetWindowSize(w, h);
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), w, h);
 
-	loadedModel->Draw();
+	RenderModel();
 
 	return UPDATE_CONTINUE;
 }
@@ -144,5 +147,61 @@ void ModuleRender::LoadModel(const char* path)
 	delete loadedModel;
 	loadedModel = nullptr;
 	loadedModel = new Model(path);
+}
+
+void ModuleRender::SetGridColor(float3 newColor)
+{
+	gridColor = newColor;
+}
+
+float3 ModuleRender::GetGridColor() const
+{
+	return gridColor;
+}
+
+bool& ModuleRender::GetAxisState()
+{
+	return activateAxis;
+}
+
+bool& ModuleRender::GetGridState()
+{
+	return activateGrid;
+}
+
+bool& ModuleRender::GetModelState()
+{
+	return activatedModel;
+}
+
+void ModuleRender::TurnAxis(bool state)
+{
+	activateAxis = state;
+}
+
+void ModuleRender::TurnGrid(bool state)
+{
+	activateGrid = state;
+}
+
+void ModuleRender::RenderAxis()
+{
+	if (activateAxis) {
+		dd::axisTriad(float4x4::identity, 0.1f, 2.0f);
+	}
+}
+
+void ModuleRender::RenderGrid()
+{
+	if (activateGrid) {
+		dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, gridColor);
+	}
+}
+
+void ModuleRender::RenderModel()
+{
+	if (activatedModel) {
+		loadedModel->Draw();
+	}
 }
 

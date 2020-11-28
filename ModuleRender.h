@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Model.h"
+#include "Math/float3.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -25,9 +26,29 @@ public:
 	unsigned int GetDefaultProgram();
 	void LoadModel(const char* path);
 
+	void SetGridColor(float3 newColor);
+	float3 GetGridColor() const;
+
+	bool& GetAxisState();
+	bool& GetGridState();
+	bool& GetModelState();
+
+	void TurnAxis(bool state);
+	void TurnGrid(bool state);
+
 private:
 	
 	void* context;
 	unsigned int defaultProgram;
 	Model* loadedModel = nullptr;
+
+	/* CONFIGURATION VARIABLES */
+	float3 gridColor;
+	bool activateAxis = true;
+	bool activateGrid = true;
+	bool activatedModel = true;
+
+	void RenderAxis();
+	void RenderGrid();
+	void RenderModel();
 };
