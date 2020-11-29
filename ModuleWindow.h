@@ -10,6 +10,14 @@ class ModuleWindow : public Module
 {
 public:
 
+	enum WindowType 
+	{
+		W_FULLSCREEN = 0,
+		W_FULLSCREEN_DESKTOP = 1,
+		W_WINDOW_BORDERLESS = 2,
+		W_WINDOW_RESIZABLE = 3
+	};
+
 	ModuleWindow();
 
 	// Destructor
@@ -21,6 +29,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	update_status Update();
+
 	int GetWindowWidth() const;
 
 	int GetWindowHeight() const;
@@ -29,12 +39,19 @@ public:
 
 	void TurnVSYNC(bool param);
 
-public:
-	//The window we'll be rendering to
-	SDL_Window* window = NULL;
+	void SetWindowConfiguration();
 
-	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
+	int GetWindowType();
+	void SetWindowType(int type);
+
+public:
+	
+	SDL_Window* window = NULL; //The window we'll be rendering to
+	SDL_Surface* screen_surface = NULL; //The surface contained by the window
+
+private:
+	/* CONFIGURATION VARIABLES */
+	WindowType windowType;
 };
 
 #endif // __ModuleWindow_H__

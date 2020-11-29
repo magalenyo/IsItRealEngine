@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleWindow.h"
 
 #include "Math/float4.h"
 
@@ -67,6 +68,35 @@ void UIConfiguration::Draw()
         bool& depthTestActivated = App->renderer->GetGLDepthTestState();
         ImGui::Checkbox("Activate Depth Test", &depthTestActivated);
     }
+
+    if (ImGui::CollapsingHeader("Window"))
+    {
+       /* bool& gridActivated = App->renderer->GetGridState();
+        ImGui::Checkbox("Activate Grid", &gridActivated);
+
+        bool& axisActivated = App->renderer->GetAxisState();
+        ImGui::Checkbox("Activate Axis", &axisActivated);
+
+        bool& modelActivated = App->renderer->GetModelState();
+        ImGui::Checkbox("Activate Model", &modelActivated);
+
+        bool& cullFaceActivated = App->renderer->GetGLCullFaceState();
+        ImGui::Checkbox("Activate Cull Face", &cullFaceActivated);
+
+        bool& depthTestActivated = App->renderer->GetGLDepthTestState();
+        ImGui::Checkbox("Activate Depth Test", &depthTestActivated);*/
+
+        ImGui::Text("Window mode");
+
+        int type = App->window->GetWindowType();
+        ImGui::RadioButton("Fullscreen", &type, 0); ImGui::SameLine();
+        ImGui::RadioButton("Fullscreen Desktop", &type, 1); ImGui::SameLine();
+        ImGui::RadioButton("Borderless", &type, 2); ImGui::SameLine();
+        ImGui::RadioButton("Resizable", &type, 3);
+        App->window->SetWindowType(type);
+    }
+
+
 
     ImGui::End();
 }
