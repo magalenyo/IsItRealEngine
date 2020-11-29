@@ -6,7 +6,6 @@
 #include "ModuleCamera.h"
 #include "ModuleTime.h"
 #include "ModuleProgram.h"
-#include "ModuleRenderExercise.h"
 #include "ModuleTexture.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
