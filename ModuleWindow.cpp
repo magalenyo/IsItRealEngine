@@ -57,7 +57,7 @@ bool ModuleWindow::Init()
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		//SDL_GL_SetSwapInterval(0);				// or this
-		TurnVSYNC(false);
+		//TurnVSYNC(false);
 
 		if(window == NULL)
 		{
@@ -120,10 +120,41 @@ void ModuleWindow::GetWindowSize(int &w, int &h) const
 	SDL_GetWindowSize(App->window->window, &w, &h);
 }
 
-void ModuleWindow::TurnVSYNC(bool param)
+int ModuleWindow::GetWindowMaxWidth() const
 {
-	SDL_GL_SetSwapInterval(param);
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	return DM.w;
 }
+
+int ModuleWindow::GetWindowMaxHeight() const
+{
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	return DM.h;
+}
+
+void ModuleWindow::GetWindowMaxSize(int& w, int& h) const
+{
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	w = DM.w;
+	h = DM.h;
+
+	//SDL_GetWindowMaximumSize(App->window->window, &w, &h); -> It won't work like this
+}
+
+void ModuleWindow::SetWindowSize(int w, int h)
+{
+	if (w > 0 && h > 0) {
+		SDL_SetWindowSize(window, w, h);
+	}
+}
+
+//void ModuleWindow::TurnVSYNC(bool param)
+//{
+//	SDL_GL_SetSwapInterval(param);
+//}
 
 void ModuleWindow::SetWindowConfiguration()
 {

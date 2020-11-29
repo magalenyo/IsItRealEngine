@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 
 #include "Math/float4.h"
 
@@ -71,32 +72,46 @@ void UIConfiguration::Draw()
 
     if (ImGui::CollapsingHeader("Window"))
     {
-       /* bool& gridActivated = App->renderer->GetGridState();
-        ImGui::Checkbox("Activate Grid", &gridActivated);
 
-        bool& axisActivated = App->renderer->GetAxisState();
-        ImGui::Checkbox("Activate Axis", &axisActivated);
-
-        bool& modelActivated = App->renderer->GetModelState();
-        ImGui::Checkbox("Activate Model", &modelActivated);
-
-        bool& cullFaceActivated = App->renderer->GetGLCullFaceState();
-        ImGui::Checkbox("Activate Cull Face", &cullFaceActivated);
-
-        bool& depthTestActivated = App->renderer->GetGLDepthTestState();
-        ImGui::Checkbox("Activate Depth Test", &depthTestActivated);*/
-
+        // WINDOW MODE
         ImGui::Text("Window mode");
-
-        int type = App->window->GetWindowType();
+        int currentType = App->window->GetWindowType();
+        int type = currentType;
         ImGui::RadioButton("Fullscreen", &type, 0); ImGui::SameLine();
         ImGui::RadioButton("Fullscreen Desktop", &type, 1); ImGui::SameLine();
         ImGui::RadioButton("Borderless", &type, 2); ImGui::SameLine();
         ImGui::RadioButton("Resizable", &type, 3);
-        App->window->SetWindowType(type);
+        if (currentType != type) {
+            App->window->SetWindowType(type);
+        }
+        ImGui::Separator();
+
+        // WINDOW SIZE
+        ImGui::Text("Window size");
+        int currentWidth;
+        int currentHeight;
+        App->window->GetWindowSize(currentWidth, currentHeight);
+        if (type != 0 && type != 1) {            // can bug the application because it's true desktop size related to app's size so if changed too fast can lead to problems
+            int maxWidth;
+            int maxHeight;
+            App->window->GetWindowMaxSize(maxWidth, maxHeight);
+
+            int width = currentWidth;
+            int height = currentHeight;
+            ImGui::SliderInt("Width", &width, 300, maxWidth);
+            ImGui::SliderInt("Height", &height, 450, maxHeight);
+            
+            if (width != currentWidth || height != currentHeight) {
+                App->window->SetWindowSize(width, height);
+                App->camera->OnWindowResized(width, height);
+            }
+            
+        }
+        else {
+            ImGui::Text((std::string("Width: ") + std::to_string(currentWidth)).c_str());
+            ImGui::Text((std::string("Height: ") + std::to_string(currentHeight)).c_str());
+        }
     }
-
-
 
     ImGui::End();
 }

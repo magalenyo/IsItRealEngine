@@ -32,12 +32,16 @@ public:
 	update_status Update();
 
 	int GetWindowWidth() const;
-
 	int GetWindowHeight() const;
-
 	void GetWindowSize(int &w, int &h) const;
 
-	void TurnVSYNC(bool param);
+	int GetWindowMaxWidth() const;
+	int GetWindowMaxHeight() const;
+	void GetWindowMaxSize(int& w, int& h) const;
+
+	void SetWindowSize(int w, int h);
+
+	/*void TurnVSYNC(bool param);*/
 
 	void SetWindowConfiguration();
 
