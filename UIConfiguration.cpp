@@ -86,6 +86,17 @@ void UIConfiguration::Draw()
         std::string glsl = std::string((char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
         ImGui::Text((std::string("GLSL: " + glsl).c_str()));
 
+        ImGui::Separator();
+
+        int systemRam = round( (SDL_GetSystemRAM() / (float) 1024));
+        ImGui::Text((std::string("System RAM: " + std::to_string(systemRam) + "GB").c_str()));
+
+        int cpuCores = SDL_GetCPUCount();
+        ImGui::Text((std::string("CPU Cores: " + std::to_string(cpuCores)).c_str()));
+
+        int cacheSize = SDL_GetCPUCacheLineSize();
+        ImGui::Text((std::string("L1 Cache Size: " + std::to_string(cacheSize) + "Byte").c_str()));
+
     }
     
     if (ImGui::CollapsingHeader("Renderer"))
