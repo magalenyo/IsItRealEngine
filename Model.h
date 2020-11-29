@@ -7,6 +7,8 @@
 class Model
 {
 public:
+	static const std::string PATH_TEXTURES;
+	static const std::string PATH_MODELS;
 
 	Model();
 	Model(const char* file_name);

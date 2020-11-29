@@ -8,8 +8,8 @@
 
 #include "MemoryLeakDetector.h"
 
-const std::string PATH_TEXTURES = "./resources/textures/"; 
-const std::string PATH_MODELS = "./resources/models/";
+const std::string Model::PATH_TEXTURES = "./resources/textures/"; 
+const std::string Model::PATH_MODELS = "./resources/models/";
 
 Model::Model()
 {

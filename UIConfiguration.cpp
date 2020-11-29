@@ -6,12 +6,25 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
-#include "Mesh.h"
+#include "Model.h"
 
 #include "MemoryLeakDetector.h"
 #include "IL/il.h"
 
 #include "Math/float4.h"
+
+static void HelpMarker(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
 
 UIConfiguration::UIConfiguration()
 {
@@ -183,6 +196,15 @@ void UIConfiguration::Draw()
         if (currentMinificationFilter != minificationFilter) {
             App->textures->SetMinificationFilter(minificationFilter);
         }
+
+        ImGui::Separator();
+
+        ImGui::Text("Textures location paths"); 
+        ImGui::SameLine(); HelpMarker("When loading the Texture, it will first try the default path. If not found, then will try in the default path. If not found, then will try in the textures path.");
+        ImGui::Text("");
+        ImGui::Text("Default: same directory as .exe");
+        ImGui::Text((std::string("Models path: ") + Model::PATH_MODELS).c_str());
+        ImGui::Text((std::string("Textures path: ") + Model::PATH_TEXTURES).c_str());
     }
 
     if (ImGui::CollapsingHeader("Input"))
