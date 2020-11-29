@@ -179,6 +179,9 @@ void UIConfiguration::Draw()
 
     if (ImGui::CollapsingHeader("Texture"))
     {
+        ImGui::Text("Texture filters");
+        ImGui::Text("");
+
         ImGui::Text("Magnification filter");
         int currentMagnificationFilter = App->textures->GetMagnificationFilter();
         int magnificationFilter = App->textures->GetMagnificationFilter();
@@ -195,6 +198,10 @@ void UIConfiguration::Draw()
         ImGui::RadioButton("Minification GL_NEAREST", &minificationFilter, GL_NEAREST);
         if (currentMinificationFilter != minificationFilter) {
             App->textures->SetMinificationFilter(minificationFilter);
+        }
+
+        if (ImGui::Button("Reset to default filters")) {
+            App->textures->SetDefaultConfig();
         }
 
         ImGui::Separator();

@@ -79,8 +79,8 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 
 void ModuleTexture::SetDefaultConfig()
 {
-	magnificationFilter = GL_LINEAR;
-	minificationFilter = GL_LINEAR;
+	SetMagnificationFilter(GL_LINEAR);
+	SetMinificationFilter(GL_LINEAR);
 }
 
 int ModuleTexture::GetMagnificationFilter()
