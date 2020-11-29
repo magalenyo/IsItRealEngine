@@ -5,16 +5,13 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleTexture.h"
+#include "Mesh.h"
 
 #include "MemoryLeakDetector.h"
 #include "IL/il.h"
 
 #include "Math/float4.h"
-
-
-//#ifndef GImGui
-//ImGuiContext* GImGui = NULL;
-//#endif
 
 UIConfiguration::UIConfiguration()
 {
@@ -167,6 +164,27 @@ void UIConfiguration::Draw()
         }
     }
 
+    if (ImGui::CollapsingHeader("Texture"))
+    {
+        ImGui::Text("Magnification filter");
+        int currentMagnificationFilter = App->textures->GetMagnificationFilter();
+        int magnificationFilter = App->textures->GetMagnificationFilter();
+        ImGui::RadioButton("Magnification GL_LINEAR", &magnificationFilter, GL_LINEAR); ImGui::SameLine();
+        ImGui::RadioButton("Magnification GL_NEAREST", &magnificationFilter, GL_NEAREST);
+        if (currentMagnificationFilter != magnificationFilter) {
+            App->textures->SetMagnificationFilter(magnificationFilter);
+        }
+
+        ImGui::Text("Minification filter");
+        int currentMinificationFilter = App->textures->GetMinificationFilter();
+        int minificationFilter = App->textures->GetMinificationFilter();
+        ImGui::RadioButton("Minification GL_LINEAR", &minificationFilter, GL_LINEAR); ImGui::SameLine();
+        ImGui::RadioButton("Minification GL_NEAREST", &minificationFilter, GL_NEAREST);
+        if (currentMinificationFilter != minificationFilter) {
+            App->textures->SetMinificationFilter(minificationFilter);
+        }
+    }
+
     if (ImGui::CollapsingHeader("Input"))
     {
         // These functions were taken from imgui_demo
@@ -183,6 +201,7 @@ void UIConfiguration::Draw()
                 ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); 
             }
         }
+
         ImGui::Text("Mouse clicked:");
         for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
             if (ImGui::IsMouseClicked(i)) { 

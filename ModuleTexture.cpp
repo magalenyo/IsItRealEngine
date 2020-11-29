@@ -58,9 +58,9 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		// STORES IN GPU
 		glGenTextures(1, &newTextureId); /* Texture name generation */
 		glBindTexture(GL_TEXTURE_2D, newTextureId); /* Binding of texture name */
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnificationFilter); /* We will use linear
 		  interpolation for magnification filter */
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter); /* We will use linear
 		  interpolation for minifying filter */
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
 			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
@@ -75,4 +75,32 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 	  we can release memory used by image. */
 
 	return newTextureId;
+}
+
+void ModuleTexture::SetDefaultConfig()
+{
+	magnificationFilter = GL_LINEAR;
+	minificationFilter = GL_LINEAR;
+}
+
+int ModuleTexture::GetMagnificationFilter()
+{
+	return magnificationFilter;
+}
+
+void ModuleTexture::SetMagnificationFilter(int newFilter)
+{
+	magnificationFilter = newFilter;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnificationFilter);
+}
+
+int ModuleTexture::GetMinificationFilter()
+{
+	return minificationFilter;
+}
+
+void ModuleTexture::SetMinificationFilter(int newFilter)
+{
+	minificationFilter = newFilter;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter);
 }

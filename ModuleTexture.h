@@ -14,5 +14,15 @@ public:
     update_status Update();
 
     int LoadTexture(const char* imagePath);
+
+    void SetDefaultConfig();
+    int GetMagnificationFilter();
+    void SetMagnificationFilter(int newFilter);
+    int GetMinificationFilter();
+    void SetMinificationFilter(int newFilter);
+
+private: 
+    int magnificationFilter = GL_LINEAR;
+    int minificationFilter = GL_LINEAR;
 };
 
