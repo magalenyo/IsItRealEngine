@@ -24,7 +24,7 @@ public:
 
 	void* GetContext();
 	unsigned int GetDefaultProgram();
-	void LoadModel(const char* path);
+	void LoadModel(std::string path);
 
 	void SetGridColor(float3 newColor);
 	float3 GetGridColor() const;

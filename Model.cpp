@@ -8,8 +8,9 @@
 
 #include "MemoryLeakDetector.h"
 
-const std::string Model::PATH_TEXTURES = "./resources/textures/"; 
-const std::string Model::PATH_MODELS = "./resources/models/";
+const std::string Model::PATH_TEXTURES			= "./resources/textures/"; 
+const std::string Model::PATH_MODELS			= "./resources/models/";
+const std::string Model::MODEL_EXTENSION_FBX	= ".fbx";
 
 Model::Model()
 {
@@ -30,6 +31,7 @@ Model::~Model()
 
 void Model::Load(const char* file_name)
 {
+	LOG("Loading model: %s...", file_name)
 	numVertices = 0;
 	numIndices = 0;
 	transform.Reset();
@@ -39,10 +41,30 @@ void Model::Load(const char* file_name)
 	{
 		LoadMaterials(scene);
 		LoadMeshes(scene);
+		LOG("Model: %s loaded", file_name)
 	}
 	else
 	{ 
 		LOG("Error loading %s: %s", file_name, aiGetErrorString());
+	}
+}
+
+void Model::LoadSingleTexture(const std::string &file_name)
+{
+	LOG("Loading single texture: %s...", file_name.c_str())
+	// The texture vector will not be cleared because textures can still be reutilized
+	int textureId = App->textures->LoadTexture(file_name.c_str());
+	if (textureId != ModuleTexture::TEXTURE_ERROR) {
+		textures.push_back(textureId);
+		for (Mesh* mesh : meshes) {
+			mesh->SetMaterialIndex(textures.size()-1);
+		}
+		textureSizes.push_back(float2(App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
+		LOG("Texture %s loaded", file_name.c_str())
+	}
+	else {
+		LOG("Error loading texture in an already existing model %s: %s.", file_name.c_str(), aiGetErrorString());
+		LOG("Try dropping the texture from a path with no special characters or accents.");
 	}
 }
 
@@ -53,6 +75,9 @@ bool Model::CleanUp()
 	}
 
 	meshes.clear();
+
+	textureSizes.clear();
+	textures.clear();
 
 	return true;
 }
@@ -70,19 +95,29 @@ int Model::GetNumMeshes() const
 	return meshes.size();
 }
 
-void Model::GetFirstTextureSize(int &w, int &h)
+bool Model::CanLoadFBX(const std::string& path)
+{
+	if (path.length() >= MODEL_EXTENSION_FBX.length()) {
+		if (path.compare(path.length() - MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX) == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Model::GetLastTextureSize(int &w, int &h)
 {
 	w = 0; h = 0;
 	if (textureSizes.size() > 0) {
-		w = textureSizes[0][TEXTURE_SIZES_WIDTH_POSITION];
-		h = textureSizes[0][TEXTURE_SIZES_HEIGHT_POSITION];
+		w = textureSizes[textureSizes.size() - 1][TEXTURE_SIZES_WIDTH_POSITION];
+		h = textureSizes[textureSizes.size() - 1][TEXTURE_SIZES_HEIGHT_POSITION];
 	}
 }
 
-int Model::GetFirstTexture() const
+int Model::GetLastTexture() const
 {
 	if (textures.size() > 0) {
-		return textures[0];
+		return textures[textures.size()-1];
 	}
 	else return ModuleTexture::TEXTURE_ERROR;
 }
@@ -152,7 +187,7 @@ std::string Model::GetProcessedPath(const std::string &path)
 		LOG("Found texture in %s", currentPath.c_str());
 		return currentPath;
 	}
-	LOG("Texture %s not found", path);
+	LOG("Texture %s not found", path.c_str());
 	return "";
 }
 

@@ -4,6 +4,10 @@
 #include <GL/GL.h>
 #include "MemoryLeakDetector.h"
 
+const std::string ModuleTexture::TEXTURE_EXTENSION_PNG = ".png";
+const std::string ModuleTexture::TEXTURE_EXTENSION_DDS = ".dds";
+const std::string ModuleTexture::TEXTURE_EXTENSION_JPG = ".jpg";
+
 ModuleTexture::ModuleTexture()
 {
 }
@@ -40,7 +44,7 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 	success = ilLoadImage(imagePath); /* Loading of image "image.jpg" */
 	if (success) /* If no error occured: */
 	{
-		
+
 		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE); /* Convert every colour component into
 		  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
 		if (!success)
@@ -48,11 +52,11 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 			/* Error occured */
 			return TEXTURE_ERROR;
 		}
-		
+
 		ILinfo imageInfo;
 		iluGetImageInfo(&imageInfo);
 		// if origin needs to be flipped, flip it
-		if(imageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
+		if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
 			iluFlipImage();
 		}
 		// STORES IN GPU
@@ -68,6 +72,8 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 	}
 	else
 	{
+		ILenum errorType = ilGetError();
+		// TODO: ilGetError() 
 		/* Error occured */
 		return TEXTURE_ERROR;
 	}
@@ -77,6 +83,21 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 	return newTextureId;
 }
 
+bool ModuleTexture::IsTexture(const std::string& imagePath)
+{
+	if (imagePath.length() >= TEXTURE_EXTENSION_LENGTH) {
+		if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_PNG.length(), TEXTURE_EXTENSION_PNG.length(), TEXTURE_EXTENSION_PNG) == 0) {
+			return true;
+		}
+		else if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_DDS.length(), TEXTURE_EXTENSION_DDS.length(), TEXTURE_EXTENSION_DDS) == 0) {
+			return true;
+		}
+		else if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_JPG.length(), TEXTURE_EXTENSION_JPG.length(), TEXTURE_EXTENSION_JPG) == 0) {
+			return true;
+		}
+	}
+	return false;
+}
 void ModuleTexture::SetDefaultConfig()
 {
 	SetMagnificationFilter(GL_LINEAR);

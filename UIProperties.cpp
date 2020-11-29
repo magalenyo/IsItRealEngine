@@ -68,12 +68,12 @@ void UIProperties::Draw()
         {
             ImGui::Text("Texture preview");
             int w, h;
-            model->GetFirstTextureSize(w, h);
+            model->GetLastTextureSize(w, h);
 
             ImGui::Text("Width: %d", w);
             ImGui::Text("Height: %d", h);
             ImGui::Text("");
-            ImGui::Image((void*) model->GetFirstTexture(), ImVec2(200, 200));
+            ImGui::Image((void*) model->GetLastTexture(), ImVec2(200, 200));
             
             ImGui::Text("");
 	    }

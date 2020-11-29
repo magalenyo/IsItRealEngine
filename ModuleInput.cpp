@@ -136,14 +136,8 @@ update_status ModuleInput::Update()
 			break;
 		case SDL_DROPFILE: {
 			char* dropped_filedir = event.drop.file;
-			// Shows directory of dropped file
-			/*SDL_ShowSimpleMessageBox(
-				SDL_MESSAGEBOX_INFORMATION,
-				"File dropped on window",
-				dropped_filedir,
-				App->window->window
-			);*/
-			App->renderer->LoadModel(dropped_filedir);
+			std::string dropped_file = event.drop.file;
+			App->renderer->LoadModel(dropped_file);
 			SDL_free(dropped_filedir);
 		}
 			break;

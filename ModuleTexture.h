@@ -1,12 +1,13 @@
 #pragma once
 #include "Module.h"
 #include <GL/GL.h>
+#include <string>
 
 class ModuleTexture : public Module
 {
 public:
     static const int TEXTURE_ERROR = -1;
-
+    
     ModuleTexture();
     ~ModuleTexture();
 
@@ -14,6 +15,7 @@ public:
     update_status Update();
 
     int LoadTexture(const char* imagePath);
+    static bool IsTexture(const std::string& imagePath);
 
     void SetDefaultConfig();
     int GetMagnificationFilter();
@@ -24,7 +26,11 @@ public:
     int GetTextureWidth() const;
     int GetTextureHeight() const;
 
-private: 
+private:
+    static const std::string TEXTURE_EXTENSION_PNG;
+    static const std::string TEXTURE_EXTENSION_DDS;
+    static const std::string TEXTURE_EXTENSION_JPG;
+    static const unsigned short TEXTURE_EXTENSION_LENGTH = 4;
     int magnificationFilter = GL_LINEAR;
     int minificationFilter = GL_LINEAR;
 };

@@ -18,20 +18,25 @@ public:
 	~Model();
 
 	void Load(const char* file_name);
+	void LoadSingleTexture(const std::string &file_name);
 	bool CleanUp();
 	void Draw();
+
+	static bool CanLoadFBX(const std::string& path);
 
 	int GetNumVertices() const;
 	int GetNumIndices() const;
 	int GetNumMeshes() const;
-	int GetFirstTexture() const;
-	void GetFirstTextureSize(int &w, int &h);
+	int GetLastTexture() const;
+	void GetLastTextureSize(int &w, int &h);
 	Transformation GetTransformation() const;
+	
 
 private:
 
 	static const int TEXTURE_SIZES_WIDTH_POSITION = 0;
 	static const int TEXTURE_SIZES_HEIGHT_POSITION = 1;
+	const static std::string MODEL_EXTENSION_FBX;
 
 	std::vector<unsigned int> textures; // Texture mesh
 	std::vector<float2> textureSizes;	// Texture size

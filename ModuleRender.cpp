@@ -18,6 +18,9 @@
 
 #include "Assimp/cimport.h" // aiLogStream
 
+#include "ModuleTexture.h"
+
+
 ModuleRender::ModuleRender()
 {
 
@@ -143,11 +146,22 @@ unsigned int ModuleRender::GetDefaultProgram()
 	return defaultProgram;
 }
 
-void ModuleRender::LoadModel(const char* path)
+void ModuleRender::LoadModel(std::string path)
 {
-	delete loadedModel;
-	loadedModel = nullptr;
-	loadedModel = new Model(path);
+	LOG("File %s dropped", path.c_str());
+	if (ModuleTexture::IsTexture(path)) {
+		LOG("File %s is a TEXTURE", path.c_str());
+		loadedModel->LoadSingleTexture(path);
+	}
+	else if (Model::CanLoadFBX(path)){
+		LOG("File %s is a MODEL", path.c_str());
+		delete loadedModel;
+		loadedModel = nullptr;
+		loadedModel = new Model(path.c_str());
+	}
+	else {
+		LOG("%s cannot be loaded", path.c_str());
+	}
 }
 
 void ModuleRender::SetGridColor(float3 newColor)
