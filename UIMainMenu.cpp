@@ -7,7 +7,7 @@
 #include <shellapi.h>
 #include <string>
 
-
+#include "MemoryLeakDetector.h"
 
 UIMainMenu::UIMainMenu()
 {
@@ -37,7 +37,6 @@ void UIMainMenu::Draw()
 
         if (ImGui::BeginMenu("Help"))
         {
-
             ImGui::MenuItem("About IsItRealEngine", NULL, &show_about);
             ImGui::Separator();
             ImGui::MenuItem("License", NULL, &show_license);
@@ -45,6 +44,17 @@ void UIMainMenu::Draw()
             //ImGui::MenuItem("Manual", NULL, &show_about);
             ImGui::EndMenu();
         }
+
+        if (ImGui::BeginMenu("Windows"))
+        {
+            bool& showConfiguration = App->editor->GetShowConfiguration();
+            ImGui::MenuItem("Configuration Window", NULL, &showConfiguration);
+
+            bool& showConsole = App->editor->GetShowConsole();
+            ImGui::MenuItem("Console Window", NULL, &showConsole);
+            ImGui::EndMenu();
+        }
+
         if (ImGui::BeginMenu("Quit"))
         {
             App->editor->ExitApplication();
@@ -95,7 +105,6 @@ void UIMainMenu::RenderAbout(bool* p_open)
             "SOFTWARE.\n";
         
         ImGui::Text(aux.c_str());
-
     }
 
     ImGui::End();

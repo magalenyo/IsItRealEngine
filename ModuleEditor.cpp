@@ -57,10 +57,6 @@ bool ModuleEditor::CleanUp()
 
 update_status ModuleEditor::Update()
 {
-    static bool show_mainMenu = true;
-    static bool show_console = true;
-    static bool show_configuration = true;
-
     if (show_mainMenu) {
         mainMenu->Draw();
     }
@@ -92,5 +88,15 @@ void ModuleEditor::ExitApplication()
 {
     LOG("Exiting application from Editor...");
     updateStatus = UPDATE_STOP;
+}
+
+bool& ModuleEditor::GetShowConsole()
+{
+    return show_console;
+}
+
+bool& ModuleEditor::GetShowConfiguration()
+{
+    return show_configuration;
 }
 

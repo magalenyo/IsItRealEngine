@@ -27,8 +27,16 @@ public:
 	UIConsole* console = nullptr;
 	UIConfiguration* configuration = nullptr;
 
+
+	bool& GetShowConsole();
+	bool& GetShowConfiguration();
+
 private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
 	update_status updateStatus = UPDATE_CONTINUE;		// The return type for the Update function
+
+	bool show_mainMenu = true;
+	bool show_console = true;
+	bool show_configuration = true;
 };
 
