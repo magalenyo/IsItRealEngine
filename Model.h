@@ -36,7 +36,7 @@ private:
 
 	static const int TEXTURE_SIZES_WIDTH_POSITION = 0;
 	static const int TEXTURE_SIZES_HEIGHT_POSITION = 1;
-	const static std::string MODEL_EXTENSION_FBX;
+	static const std::string MODEL_EXTENSION_FBX;
 
 	std::vector<unsigned int> textures; // Texture mesh
 	std::vector<float2> textureSizes;	// Texture size

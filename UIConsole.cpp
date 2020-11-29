@@ -18,6 +18,7 @@ UIConsole::UIConsole()
 
 UIConsole::~UIConsole()
 {
+
 }
 
 void UIConsole::Draw()

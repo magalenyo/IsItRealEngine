@@ -13,6 +13,7 @@ public:
 
     bool Init();
     update_status Update();
+    bool CleanUp();
 
     int LoadTexture(const char* imagePath);
     static bool IsTexture(const std::string& imagePath);

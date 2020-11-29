@@ -2,7 +2,7 @@
 class UIComponent {
 public:
 	UIComponent() {};
-	~UIComponent() {};
+	virtual ~UIComponent() {};
 
 	virtual void Draw() {};
 };

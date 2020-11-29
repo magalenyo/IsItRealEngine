@@ -25,8 +25,6 @@ Model::Model(const char* file_name)
 Model::~Model()
 {
 	CleanUp();
-	/*PATH_TEXTURES.~basic_string();
-	PATH_MODELS.~basic_string();*/
 }
 
 void Model::Load(const char* file_name)
@@ -78,6 +76,10 @@ bool Model::CleanUp()
 
 	textureSizes.clear();
 	textures.clear();
+
+	PATH_TEXTURES.~basic_string();
+	PATH_MODELS.~basic_string();
+	MODEL_EXTENSION_FBX.~basic_string();
 
 	return true;
 }

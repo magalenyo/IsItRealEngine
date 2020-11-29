@@ -32,6 +32,8 @@ UIConfiguration::UIConfiguration()
 
 UIConfiguration::~UIConfiguration()
 {
+    frames.clear();
+    millis.clear();
 }
 
 void UIConfiguration::Draw()

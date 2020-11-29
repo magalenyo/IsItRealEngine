@@ -5,6 +5,8 @@
 #include "Model.h"
 #include "imgui.h"
 
+#include "MemoryLeakDetector.h"
+
 
 UIProperties::UIProperties()
 {

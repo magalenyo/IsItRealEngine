@@ -20,6 +20,11 @@ enum main_states
 
 Application* App = NULL;
 
+void DumpLeaks(void)
+{
+	_CrtDumpMemoryLeaks(); // show leaks with file and line where allocation was made
+}
+
 int main(int argc, char ** argv)
 {
 	int main_return = EXIT_FAILURE;
@@ -88,7 +93,8 @@ int main(int argc, char ** argv)
 	delete App;
 	LOG("Bye :)\n");
 
-	_CrtDumpMemoryLeaks(); // show leaks with file and line where allocation was made
+	atexit(DumpLeaks);
+	//(); // show leaks with file and line where allocation was made
 
 	return main_return;
 }

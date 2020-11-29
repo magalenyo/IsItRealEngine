@@ -20,8 +20,5 @@ private:
 
 	void AddFrame(float fps);
 	void AddMillis(float frameMillis);
-
-
-
 };
 

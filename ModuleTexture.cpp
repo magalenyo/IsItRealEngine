@@ -14,6 +14,7 @@ ModuleTexture::ModuleTexture()
 
 ModuleTexture::~ModuleTexture()
 {
+
 }
 
 bool ModuleTexture::Init()
@@ -32,6 +33,15 @@ bool ModuleTexture::Init()
 update_status ModuleTexture::Update()
 {
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleTexture::CleanUp()
+{
+	TEXTURE_EXTENSION_PNG.~basic_string();
+	TEXTURE_EXTENSION_DDS.~basic_string();
+	TEXTURE_EXTENSION_JPG.~basic_string();
+
+	return true;
 }
 
 int ModuleTexture::LoadTexture(const char* imagePath)
