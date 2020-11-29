@@ -1,9 +1,13 @@
 #include "UIConfiguration.h"
 #include "imgui.h"
 #include "Application.h"
+#include "GL/glew.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+
+#include "MemoryLeakDetector.h"
+#include "IL/il.h"
 
 #include "Math/float4.h"
 
@@ -35,14 +39,53 @@ void UIConfiguration::Draw()
 
     if (ImGui::CollapsingHeader("Application"))
     {
-        //Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-
+        ImGui::Text("Performance");
 		char title[55];
-		
         sprintf_s(title, 55, "Framerate %.1f FPS", fps);
         ImGui::PlotHistogram("##Framerate", &frames[0], frames.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100), sizeof(float));
         sprintf_s(title, 55, "Milliseconds %0.3f ms/frame", frameMillis);
         ImGui::PlotHistogram("##Milliseconds", &millis[0], millis.size(), 0, title, 0.0f, 50.0f, ImVec2(310, 100), sizeof(float));
+
+        ImGui::Separator();
+
+        int devilVersion = (int) ilGetInteger(IL_VERSION_NUM);
+        char devilVersionFormatted[30];
+        sprintf_s(devilVersionFormatted, 30, "DevIL version: %d.%d.%d", devilVersion/100, devilVersion/10%10, devilVersion%10);
+        ImGui::Text(devilVersionFormatted);
+
+        int sdlglMajorVersion;
+        int sdlglMinorVersion;
+        SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &sdlglMajorVersion);
+        SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &sdlglMinorVersion);
+        ImGui::Text((std::string("GL Version: ") + std::to_string(sdlglMajorVersion) + "." + std::to_string(sdlglMinorVersion)).c_str());
+
+        std::string glewVersion = std::string((char*) glewGetString(GLEW_VERSION));
+        ImGui::Text((std::string("GLEW Version: " + glewVersion).c_str()));
+
+        SDL_version compiled;
+        SDL_version linked;
+        SDL_VERSION(&compiled);
+        SDL_GetVersion(&linked);
+        char sdlVersion[50];
+        sprintf_s(sdlVersion, 50, "Compiled against SDL version %d.%d.%d\n", compiled.major, compiled.minor, compiled.patch);
+        ImGui::Text(sdlVersion);
+        sprintf_s(sdlVersion, 50, "Linked against SDL version %d.%d.%d\n", linked.major, linked.minor, linked.patch);
+        ImGui::Text(sdlVersion);
+
+        ImGui::Separator();
+
+        std::string glVendor = std::string((char*) glGetString(GL_VENDOR));
+        ImGui::Text((std::string("Vendor: " + glVendor).c_str()));
+
+        std::string glRenderer = std::string((char*) glGetString(GL_RENDERER));
+        ImGui::Text((std::string("Renderer: " + glRenderer).c_str()));
+
+        std::string glSupported = std::string((char*)glGetString(GL_VERSION));
+        ImGui::Text((std::string("OpenGL version supported: " + glSupported).c_str()));
+
+        std::string glsl = std::string((char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+        ImGui::Text((std::string("GLSL: " + glsl).c_str()));
+
     }
     
     if (ImGui::CollapsingHeader("Renderer"))
