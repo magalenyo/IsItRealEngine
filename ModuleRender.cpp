@@ -160,6 +160,11 @@ float3 ModuleRender::GetGridColor() const
 	return gridColor;
 }
 
+Model* ModuleRender::GetModel() const
+{
+	return loadedModel;
+}
+
 bool& ModuleRender::GetAxisState()
 {
 	return activeAxis;

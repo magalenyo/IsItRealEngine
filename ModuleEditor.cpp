@@ -7,6 +7,7 @@
 #include "UIMainMenu.h"
 #include "UIConsole.h"
 #include "UIConfiguration.h"
+#include "UIProperties.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -37,6 +38,7 @@ bool ModuleEditor::Init()
     components.push_back(mainMenu = new UIMainMenu());
     components.push_back(console = new UIConsole());
     components.push_back(configuration = new UIConfiguration());
+    components.push_back(properties = new UIProperties());
 
     return true;
 }
@@ -68,6 +70,10 @@ update_status ModuleEditor::Update()
     if (show_configuration) {
         configuration->Draw();
     }
+    
+    if (show_properties) {
+        properties->Draw();
+    }
 
     ImGui::ShowDemoWindow();
     return updateStatus;
@@ -98,5 +104,10 @@ bool& ModuleEditor::GetShowConsole()
 bool& ModuleEditor::GetShowConfiguration()
 {
     return show_configuration;
+}
+
+bool& ModuleEditor::GetShowProperties()
+{
+    return show_properties;
 }
 

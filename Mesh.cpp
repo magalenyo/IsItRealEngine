@@ -111,6 +111,16 @@ bool Mesh::CleanUp()
 	return true;
 }
 
+int Mesh::GetNumVertices() const
+{
+	return numVertices;
+}
+
+int Mesh::GetNumIndices() const
+{
+	return numIndices;
+}
+
 void Mesh::DestroyBuffer(unsigned int buffer)
 {
 	glDeleteBuffers(1, &buffer);

@@ -21,6 +21,9 @@ public:
     int GetMinificationFilter();
     void SetMinificationFilter(int newFilter);
 
+    int GetTextureWidth() const;
+    int GetTextureHeight() const;
+
 private: 
     int magnificationFilter = GL_LINEAR;
     int minificationFilter = GL_LINEAR;

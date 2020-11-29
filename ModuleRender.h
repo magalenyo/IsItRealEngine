@@ -29,6 +29,8 @@ public:
 	void SetGridColor(float3 newColor);
 	float3 GetGridColor() const;
 
+	Model* GetModel() const;
+
 	bool& GetAxisState();
 	bool& GetGridState();
 	bool& GetModelState();

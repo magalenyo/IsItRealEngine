@@ -251,6 +251,7 @@
     <ClInclude Include="UIConfiguration.h" />
     <ClInclude Include="UIConsole.h" />
     <ClInclude Include="UIMainMenu.h" />
+    <ClInclude Include="UIProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -320,6 +321,7 @@
     <ClCompile Include="UIConfiguration.cpp" />
     <ClCompile Include="UIConsole.cpp" />
     <ClCompile Include="UIMainMenu.cpp" />
+    <ClCompile Include="UIProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\shaders\FragmentShader.glsl" />

@@ -104,3 +104,13 @@ void ModuleTexture::SetMinificationFilter(int newFilter)
 	minificationFilter = newFilter;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter);
 }
+
+int ModuleTexture::GetTextureWidth() const
+{
+	return ilGetInteger(IL_IMAGE_WIDTH);
+}
+
+int ModuleTexture::GetTextureHeight() const
+{
+	return ilGetInteger(IL_IMAGE_HEIGHT);
+}

@@ -170,6 +170,9 @@
     <ClCompile Include="UIMainMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="UIProperties.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -460,6 +463,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="UIMainMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIProperties.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>

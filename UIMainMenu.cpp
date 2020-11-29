@@ -52,6 +52,10 @@ void UIMainMenu::Draw()
 
             bool& showConsole = App->editor->GetShowConsole();
             ImGui::MenuItem("Console Window", NULL, &showConsole);
+
+            bool& showProperties = App->editor->GetShowProperties();
+            ImGui::MenuItem("Properties Window", NULL, &showProperties);
+
             ImGui::EndMenu();
         }
 

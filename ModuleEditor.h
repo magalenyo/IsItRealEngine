@@ -7,6 +7,7 @@
 class UIMainMenu;
 class UIConsole;
 class UIConfiguration;
+class UIProperties;
 
 class ModuleEditor : public Module
 {
@@ -21,15 +22,16 @@ public:
 	update_status PreUpdate();
 	void ExitApplication(); // Sets the value of updateStatus to UPDATE_STOP
 
+	bool& GetShowConsole();
+	bool& GetShowConfiguration();
+	bool& GetShowProperties();
 
+public:
 	bool isReady = false;
 	UIMainMenu* mainMenu = nullptr;
 	UIConsole* console = nullptr;
 	UIConfiguration* configuration = nullptr;
-
-
-	bool& GetShowConsole();
-	bool& GetShowConfiguration();
+	UIProperties* properties = nullptr;
 
 private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
@@ -38,5 +40,6 @@ private:
 	bool show_mainMenu = true;
 	bool show_console = true;
 	bool show_configuration = true;
+	bool show_properties = true;
 };
 

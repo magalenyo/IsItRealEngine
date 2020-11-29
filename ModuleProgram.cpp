@@ -14,8 +14,6 @@ unsigned CreateTriangleVBO()
 	return vbo;
 }
 
-
-
 ModuleProgram::ModuleProgram()
 {
 }
@@ -61,6 +59,7 @@ unsigned ModuleProgram::CompileShader(unsigned type, const char* fileName)
 		}
 	}
 	delete source;
+	
 	return shader_id;
 }
 

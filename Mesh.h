@@ -18,6 +18,9 @@ public:
 
 	bool CleanUp();
 
+	int GetNumVertices() const;
+	int GetNumIndices() const;
+
 private:
 	static const int BIND_VERTEX_ARRAY_END = 0;
 

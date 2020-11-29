@@ -24,10 +24,15 @@ Model::Model(const char* file_name)
 Model::~Model()
 {
 	CleanUp();
+	/*PATH_TEXTURES.~basic_string();
+	PATH_MODELS.~basic_string();*/
 }
 
 void Model::Load(const char* file_name)
 {
+	numVertices = 0;
+	numIndices = 0;
+
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
 	{
@@ -51,6 +56,7 @@ bool Model::CleanUp()
 	return true;
 }
 
+
 void Model::Draw()
 {
 	for (Mesh* mesh : meshes) {
@@ -58,10 +64,44 @@ void Model::Draw()
 	}
 }
 
+int Model::GetNumMeshes() const
+{
+	return meshes.size();
+}
+
+void Model::GetFirstTextureSize(int &w, int &h)
+{
+	w = 0; h = 0;
+	if (textureSizes.size() > 0) {
+		w = textureSizes[0][TEXTURE_SIZES_WIDTH_POSITION];
+		h = textureSizes[0][TEXTURE_SIZES_HEIGHT_POSITION];
+	}
+}
+
+int Model::GetFirstTexture() const
+{
+	if (textures.size() > 0) {
+		return textures[0];
+	}
+	else return ModuleTexture::TEXTURE_ERROR;
+}
+
+int Model::GetNumVertices() const
+{
+	return numVertices;
+}
+
+
+int Model::GetNumIndices() const
+{
+	return numIndices;
+}
+
 void Model::LoadMaterials(const aiScene* scene)
 {
 	aiString file;
 	textures.reserve(scene->mNumMaterials);
+	textureSizes.reserve(scene->mNumMaterials);
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
 		aiReturn returnType = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
@@ -70,6 +110,7 @@ void Model::LoadMaterials(const aiScene* scene)
 			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());
 			if (textureId != ModuleTexture::TEXTURE_ERROR) {
 				textures.push_back(textureId);
+				textureSizes.push_back(float2(App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
 			}
 		}
 	}
@@ -81,6 +122,8 @@ void Model::LoadMeshes(const aiScene* scene)
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
 		meshes.push_back(new Mesh(scene->mMeshes[i]));
+		numVertices += meshes[i]->GetNumVertices();
+		numIndices += meshes[i]->GetNumIndices();
 	}
 }
 
