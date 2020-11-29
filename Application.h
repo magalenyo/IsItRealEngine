@@ -26,6 +26,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	bool HasEnded() const;
 
 public:
 	ModuleRender* renderer = nullptr;
@@ -42,6 +43,7 @@ public:
 private:
 
 	std::list<Module*> modules;
+	bool ended = false;
 
 };
 

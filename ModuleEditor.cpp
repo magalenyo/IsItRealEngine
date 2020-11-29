@@ -54,6 +54,11 @@ bool ModuleEditor::CleanUp()
     }
     components.clear();
 
+    mainMenu = nullptr;
+    console = nullptr;
+    configuration = nullptr;
+    properties = nullptr;
+
     return true;
 }
 

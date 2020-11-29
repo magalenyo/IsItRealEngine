@@ -70,10 +70,16 @@ update_status Application::Update()
 
 bool Application::CleanUp()
 {
+	ended = true;
 	bool ret = true;
 
 	for(list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 		ret = (*it)->CleanUp();
 
 	return ret;
+}
+
+bool Application::HasEnded() const
+{
+	return ended;
 }

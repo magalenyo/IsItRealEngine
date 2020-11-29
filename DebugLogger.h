@@ -38,10 +38,6 @@ public:
 		case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 		};
 
-		if (id == 1281) {
-			int aux = 0;
-		}
-
 		if (!isIdExcluded(id)) {
 			LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 		}
@@ -56,13 +52,14 @@ public:
 private:
 	static const int GL_ID_NOTIFICATION_USINGVIDEOMEMORY = 131185;		// The id of the "Buffer object X (bound to GL_ARRAY_BUFFER_ARB, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations"
 	static const int GL_ID_NOTIFICATION_SHADERRECOMPILED = 131218;		// The id of the "Message:Program/shader state performance warning: Vertex shader in program X is being recompiled based on GL state."
-
+	static const int GL_ID_NOTIFICATION_INVALIDVALUE = 1281;			// The id of the "Message:GL_INVALID_VALUE error generated. Invalid offset and/or size."
 
 	// returns true if idToScan is one of the IDS to exclude (not show) in the log
 	static bool isIdExcluded(int idToScan) {
 		bool result = false;
 		if (idToScan == GL_ID_NOTIFICATION_USINGVIDEOMEMORY 
-		 || idToScan == GL_ID_NOTIFICATION_SHADERRECOMPILED) {
+		 || idToScan == GL_ID_NOTIFICATION_SHADERRECOMPILED
+		 || idToScan == GL_ID_NOTIFICATION_INVALIDVALUE) {
 			result = true;
 		}
 		return result;
