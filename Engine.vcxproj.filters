@@ -136,7 +136,6 @@
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
-    <ClCompile Include="ModuleRenderExercise.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -413,7 +412,6 @@
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleProgram.h" />
-    <ClInclude Include="ModuleRenderExercise.h" />
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Mesh.h" />
