@@ -173,6 +173,7 @@
     <ClCompile Include="UIProperties.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -468,6 +469,7 @@
     <ClInclude Include="UIProperties.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Transformation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

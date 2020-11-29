@@ -3,7 +3,9 @@
 #include "assimp/scene.h"
 #include <vector>
 #include "Mesh.h"
-#include "Math/vec2d.h"
+#include "Math/float2.h"
+#include "Math/float3.h"
+#include "Transformation.h"
 
 class Model
 {
@@ -24,7 +26,7 @@ public:
 	int GetNumMeshes() const;
 	int GetFirstTexture() const;
 	void GetFirstTextureSize(int &w, int &h);
-
+	Transformation GetTransformation() const;
 
 private:
 
@@ -34,8 +36,9 @@ private:
 	std::vector<unsigned int> textures; // Texture mesh
 	std::vector<float2> textureSizes;	// Texture size
 	std::vector<Mesh*> meshes;			// Mesh array
-	unsigned int numVertices = 0;
-	unsigned int numIndices = 0;
+	unsigned int numVertices = 0;		// Number of vertices total. Sum of the vertices of each mesh.
+	unsigned int numIndices = 0;		// Number of indices total. Sum of the indices of each mesh.
+	Transformation transform;			// Stores Position, Scale and Rotation of the object. Position initialized to (0,0,0)
 	
 	void LoadMaterials(const aiScene* scene);
 	void LoadMeshes(const aiScene* scene);

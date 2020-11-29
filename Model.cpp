@@ -32,6 +32,7 @@ void Model::Load(const char* file_name)
 {
 	numVertices = 0;
 	numIndices = 0;
+	transform.Reset();
 
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
@@ -95,6 +96,11 @@ int Model::GetNumVertices() const
 int Model::GetNumIndices() const
 {
 	return numIndices;
+}
+
+Transformation Model::GetTransformation() const
+{
+	return transform;
 }
 
 void Model::LoadMaterials(const aiScene* scene)
