@@ -80,7 +80,6 @@ bool Model::CleanUp()
 	}
 
 	meshes.clear();
-
 	textureSizes.clear();
 	textures.clear();
 
