@@ -73,13 +73,12 @@ bool Model::CleanUp()
 	}
 
 	meshes.clear();
-
 	textureSizes.clear();
 	textures.clear();
 
-	PATH_TEXTURES.~basic_string();
-	PATH_MODELS.~basic_string();
-	MODEL_EXTENSION_FBX.~basic_string();
+	//PATH_TEXTURES.~basic_string();
+	//PATH_MODELS.~basic_string();
+	//MODEL_EXTENSION_FBX.~basic_string();
 
 	return true;
 }
