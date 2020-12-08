@@ -2,6 +2,7 @@
 
 #include "assimp/mesh.h"
 #include <vector>
+#include "Math/float3.h"
 
 class Mesh
 {
@@ -20,6 +21,7 @@ public:
 
 	int GetNumVertices() const;
 	int GetNumIndices() const;
+	float3 GetFurthestPosition();
 
 private:
 	static const int BIND_VERTEX_ARRAY_END = 0;
@@ -31,6 +33,8 @@ private:
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int vao;
+
+	float3 furthestPosition = float3(0, 0, 0);
 
 	void DestroyBuffer(unsigned int buffer);
 };

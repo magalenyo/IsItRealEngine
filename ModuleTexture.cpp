@@ -88,8 +88,11 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		return TEXTURE_ERROR;
 	}
 	ilDeleteImages(1, &newTextureId); /* Because we have already copied image data into texture data
+									  // CHANGING the delete for the newImageId
 	  we can release memory used by image. */
 
+
+	// TODO: reload texture on the openGL buffer only.
 	return newTextureId;
 }
 

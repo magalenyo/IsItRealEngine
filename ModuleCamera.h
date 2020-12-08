@@ -43,6 +43,7 @@ public:
 	void SetVerticalFov(int fov);
 	void SetNearPlaneDistance(float dist);
 	void SetFarPlaneDistance(float dist);
+	void FocusCamera(const float3 &position);
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
 	
@@ -52,9 +53,8 @@ private:
 	float verticalSpeed = 1.0f;
 	float horizontalSpeed = 1.0f;
 	float rotationSpeed = 60.0f;
-
+	float positionFromFocusVertice = 4.0f;
 
 	void ResetSpeed();
-	void IncreaseSpeed();
-	
+	void IncreaseSpeed();	
 };

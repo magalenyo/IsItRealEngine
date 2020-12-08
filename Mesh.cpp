@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "Math/float3.h"
 
 #include "MemoryLeakDetector.h"
 
@@ -34,14 +35,21 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	unsigned buffer_size = vertex_size * mesh->mNumVertices;
 	glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
 	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+	float3 currentPosition = float3(0, 0, 0);
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
+
 		*(vertices++) = mesh->mVertices[i].x;
 		*(vertices++) = mesh->mVertices[i].y;
 		*(vertices++) = mesh->mVertices[i].z;
 		*(vertices++) = mesh->mTextureCoords[0][i].x;
 		*(vertices++) = mesh->mTextureCoords[0][i].y;
-	} 
+
+		if (mesh->mVertices[i].z > currentPosition.z) {
+			currentPosition = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		}
+	}
+	furthestPosition = currentPosition;
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	numVertices = mesh->mNumVertices;
 }
@@ -119,6 +127,11 @@ int Mesh::GetNumVertices() const
 int Mesh::GetNumIndices() const
 {
 	return numIndices;
+}
+
+float3 Mesh::GetFurthestPosition()
+{
+	return furthestPosition;
 }
 
 void Mesh::DestroyBuffer(unsigned int buffer)

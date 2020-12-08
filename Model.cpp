@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTexture.h"
+#include "ModuleCamera.h"
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
@@ -38,8 +39,14 @@ void Model::Load(const char* file_name)
 	if (scene)
 	{
 		LoadMaterials(scene);
-		LoadMeshes(scene);
-		LOG("Model: %s loaded", file_name)
+		if (textures.size() > 0) {
+			LoadMeshes(scene);
+			LOG("Model: %s loaded", file_name);
+			App->camera->FocusCamera(furthestPosition);
+		}
+		else {
+			LOG("ERROR Loading Model: %s. No texture found.", file_name);
+		}
 	}
 	else
 	{ 
@@ -77,9 +84,9 @@ bool Model::CleanUp()
 	textureSizes.clear();
 	textures.clear();
 
-	PATH_TEXTURES.~basic_string();
+	/*PATH_TEXTURES.~basic_string();
 	PATH_MODELS.~basic_string();
-	MODEL_EXTENSION_FBX.~basic_string();
+	MODEL_EXTENSION_FBX.~basic_string();*/
 
 	return true;
 }
@@ -167,6 +174,9 @@ void Model::LoadMeshes(const aiScene* scene)
 		meshes.push_back(new Mesh(scene->mMeshes[i]));
 		numVertices += meshes[i]->GetNumVertices();
 		numIndices += meshes[i]->GetNumIndices();
+		if (meshes[i]->GetFurthestPosition().z > furthestPosition.z) {
+			furthestPosition = meshes[i]->GetFurthestPosition();
+		}
 	}
 }
 

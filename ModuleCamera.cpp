@@ -216,7 +216,6 @@ void ModuleCamera::SetHorizontalFov(int fov)
 void ModuleCamera::SetVerticalFov(int fov)
 {
 	frustum.SetVerticalFovAndAspectRatio(fov, frustum.AspectRatio());
-
 }
 
 void ModuleCamera::SetNearPlaneDistance(float dist)
@@ -227,6 +226,11 @@ void ModuleCamera::SetNearPlaneDistance(float dist)
 void ModuleCamera::SetFarPlaneDistance(float dist)
 {
 	frustum.SetViewPlaneDistances(frustum.NearPlaneDistance(), dist);
+}
+
+void ModuleCamera::FocusCamera(const float3 &position)
+{
+	frustum.SetPos(float3(position.x, position.y, position.z + positionFromFocusVertice));
 }
 
 float4x4 ModuleCamera::GetViewMatrix()
