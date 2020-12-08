@@ -31,20 +31,6 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
-	glLoadIdentity();		// TODO: -> might not be necessary. Make changes and try
-
-	//frustum;
-	float4x4 projectionGL = frustum.ProjectionMatrix().Transposed(); //<-- Important to transpose!
-	float4x4 viewMatrix = frustum.ViewMatrix();
-
-	//Send the frustum view matrix to OpenGL
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(*viewMatrix.Transposed().v);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(*projectionGL.v);
-
 	/* START CAMERA SETTINGS */
 	if (App->input->GetWindowEvent(ModuleInput::EventWindow::WE_RESIZED)) {
 
