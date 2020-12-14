@@ -325,8 +325,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\shaders\FragmentShader.glsl" />
+    <None Include="Game\shaders\FragmentShaderPhong.glsl" />
     <None Include="Game\shaders\FragmentShaderTexture.glsl" />
     <None Include="Game\shaders\VertexShader.glsl" />
+    <None Include="Game\shaders\VertexShaderPhong.glsl" />
     <None Include="Game\shaders\VertexShaderTexture.glsl" />
     <None Include="MathGeoLib-master\src\emscripten\library_system.js" />
     <None Include="MathGeoLib-master\src\Geometry\KDTree.inl" />

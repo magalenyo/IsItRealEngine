@@ -538,5 +538,11 @@
     <None Include="Game\shaders\FragmentShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Game\shaders\FragmentShaderPhong.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\VertexShaderPhong.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
