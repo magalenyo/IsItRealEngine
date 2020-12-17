@@ -468,6 +468,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Transformation.h" />
+    <ClInclude Include="Brofiler\Brofiler\Brofiler.h">
+      <Filter>Brofiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">
@@ -499,6 +502,9 @@
     </Filter>
     <Filter Include="Timers">
       <UniqueIdentifier>{89c545e7-f06a-4d9b-823f-2c192a418de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Brofiler">
+      <UniqueIdentifier>{f1e0bb01-8c7b-4189-8913-5c0680270fad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

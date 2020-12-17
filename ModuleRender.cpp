@@ -20,6 +20,7 @@
 
 #include "ModuleTexture.h"
 
+#include "Brofiler/Brofiler.h"
 
 ModuleRender::ModuleRender()
 {
@@ -103,6 +104,8 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	BROFILER_CATEGORY("UpdateLogic", Profiler::Color::Orchid)
+
 	LoadRenderConfiguration();
 	RenderAxis();
 	RenderGrid();
