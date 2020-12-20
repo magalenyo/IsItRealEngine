@@ -48,14 +48,14 @@ public:
 	int GetWindowType();
 	void SetWindowType(int type);
 
-public:
-	
-	SDL_Window* window = NULL; //The window we'll be rendering to
-	SDL_Surface* screen_surface = NULL; //The surface contained by the window
+	SDL_Window* GetWindow();
+	SDL_Surface* GetScreenSurface();
 
 private:
 	/* CONFIGURATION VARIABLES */
 	WindowType windowType;
+	SDL_Window* window = NULL; //The window we'll be rendering to
+	SDL_Surface* screenSurface = NULL; //The surface contained by the window
 };
 
 #endif // __ModuleWindow_H__

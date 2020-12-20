@@ -53,7 +53,16 @@ bool ModuleWindow::Init()
 			windowType = WindowType::W_WINDOW_RESIZABLE;
 		}
 
-		flags |= SDL_RENDERER_PRESENTVSYNC;		// this for vsync
+		//flags |= SDL_RENDERER_PRESENTVSYNC;		// this for vsync
+
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // desired version
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // we want a double buffer
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // we want to have a depth buffer with 24 bits
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
+		SDL_DisplayMode desktopDisplay;
+		SDL_GetDesktopDisplayMode(0, &desktopDisplay);
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		//SDL_GL_SetSwapInterval(0);				// or this
@@ -66,9 +75,7 @@ bool ModuleWindow::Init()
 		}
 		else
 		{
-			//Get window surface
-			
-			screen_surface = SDL_GetWindowSurface(window);
+			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
 
@@ -192,3 +199,11 @@ void ModuleWindow::SetWindowType(int type)
 	windowType = static_cast<ModuleWindow::WindowType>(type);
 }
 
+
+SDL_Window* ModuleWindow::GetWindow() {
+	return window;
+}
+
+SDL_Surface* ModuleWindow::GetScreenSurface() {
+	return screenSurface;
+}
