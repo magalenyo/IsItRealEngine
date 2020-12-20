@@ -19,16 +19,19 @@ public:
 
 	bool CleanUp();
 
-	int GetNumVertices() const;
-	int GetNumIndices() const;
+	unsigned int GetNumVertices() const;
+	unsigned int GetNumIndices() const;
+	unsigned int GetTriangles() const;
+	unsigned int GetFaces() const;
 	float3 GetFurthestPosition();
 
 private:
 	static const int BIND_VERTEX_ARRAY_END = 0;
 
 	unsigned int materialIndex = 0;
-	int numVertices = 0;
-	int numIndices = 0;
+	unsigned int numVertices = 0;
+	unsigned int numIndices = 0;
+	unsigned int numFaces = 0;
 
 	unsigned int vbo;
 	unsigned int ebo;

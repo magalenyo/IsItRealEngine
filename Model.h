@@ -51,6 +51,5 @@ private:
 	std::string GetProcessedPath(const std::string& path);
 	bool ExistsTexture(const std::string& path);
 
-
 };
 
