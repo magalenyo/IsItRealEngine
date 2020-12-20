@@ -40,7 +40,7 @@ void UIConsole::Draw()
     // ImGuiCond_FirstUseEver
     // ImGuiCond_None so it isn't resizable
     ImGui::SetNextWindowSize(ImVec2(width, defaultHeight), ImGuiCond_None);
-    ImGui::SetNextWindowPos(ImVec2(0, height - defaultHeight));
+   // ImGui::SetNextWindowPos(ImVec2(0, height - defaultHeight));
     bool *open = false;
     if (!ImGui::Begin("Console", open, window_flags))
     {

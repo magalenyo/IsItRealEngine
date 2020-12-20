@@ -31,14 +31,26 @@ bool ModuleEditor::Init()
     const char* glsl_version = "#version 130";
 
     ImGui::CreateContext();
-    ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->GetContext());
-    ImGui_ImplOpenGL3_Init(glsl_version);
+
     isReady = true;
 
     components.push_back(mainMenu = new UIMainMenu());
     components.push_back(console = new UIConsole());
     components.push_back(configuration = new UIConfiguration());
     components.push_back(properties = new UIProperties());
+
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // Enable Docking
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows     
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    };
+
+    ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->GetContext());
+    ImGui_ImplOpenGL3_Init(glsl_version);
 
     return true;
 }
@@ -80,7 +92,6 @@ update_status ModuleEditor::Update()
         properties->Draw();
     }
 
-    ImGui::ShowDemoWindow();
     return updateStatus;
 }
 
@@ -91,9 +102,9 @@ update_status ModuleEditor::PreUpdate()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->window->window);
     ImGui::NewFrame();
+
     return UPDATE_CONTINUE;
 }
-
 
 void ModuleEditor::ExitApplication()
 {
