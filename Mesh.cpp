@@ -88,6 +88,13 @@ void Mesh::CreateVAO()
 	glBindVertexArray(BIND_VERTEX_ARRAY_END);
 }
 
+void Mesh::CreateFBO()
+{
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+}
+
 void Mesh::SetMaterialIndex(unsigned int newMaterialIndex)
 {
 	materialIndex = newMaterialIndex;
@@ -113,6 +120,7 @@ void Mesh::Draw(const std::vector<unsigned>& model_textures)
 
 bool Mesh::CleanUp()
 {
+	DestroyBuffer(fbo);
 	DestroyBuffer(vao);	// last created, first deleted
 	DestroyBuffer(ebo);
 	DestroyBuffer(vbo);

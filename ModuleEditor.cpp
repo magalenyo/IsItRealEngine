@@ -8,6 +8,7 @@
 #include "UIConsole.h"
 #include "UIConfiguration.h"
 #include "UIProperties.h"
+#include "UISceneView.h";
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -38,6 +39,7 @@ bool ModuleEditor::Init()
     components.push_back(console = new UIConsole());
     components.push_back(configuration = new UIConfiguration());
     components.push_back(properties = new UIProperties());
+    components.push_back(scene = new UISceneView());
 
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // Enable Docking
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows     
@@ -90,6 +92,10 @@ update_status ModuleEditor::Update()
     
     if (show_properties) {
         properties->Draw();
+    }
+
+    if (show_scene) {
+        scene->Draw();
     }
 
     return updateStatus;

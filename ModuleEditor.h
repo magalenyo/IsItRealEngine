@@ -8,6 +8,7 @@ class UIMainMenu;
 class UIConsole;
 class UIConfiguration;
 class UIProperties;
+class UISceneView;
 
 class ModuleEditor : public Module
 {
@@ -32,6 +33,7 @@ public:
 	UIConsole* console = nullptr;
 	UIConfiguration* configuration = nullptr;
 	UIProperties* properties = nullptr;
+	UISceneView* scene = nullptr;
 
 private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
@@ -41,5 +43,6 @@ private:
 	bool show_console = true;
 	bool show_configuration = true;
 	bool show_properties = true;
+	bool show_scene = true;
 };
 

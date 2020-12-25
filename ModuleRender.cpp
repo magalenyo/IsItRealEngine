@@ -21,6 +21,8 @@
 #include "ModuleTexture.h"
 
 
+
+
 ModuleRender::ModuleRender()
 {
 
@@ -85,6 +87,42 @@ bool ModuleRender::Init()
 
 	gridColor = { 1.000000f, 1.000000f, 1.000000f };
 
+	
+	// generate texture
+	glGenTextures(1, &sceneTexture);
+	glBindTexture(GL_TEXTURE_2D, sceneTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); // automatic mipmap
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 400, 400, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// create a renderbuffer object to store depth info
+	glGenRenderbuffers(1, &sceneRBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, sceneRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 400, 400);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	// create a framebuffer object
+	glGenFramebuffers(1, &sceneFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
+
+	// attach the texture to FBO color attachment point
+	glFramebufferTexture2D(GL_FRAMEBUFFER,        // 1. fbo target: GL_FRAMEBUFFER
+						   GL_COLOR_ATTACHMENT0,  // 2. attachment point
+						   GL_TEXTURE_2D,         // 3. tex target: GL_TEXTURE_2D
+						   sceneTexture,          // 4. tex ID
+						   0);                    // 5. mipmap level: 0(base)
+
+	// attach the renderbuffer to depth attachment point
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER,      // 1. fbo target: GL_FRAMEBUFFER
+							  GL_DEPTH_ATTACHMENT, // 2. attachment point
+							  GL_RENDERBUFFER,     // 3. rbo target: GL_RENDERBUFFER
+							  sceneRBO);              // 4. rbo ID
+
+	// switch back to window-system-provided framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	return true;
 }
 
@@ -93,6 +131,8 @@ update_status ModuleRender::PreUpdate()
 	int w;
 	int h;
 	SDL_GetWindowSize(App->window->window, &w, &h);
+	// set rendering destination to FBO
+	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
 	glViewport(0, 0, w, h);
 	// TODO Check commented viewport
 	//glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
@@ -106,12 +146,26 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {
 	LoadRenderConfiguration();
+	/*glGenFramebuffers(1, &sceneFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);*/
+
 	RenderAxis();
 	RenderGrid();
 	int w, h;
 	App->window->GetWindowSize(w, h);
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), w, h);
 	RenderModel();
+
+	// unbind FBO
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// trigger mipmaps generation explicitly
+	// NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
+	// triggers mipmap generation automatically. However, the texture attached
+	// onto a FBO should generate mipmaps manually via glGenerateMipmap().
+	glBindTexture(GL_TEXTURE_2D, sceneTexture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return UPDATE_CONTINUE;
 }

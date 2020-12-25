@@ -37,6 +37,9 @@ public:
 	bool& GetGLDepthTestState();
 	bool& GetGLCullFaceState();
 
+	unsigned int GetSceneFBO() { return sceneFBO; }
+	unsigned int GetSceneTexture() { return sceneTexture; }
+
 	void TurnAxis(bool state);
 	void TurnGrid(bool state);
 
@@ -45,6 +48,9 @@ private:
 	void* context;
 	unsigned int defaultProgram;
 	Model* loadedModel = nullptr;
+	unsigned int sceneFBO;
+	unsigned int sceneRBO;
+	unsigned int sceneTexture;
 
 	/* CONFIGURATION VARIABLES */
 	float3 gridColor;

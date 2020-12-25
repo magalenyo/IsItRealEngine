@@ -2,6 +2,8 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 #include <GL/GL.h>
+
+
 #include "MemoryLeakDetector.h"
 
 const std::string ModuleTexture::TEXTURE_EXTENSION_PNG = ".png";
@@ -78,7 +80,8 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		  interpolation for minifying filter */
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
 			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-			ilGetData()); /* Texture specification */
+			ilGetData()); /* Texture specification */	
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, newTextureId, 0);
 	}
 	else
 	{
@@ -88,7 +91,7 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		return TEXTURE_ERROR;
 	}
 	ilDeleteImages(1, &newTextureId); /* Because we have already copied image data into texture data
-									  // CHANGING the delete for the newImageId
+									  // TODO CHANGING the delete for the newImageId
 	  we can release memory used by image. */
 
 
