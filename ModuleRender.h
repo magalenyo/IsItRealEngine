@@ -43,6 +43,8 @@ public:
 	void TurnAxis(bool state);
 	void TurnGrid(bool state);
 
+	void OnSceneResize(int width, int height);
+
 private:
 	
 	void* context;

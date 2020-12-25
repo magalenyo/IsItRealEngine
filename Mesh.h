@@ -14,7 +14,6 @@ public:
 	void LoadVBO(const aiMesh* mesh);
 	void LoadEBO(const aiMesh* mesh);
 	void CreateVAO();
-	void CreateFBO();
 	void SetMaterialIndex(unsigned int newMaterialIndex);
 	void Draw(const std::vector<unsigned>& model_textures);
 
@@ -34,7 +33,6 @@ private:
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int vao;
-	unsigned int fbo;
 
 	float3 furthestPosition = float3(0, 0, 0);
 

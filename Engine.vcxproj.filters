@@ -176,7 +176,6 @@
     <ClCompile Include="UISceneView.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -475,7 +474,6 @@
     <ClInclude Include="UISceneView.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

@@ -19,8 +19,10 @@
 #include "Assimp/cimport.h" // aiLogStream
 
 #include "ModuleTexture.h"
+#include "ModuleEditor.h"
+#include "UISceneView.h"
 
-
+#include "MemoryLeakDetector.h"
 
 
 ModuleRender::ModuleRender()
@@ -101,6 +103,7 @@ bool ModuleRender::Init()
 	glGenRenderbuffers(1, &sceneRBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, sceneRBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 400, 400);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 400, 400); // -> this works
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// create a framebuffer object
@@ -123,6 +126,10 @@ bool ModuleRender::Init()
 	// switch back to window-system-provided framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		LOG("ERROR: FrameBuffer incomplete");
+	}
+
 	return true;
 }
 
@@ -133,9 +140,8 @@ update_status ModuleRender::PreUpdate()
 	SDL_GetWindowSize(App->window->window, &w, &h);
 	// set rendering destination to FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
-	glViewport(0, 0, w, h);
-	// TODO Check commented viewport
-	//glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
+
+	glViewport(0, 0, App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -146,14 +152,9 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {
 	LoadRenderConfiguration();
-	/*glGenFramebuffers(1, &sceneFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);*/
-
 	RenderAxis();
 	RenderGrid();
-	int w, h;
-	App->window->GetWindowSize(w, h);
-	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), w, h);
+	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
 	RenderModel();
 
 	// unbind FBO
@@ -281,6 +282,28 @@ void ModuleRender::TurnAxis(bool state)
 void ModuleRender::TurnGrid(bool state)
 {
 	activeGrid = state;
+}
+
+void ModuleRender::OnSceneResize(int width, int height)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
+
+	glBindTexture(GL_TEXTURE_2D, sceneTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, sceneTexture, 0);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, sceneRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height); // -> this works
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, sceneRBO);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		LOG("ERROR: FrameBuffer incomplete");
+	}
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void ModuleRender::RenderAxis()
