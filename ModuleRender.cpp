@@ -47,11 +47,8 @@ bool ModuleRender::Init()
 	SDL_GL_CreateContext(App->window->window);
 
 
-	//glewInit();
 	GLenum err = glewInit();
-	// … check for errors
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	// Should be 2.0
 
 	LOG("Vendor: %s", glGetString(GL_VENDOR));
 	LOG("Renderer: %s", glGetString(GL_RENDERER));
@@ -101,7 +98,6 @@ bool ModuleRender::Init()
 	glGenRenderbuffers(1, &sceneRBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, sceneRBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 400, 400);
-	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 400, 400); // -> this works
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// create a framebuffer object
@@ -133,13 +129,9 @@ bool ModuleRender::Init()
 
 update_status ModuleRender::PreUpdate()
 {
-	int w;
-	int h;
-	SDL_GetWindowSize(App->window->window, &w, &h);
 	// set rendering destination to FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
 
-	//glViewport(0, 0, App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
 	glViewport(0, 0, viewportWidth, viewportHeight);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -153,7 +145,6 @@ update_status ModuleRender::Update()
 	LoadRenderConfiguration();
 	RenderAxis();
 	RenderGrid();
-	//App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
 	RenderModel();
 
@@ -286,8 +277,7 @@ void ModuleRender::OnSceneResize(int width, int height)
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, sceneTexture, 0);
 
 	glBindRenderbuffer(GL_RENDERBUFFER, sceneRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height); // -> this works
-	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, sceneRBO);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

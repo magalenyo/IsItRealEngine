@@ -50,16 +50,19 @@ public:
 	}
 
 private:
+	// REF: https://learnopengl.com/In-Practice/Debugging
 	static const int GL_ID_NOTIFICATION_USINGVIDEOMEMORY = 131185;		// The id of the "Buffer object X (bound to GL_ARRAY_BUFFER_ARB, usage hint is GL_STATIC_DRAW) will use VIDEO memory as the source for buffer object operations"
 	static const int GL_ID_NOTIFICATION_SHADERRECOMPILED = 131218;		// The id of the "Message:Program/shader state performance warning: Vertex shader in program X is being recompiled based on GL state."
-	static const int GL_ID_NOTIFICATION_INVALIDVALUE = 1281;			// The id of the "Message:GL_INVALID_VALUE error generated. Invalid offset and/or size."
+	static const int GL_ID_OTHER_DRIVERALLOCATEDSTORAGE	 = 131169;		// The id of the "Message:Framebuffer detailed info: The driver allocated storage for renderbuffer 1."
+	static const int GL_ID_NOTIFICATION_INVALIDVALUE	 = 1281;		// The id of the "Message:GL_INVALID_VALUE error generated. Invalid offset and/or size."
 
 	// returns true if idToScan is one of the IDS to exclude (not show) in the log
 	static bool isIdExcluded(int idToScan) {
 		bool result = false;
 		if (idToScan == GL_ID_NOTIFICATION_USINGVIDEOMEMORY 
 		 || idToScan == GL_ID_NOTIFICATION_SHADERRECOMPILED
-		 || idToScan == GL_ID_NOTIFICATION_INVALIDVALUE) {
+		 || idToScan == GL_ID_NOTIFICATION_INVALIDVALUE
+		 || idToScan == GL_ID_OTHER_DRIVERALLOCATEDSTORAGE) {
 			result = true;
 		}
 		return result;

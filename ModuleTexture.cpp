@@ -81,12 +81,10 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
 			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
 			ilGetData()); /* Texture specification */	
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, newTextureId, 0);
 	}
 	else
 	{
 		ILenum errorType = ilGetError();
-		// TODO: ilGetError() 
 		/* Error occured */
 		return TEXTURE_ERROR;
 	}
