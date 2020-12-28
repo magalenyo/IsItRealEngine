@@ -7,8 +7,6 @@
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry/Frustum.h"
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
 #include "DebugLogger.h"
 
 #include "Math/float4x4.h"
@@ -141,7 +139,8 @@ update_status ModuleRender::PreUpdate()
 	// set rendering destination to FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
 
-	glViewport(0, 0, App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
+	//glViewport(0, 0, App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
+	glViewport(0, 0, viewportWidth, viewportHeight);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -154,7 +153,8 @@ update_status ModuleRender::Update()
 	LoadRenderConfiguration();
 	RenderAxis();
 	RenderGrid();
-	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
+	//App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->editor->scene->GetSceneWidth(), App->editor->scene->GetSceneHeight());
+	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
 	RenderModel();
 
 	// unbind FBO
@@ -164,31 +164,18 @@ update_status ModuleRender::Update()
 	// NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
 	// triggers mipmap generation automatically. However, the texture attached
 	// onto a FBO should generate mipmaps manually via glGenerateMipmap().
-	glBindTexture(GL_TEXTURE_2D, sceneTexture);
+	//TODO: Revisar esto
+	/*glBindTexture(GL_TEXTURE_2D, sceneTexture);
 	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);*/
+
 
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	// Needed for Viewport
-	// Update and Render additional Platform Windows
-	// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-	//  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
-	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
-		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
-	}
-
+	
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -286,6 +273,10 @@ void ModuleRender::TurnGrid(bool state)
 
 void ModuleRender::OnSceneResize(int width, int height)
 {
+
+	viewportWidth = width;
+	viewportHeight = height;
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sceneFBO);
 
 	glBindTexture(GL_TEXTURE_2D, sceneTexture);

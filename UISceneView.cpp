@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
 #include "Model.h"
 #include "imgui.h"
 
@@ -31,10 +32,15 @@ void UISceneView::Draw()
 
         /*if (width != wsize.x || height != wsize.y) {
             App->renderer->OnSceneResize(width, height);
-        }*/
+        }
 
         width = wsize.x;
-        height = wsize.y;
+        height = wsize.y;*/
+
+        if (App->renderer->viewportWidth != wsize.x || App->renderer->viewportHeight != wsize.y) {
+            App->renderer->OnSceneResize(wsize.x, wsize.y);
+            App->camera->OnWindowResized(wsize.x, wsize.y);
+        }
         
         // Because I use the texture from OpenGL, I need to invert the V from the UV.
         ImGui::Image((ImTextureID)App->renderer->GetSceneTexture(), wsize, ImVec2(0, 1), ImVec2(1, 0));

@@ -45,14 +45,20 @@ public:
 
 	void OnSceneResize(int width, int height);
 
+public:
+	unsigned int viewportWidth = 0;
+	unsigned int viewportHeight = 0;
+
 private:
 	
 	void* context;
 	unsigned int defaultProgram;
 	Model* loadedModel = nullptr;
-	unsigned int sceneFBO;
-	unsigned int sceneRBO;
-	unsigned int sceneTexture;
+	unsigned int sceneFBO = 0;
+	unsigned int sceneRBO = 0;
+	unsigned int sceneTexture = 0;
+
+	
 
 	/* CONFIGURATION VARIABLES */
 	float3 gridColor;

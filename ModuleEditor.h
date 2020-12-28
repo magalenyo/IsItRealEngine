@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 	update_status Update();
 	update_status PreUpdate();
+	update_status PostUpdate();
 	void ExitApplication(); // Sets the value of updateStatus to UPDATE_STOP
 
 	bool& GetShowConsole();
