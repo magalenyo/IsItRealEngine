@@ -2,7 +2,9 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+#define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+
+#define LOG(format, ...) log(__FILENAME__, __LINE__, format, __VA_ARGS__);
 #define OWN_PI 3.14159265359
 #define DEGTORAD OWN_PI/180
 #define RADTODEG 180/OWN_PI
@@ -24,4 +26,4 @@ enum update_status
 #define WINDOW_BORDERLESS false
 #define WINDOW_RESIZABLE true
 #define VSYNC true
-#define TITLE "IsItRealEngine"
+#define TITLE "RealDisunity"

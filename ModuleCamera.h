@@ -11,50 +11,38 @@ class ModuleCamera : public Module
 {
 public:
 
-	enum CameraMovement {
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
-		FORWARD,
-		BACKWARD
-	};
+	bool Init() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
-	enum CameraRotation {
-		ROLL_POSITIVE,
-		ROLL_NEGATIVE,
-		PITCH_POSITIVE,
-		PITCH_NEGATIVE,
-		YAW_POSITIVE,
-		YAW_NEGATIVE
-	};
-
-	ModuleCamera();
-	~ModuleCamera();
-
-	bool Init();
-	update_status Update();
-	bool CleanUp();
-
-	void Move(const CameraMovement &movementType);
-	void Rotate(const CameraRotation& rotationType);
 	void OnWindowResized(int width, int height);
 	void SetHorizontalFov(int fov);
 	void SetVerticalFov(int fov);
 	void SetNearPlaneDistance(float dist);
 	void SetFarPlaneDistance(float dist);
 	void FocusCamera(const float3 &position);
-	float4x4 GetViewMatrix();
-	float4x4 GetProjectionMatrix();
-	
+	float4x4 GetViewMatrix() const;
+	float4x4 GetProjectionMatrix() const;
+	vec GetFront() const;
+	vec GetUp() const;
+	vec GetPosition() const;
+	float GetNearPlane() const;
+	float GetFarPlane() const;
+	float GetFOV() const;
+	float GetAspectRatio() const;
+	float GetMovementSpeed() const;
+	float GetRotationSpeed() const;
+	float GetZoomSpeed() const;
 
 private:
 	Frustum frustum;
-	float verticalSpeed = 1.0f;
-	float horizontalSpeed = 1.0f;
+	float movementSpeed = 5.0f;
 	float rotationSpeed = 60.0f;
+	float zoomSpeed = 5.0f;
 	float positionFromFocusVertice = 4.0f;
+	float distanceFocus = 10.0f;
 
 	void ResetSpeed();
-	void IncreaseSpeed();	
+	void IncreaseSpeed();
+	void Rotate(float3x3 rotationMatrix);
 };

@@ -1,5 +1,4 @@
 #include "UIConfiguration.h"
-#include "imgui.h"
 #include "Application.h"
 #include "GL/glew.h"
 #include "ModuleRender.h"
@@ -10,6 +9,7 @@
 
 #include "MemoryLeakDetector.h"
 #include "IL/il.h"
+#include "assimp/version.h"
 
 #include "Math/float4.h"
 
@@ -59,56 +59,65 @@ void UIConfiguration::Draw()
         ImGui::PlotHistogram("##Milliseconds", &millis[0], millis.size(), 0, title, 0.0f, 50.0f, ImVec2(310, 100), sizeof(float));
 
         ImGui::Separator();
+    }
 
-        int devilVersion = (int) ilGetInteger(IL_VERSION_NUM);
-        char devilVersionFormatted[30];
-        sprintf_s(devilVersionFormatted, 30, "DevIL version: %d.%d.%d", devilVersion/100, devilVersion/10%10, devilVersion%10);
-        ImGui::Text(devilVersionFormatted);
+    if (ImGui::CollapsingHeader("Hardware Information")) {
+        ImGui::Text("Number of CPUs:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%i", SDL_GetCPUCount());
+        ImGui::Text("RAM Memory:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%.1f Gb", SDL_GetSystemRAM() / 1000.0f);
+        ImGui::Text("GPU Vendor:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%s", (const char*)glGetString(GL_VENDOR));
+        ImGui::Text("GPU Model:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%s", (const char*)glGetString(GL_RENDERER));
+        ImGui::Text("GPU OpenGL Version:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%s", (const char*)glGetString(GL_VERSION));
+        ImGui::Text("VRAM Available:");
+        ImGui::SameLine();
+        int vramAvailable;
+        glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &vramAvailable);
+        ImGui::TextColored(purple, "%.1f Mb", vramAvailable / 1000.0f);
+        ImGui::Text("VRAM Budget:");
+        ImGui::SameLine();
+        int vramBudget;
+        glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &vramBudget);
+        ImGui::TextColored(purple, "%.1f Mb", vramBudget / 1000.0f);
+        ImGui::Text("VRAM Usage:");
+        ImGui::SameLine();
+        int vramUsage = vramBudget - vramAvailable;
+        ImGui::TextColored(purple, "%.1f Mb", vramUsage / 1000.0f);
+        ImGui::Text("L1 Cache Size:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%iByte", SDL_GetCPUCacheLineSize());
+    }
 
+    if (ImGui::CollapsingHeader("Libraries' Versions")) {
+        ImGui::Text("Assimp:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%i.%i.%i", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+        ImGui::Text("DevIL:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%i.%i.%i", IL_VERSION / 100, (IL_VERSION % 100) / 10, IL_VERSION & 10);
         int sdlglMajorVersion;
         int sdlglMinorVersion;
         SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &sdlglMajorVersion);
         SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &sdlglMinorVersion);
-        ImGui::Text((std::string("GL Version: ") + std::to_string(sdlglMajorVersion) + "." + std::to_string(sdlglMinorVersion)).c_str());
-
-        std::string glewVersion = std::string((char*) glewGetString(GLEW_VERSION));
-        ImGui::Text((std::string("GLEW Version: " + glewVersion).c_str()));
-
-        SDL_version compiled;
-        SDL_version linked;
-        SDL_VERSION(&compiled);
-        SDL_GetVersion(&linked);
-        char sdlVersion[50];
-        sprintf_s(sdlVersion, 50, "Compiled against SDL version %d.%d.%d\n", compiled.major, compiled.minor, compiled.patch);
-        ImGui::Text(sdlVersion);
-        sprintf_s(sdlVersion, 50, "Linked against SDL version %d.%d.%d\n", linked.major, linked.minor, linked.patch);
-        ImGui::Text(sdlVersion);
-
-        ImGui::Separator();
-
-        std::string glVendor = std::string((char*) glGetString(GL_VENDOR));
-        ImGui::Text((std::string("Vendor: " + glVendor).c_str()));
-
-        std::string glRenderer = std::string((char*) glGetString(GL_RENDERER));
-        ImGui::Text((std::string("Renderer: " + glRenderer).c_str()));
-
-        std::string glSupported = std::string((char*)glGetString(GL_VERSION));
-        ImGui::Text((std::string("OpenGL version supported: " + glSupported).c_str()));
-
-        std::string glsl = std::string((char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
-        ImGui::Text((std::string("GLSL: " + glsl).c_str()));
-
-        ImGui::Separator();
-
-        int systemRam = round( (SDL_GetSystemRAM() / (float) 1024));
-        ImGui::Text((std::string("System RAM: " + std::to_string(systemRam) + "GB").c_str()));
-
-        int cpuCores = SDL_GetCPUCount();
-        ImGui::Text((std::string("CPU Cores: " + std::to_string(cpuCores)).c_str()));
-
-        int cacheSize = SDL_GetCPUCacheLineSize();
-        ImGui::Text((std::string("L1 Cache Size: " + std::to_string(cacheSize) + "Byte").c_str()));
-
+        ImGui::Text("GL:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%i.%i", sdlglMajorVersion, sdlglMinorVersion);
+        ImGui::Text("GLEW:");
+        ImGui::SameLine();
+        ImGui::TextColored(purple, "%s", glewGetString(GLEW_VERSION));
+        ImGui::Text("SDL:");
+        ImGui::SameLine();
+        SDL_version version;
+        SDL_VERSION(&version);
+        ImGui::TextColored(purple, "%i.%i.%i", version.major, version.minor, version.patch);
     }
     
     if (ImGui::CollapsingHeader("Renderer"))
@@ -138,7 +147,6 @@ void UIConfiguration::Draw()
 
     if (ImGui::CollapsingHeader("Window"))
     {
-
         // WINDOW MODE
         ImGui::Text("Window mode");
         int currentType = App->window->GetWindowType();
@@ -246,6 +254,29 @@ void UIConfiguration::Draw()
                 ImGui::SameLine(); ImGui::Text("b%d", i);
             }
         }
+    }
+
+    if (ImGui::CollapsingHeader("Camera")) {
+        vec front = App->camera->GetFront();
+        vec up = App->camera->GetUp();
+        vec position = App->camera->GetPosition();
+        float nearPlane = App->camera->GetNearPlane();
+        float farPlane = App->camera->GetFarPlane();
+        float FOV = App->camera->GetFOV();
+        float aspectRatio = App->camera->GetAspectRatio();
+        float movementSpeed = App->camera->GetMovementSpeed();
+        float rotationSpeed = App->camera->GetRotationSpeed();
+        float zoomSpeed = App->camera->GetZoomSpeed();
+        ImGui::InputFloat3("Front", front.ptr(), "%.3f");
+        ImGui::InputFloat3("Up", up.ptr(), "%.3f");
+        ImGui::InputFloat3("Position", position.ptr());
+        ImGui::InputFloat("Near Plane", &nearPlane);
+        ImGui::InputFloat("Far Plane", &farPlane);
+        ImGui::InputFloat("FOV", &FOV);
+        ImGui::InputFloat("Aspect Ratio", &aspectRatio);
+        ImGui::InputFloat("Movement Speed", &movementSpeed);
+        ImGui::InputFloat("Rotation Speed", &rotationSpeed);
+        ImGui::InputFloat("Zoom Speed", &zoomSpeed);
     }
 
     ImGui::End();

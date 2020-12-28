@@ -31,9 +31,9 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	// float, float, float -> v0
 	// uv, uv			   -> uv0
-	unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2);
-	unsigned buffer_size = vertex_size * mesh->mNumVertices;
-	glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
+	unsigned vertexSize = (sizeof(float) * 3 + sizeof(float) * 2);
+	unsigned bufferSize = vertexSize * mesh->mNumVertices;
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW);
 	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	float3 currentPosition = float3(0, 0, 0);
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
@@ -52,6 +52,7 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	furthestPosition = currentPosition;
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	numVertices = mesh->mNumVertices;
+	numFaces = mesh->mNumFaces;
 }
 
 
@@ -59,8 +60,8 @@ void Mesh::LoadEBO(const aiMesh* mesh)
 {
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	unsigned index_size = sizeof(unsigned) * mesh->mNumFaces * 3;
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, nullptr, GL_STATIC_DRAW);
+	unsigned indexSize = sizeof(unsigned) * mesh->mNumFaces * 3;
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize, nullptr, GL_STATIC_DRAW);
 	// if it's GL_MAP_WRITE_BIT it won't let it load, needs to be READ_ONLY
 	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 	for (unsigned i = 0; i < mesh->mNumFaces; ++i)
@@ -109,6 +110,7 @@ void Mesh::Draw(const std::vector<unsigned>& model_textures)
 	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(BIND_VERTEX_ARRAY_END);
 }
 
 bool Mesh::CleanUp()
@@ -119,14 +121,24 @@ bool Mesh::CleanUp()
 	return true;
 }
 
-int Mesh::GetNumVertices() const
+unsigned int Mesh::GetNumVertices() const
 {
 	return numVertices;
 }
 
-int Mesh::GetNumIndices() const
+unsigned int Mesh::GetNumIndices() const
 {
 	return numIndices;
+}
+
+unsigned int Mesh::GetTriangles() const
+{
+	return numVertices / 3;
+}
+
+unsigned int Mesh::GetFaces() const
+{
+	return numFaces;
 }
 
 float3 Mesh::GetFurthestPosition()

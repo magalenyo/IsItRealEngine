@@ -8,7 +8,7 @@
 #include "UIConsole.h"
 #include "UIConfiguration.h"
 #include "UIProperties.h"
-#include "UISceneView.h";
+#include "UISceneView.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -32,7 +32,8 @@ bool ModuleEditor::Init()
     const char* glsl_version = "#version 130";
 
     ImGui::CreateContext();
-
+    ImGui_ImplSDL2_InitForOpenGL(App->window->GetWindow(), App->renderer->GetContext());
+    ImGui_ImplOpenGL3_Init(glsl_version);
     isReady = true;
 
     components.push_back(mainMenu = new UIMainMenu());
@@ -51,7 +52,7 @@ bool ModuleEditor::Init()
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     };
 
-    ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->GetContext());
+    ImGui_ImplSDL2_InitForOpenGL(App->window->GetWindow(), App->renderer->GetContext());
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     return true;
@@ -106,7 +107,7 @@ update_status ModuleEditor::PreUpdate()
 {
     // THESE SHOULD BE CALLED BEFORE ANY DRAWING
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame(App->window->window);
+    ImGui_ImplSDL2_NewFrame(App->window->GetWindow());
     ImGui::NewFrame();
 
     return UPDATE_CONTINUE;

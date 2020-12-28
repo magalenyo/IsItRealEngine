@@ -18,7 +18,6 @@ UIMainMenu::~UIMainMenu()
 
 }
 
-
 void UIMainMenu::Draw()
 {
     if (show_about) {
@@ -112,11 +111,9 @@ void UIMainMenu::Draw()
 
         if (ImGui::BeginMenu("Help"))
         {
-            ImGui::MenuItem("About IsItRealEngine", NULL, &show_about);
+            ImGui::MenuItem("About RealDisunity", NULL, &show_about);
             ImGui::Separator();
             ImGui::MenuItem("License", NULL, &show_license);
-            // TODO MAYBE?
-            //ImGui::MenuItem("Manual", NULL, &show_about);
             ImGui::EndMenu();
         }
 
@@ -148,16 +145,16 @@ void UIMainMenu::Draw()
 
 void UIMainMenu::RenderAbout(bool* p_open)
 {
-    if (!ImGui::Begin("About IsItRealEngine", p_open, ImGuiWindowFlags_AlwaysAutoResize))
+    if (!ImGui::Begin("About RealDisunity", p_open, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::End();
         return;
     }
    
-    ImGui::Text("IsItRealEngine v1.0\n");
+    ImGui::Text("RealDisunity v1.0\n");
     ImGui::Text("Engine developed as First Assignment for the UPC's Master Degree in Advanced Programming for AAA Video Games.");
     ImGui::Separator();
-    ImGui::Text("Author: Miguel Ángel Bueno Rivera - magalenyo on GitHub");
+    ImGui::Text("Author: Miguel ï¿½ngel Bueno Rivera - magalenyo on GitHub");
     ImGui::Text("Github Repository: https://github.com/magalenyo/IsItRealEngine");
     ImGui::Text("");
 

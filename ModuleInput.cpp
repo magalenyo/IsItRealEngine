@@ -7,12 +7,11 @@
 #include "SDL/include/SDL.h"
 #include "MemoryLeakDetector.h"
 
-#define MAX_KEYS 300
+
 ModuleInput::ModuleInput()
 {
-	keyboard = new KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
-	memset(mouse_buttons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	/*memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
+	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);*/
 }
 
 // Destructor
@@ -43,6 +42,8 @@ update_status ModuleInput::Update()
 	static SDL_Event event;
 
 	memset(windowEvents, false, WE_COUNT * sizeof(bool));
+	mouseMotion = { 0, 0 };
+	mouseWheelMotion = 0;
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
@@ -66,13 +67,13 @@ update_status ModuleInput::Update()
 
 	for (int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
-		if (mouse_buttons[i] == KEY_DOWN)
-			mouse_buttons[i] = KEY_REPEAT;
+		if (mouseButtons[i] == KEY_DOWN)
+			mouseButtons[i] = KEY_REPEAT;
 
-		if (mouse_buttons[i] == KEY_UP)
-			mouse_buttons[i] = KEY_IDLE;
+		if (mouseButtons[i] == KEY_UP)
+			mouseButtons[i] = KEY_IDLE;
 	}
-	mouseWheelState = MouseWheelState::SCROLLING_IDLE;
+
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -106,40 +107,34 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			mouse_buttons[event.button.button - 1] = KEY_DOWN;
+			mouseButtons[event.button.button - 1] = KEY_DOWN;
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			mouse_buttons[event.button.button - 1] = KEY_UP;
+			mouseButtons[event.button.button - 1] = KEY_UP;
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouse_motion.x = event.motion.xrel / 2;
-			mouse_motion.y = event.motion.yrel / 2;
+			mouseMotion.x = event.motion.xrel / 2;
+			mouseMotion.y = event.motion.yrel / 2;
 			mouse.x = event.motion.x / 2;
 			mouse.y = event.motion.y / 2;
 			
 			break;
-		case SDL_MOUSEWHEEL: {
-			if (event.wheel.y > 0) // scroll up
-			{
-				mouseWheelState = MouseWheelState::SCROLLING_UP;
-			}
-			else if (event.wheel.y < 0) // scroll down
-			{
-				mouseWheelState = MouseWheelState::SCROLLING_DOWN;
+		case SDL_MOUSEWHEEL:
+			if (event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED) {
+				mouseWheelMotion = event.wheel.x;
 			}
 			else {
-				mouseWheelState = MouseWheelState::SCROLLING_IDLE;
+				mouseWheelMotion = event.wheel.y;
 			}
-		}
 			break;
-		case SDL_DROPFILE: {
+		case SDL_DROPFILE:
 			char* dropped_filedir = event.drop.file;
 			std::string dropped_file = event.drop.file;
 			App->renderer->LoadModel(dropped_file);
 			SDL_free(dropped_filedir);
-		}
+		
 			break;
 		}
 	}
@@ -154,7 +149,6 @@ update_status ModuleInput::Update()
 bool ModuleInput::CleanUp()
 {
 	LOG("Quitting SDL input event subsystem");
-	delete keyboard;
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

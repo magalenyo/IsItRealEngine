@@ -61,7 +61,7 @@ private:
 	
 
 	/* CONFIGURATION VARIABLES */
-	float3 gridColor;
+	float3 gridColor = { 1.000000f, 1.000000f, 1.000000f };
 	bool activeAxis = true;
 	bool activeGrid = true;
 	bool activeModel = true;
