@@ -27,6 +27,7 @@ public:
 	bool& GetShowConsole();
 	bool& GetShowConfiguration();
 	bool& GetShowProperties();
+	bool& GetShowSceneView();
 
 public:
 	bool isReady = false;

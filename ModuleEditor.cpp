@@ -155,3 +155,8 @@ bool& ModuleEditor::GetShowProperties()
     return show_properties;
 }
 
+bool& ModuleEditor::GetShowSceneView()
+{
+    return show_scene;
+}
+

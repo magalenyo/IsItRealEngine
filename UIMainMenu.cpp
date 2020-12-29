@@ -85,6 +85,21 @@ void UIMainMenu::Draw()
 
     if (ImGui::BeginMenuBar())
     {
+
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Quit")) {
+                App->editor->ExitApplication();
+            }
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("External links")) {
+            if (ImGui::MenuItem("Github")) {
+                ShellExecute(0, 0, "https://github.com/magalenyo/IsItRealEngine", 0, 0, SW_SHOW);
+            }
+            ImGui::EndMenu();
+        }
+
         if (ImGui::BeginMenu("Options"))
         {
             // Disabling fullscreen would allow the window to be moved to the front of other windows,
@@ -103,10 +118,6 @@ void UIMainMenu::Draw()
             if (ImGui::MenuItem("Close", NULL, false, &show_app_dockspace != NULL))
                 show_app_dockspace = false;
             ImGui::EndMenu();
-        }
-
-        if (ImGui::Button("Github Page")) {
-            ShellExecute(0, 0, "https://github.com/magalenyo/IsItRealEngine", 0, 0, SW_SHOW);
         }
 
         if (ImGui::BeginMenu("Help"))
@@ -128,12 +139,9 @@ void UIMainMenu::Draw()
             bool& showProperties = App->editor->GetShowProperties();
             ImGui::MenuItem("Properties Window", NULL, &showProperties);
 
-            ImGui::EndMenu();
-        }
+            bool& showSceneView = App->editor->GetShowSceneView();
+            ImGui::MenuItem("GameView Window", NULL, &showSceneView);
 
-        if (ImGui::BeginMenu("Quit"))
-        {
-            App->editor->ExitApplication();
             ImGui::EndMenu();
         }
 
