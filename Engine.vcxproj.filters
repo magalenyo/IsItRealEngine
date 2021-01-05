@@ -189,6 +189,7 @@
     <ClCompile Include="ComponentMesh.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="GUIDGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -500,6 +501,7 @@
     <ClInclude Include="ComponentMesh.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="GUIDGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

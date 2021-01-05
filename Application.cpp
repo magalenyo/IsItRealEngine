@@ -9,6 +9,7 @@
 #include "ModuleTexture.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleScene.h"
 #include "MemoryLeakDetector.h"
 
 using namespace std;
@@ -25,6 +26,7 @@ Application::Application()
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugDraw = new ModuleDebugDraw());
+	modules.push_back(scene = new ModuleScene());
 }
 
 Application::~Application()

@@ -22,6 +22,8 @@ public:
 	float3 GetScale() const { return scale; }
 	Quat GetRotation() const { return rotation; };
 
+	float3 GetRotationMatrix() const { return rotation.ToEulerXYZ(); };
+
 private:
 
 	float3 position = float3(0, 0, 0);

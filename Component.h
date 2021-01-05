@@ -1,4 +1,7 @@
 #pragma once
+
+#include <string>
+
 class Component
 {
 public:
@@ -14,5 +17,6 @@ public:
 
 private:
 	ComponentType type;
+	std::string uid;
 };
 
