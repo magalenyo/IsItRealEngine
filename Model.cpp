@@ -61,7 +61,7 @@ void Model::LoadSingleTexture(const std::string &file_name)
 	int textureId = App->textures->LoadTexture(file_name.c_str());
 	if (textureId != ModuleTexture::TEXTURE_ERROR) {
 		textures.push_back(textureId);
-		for (Mesh* mesh : meshes) {
+		for (ComponentMesh* mesh : meshes) {
 			mesh->SetMaterialIndex(textures.size()-1);
 		}
 		textureSizes.push_back(float2(App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
@@ -75,7 +75,7 @@ void Model::LoadSingleTexture(const std::string &file_name)
 
 bool Model::CleanUp()
 {
-	for (Mesh* mesh : meshes) {
+	for (ComponentMesh* mesh : meshes) {
 		delete mesh;
 	}
 
@@ -93,7 +93,7 @@ bool Model::CleanUp()
 
 void Model::Draw()
 {
-	for (Mesh* mesh : meshes) {
+	for (ComponentMesh* mesh : meshes) {
 		mesh->Draw(textures);
 	}
 }
@@ -141,7 +141,7 @@ int Model::GetNumIndices() const
 	return numIndices;
 }
 
-Transformation Model::GetTransformation() const
+ComponentTransform Model::GetTransformation() const
 {
 	return transform;
 }
@@ -170,7 +170,7 @@ void Model::LoadMeshes(const aiScene* scene)
 	meshes.reserve(scene->mNumMeshes);
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
-		meshes.push_back(new Mesh(scene->mMeshes[i]));
+		meshes.push_back(new ComponentMesh(scene->mMeshes[i]));
 		numVertices += meshes[i]->GetNumVertices();
 		numIndices += meshes[i]->GetNumIndices();
 		if (meshes[i]->GetFurthestPosition().z > furthestPosition.z) {

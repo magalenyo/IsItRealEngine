@@ -34,7 +34,7 @@ void UIProperties::Draw()
         if (ImGui::CollapsingHeader("Transformation")) 
         {
             ImGui::Text("Position");
-            Transformation modelTransform = model->GetTransformation();
+            ComponentTransform modelTransform = model->GetTransformation();
             float3 modelPosition = modelTransform.GetPosition();
             ImGui::Text("X: %.1f", modelPosition.x); ImGui::SameLine();
             ImGui::Text("Y: %.1f", modelPosition.y); ImGui::SameLine();
@@ -43,10 +43,11 @@ void UIProperties::Draw()
             ImGui::Text("");
 
             ImGui::Text("Rotation");
-            float3 modelRotation = modelTransform.GetRotation();
+            // TODO 
+            /*float3 modelRotation = modelTransform.GetRotation();
             ImGui::Text("X: %.1f", modelRotation.x); ImGui::SameLine();
             ImGui::Text("Y: %.1f", modelRotation.y); ImGui::SameLine();
-            ImGui::Text("Z: %.1f", modelRotation.z);
+            ImGui::Text("Z: %.1f", modelRotation.z);*/
 
 			ImGui::Text("");
 

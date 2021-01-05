@@ -2,10 +2,10 @@
 
 #include "assimp/scene.h"
 #include <vector>
-#include "Mesh.h"
+#include "ComponentMesh.h"
 #include "Math/float2.h"
 #include "Math/float3.h"
-#include "Transformation.h"
+#include "ComponentTransform.h"
 
 class Model
 {
@@ -29,7 +29,7 @@ public:
 	int GetNumMeshes() const;
 	int GetLastTexture() const;
 	void GetLastTextureSize(int &w, int &h);
-	Transformation GetTransformation() const;
+	ComponentTransform GetTransformation() const;
 
 private:
 
@@ -39,10 +39,10 @@ private:
 
 	std::vector<unsigned int> textures; // Texture mesh
 	std::vector<float2> textureSizes;	// Texture size
-	std::vector<Mesh*> meshes;			// Mesh array
+	std::vector<ComponentMesh*> meshes;			// Mesh array
 	unsigned int numVertices = 0;		// Number of vertices total. Sum of the vertices of each mesh.
 	unsigned int numIndices = 0;		// Number of indices total. Sum of the indices of each mesh.
-	Transformation transform;			// Stores Position, Scale and Rotation of the object. Position initialized to (0,0,0)
+	ComponentTransform transform;			// Stores Position, Scale and Rotation of the object. Position initialized to (0,0,0)
 	float3 furthestPosition = float3(0, 0, 0);	// Store the furthest vertice of the model.
 	
 	void LoadMaterials(const aiScene* scene);

@@ -4,12 +4,12 @@
 #include <vector>
 #include "Math/float3.h"
 
-class Mesh
+class ComponentMesh
 {
 public:
-	Mesh();
-	Mesh(const aiMesh* mesh);
-	~Mesh();
+	ComponentMesh();
+	ComponentMesh(const aiMesh* mesh);
+	~ComponentMesh();
 
 	void LoadVBO(const aiMesh* mesh);
 	void LoadEBO(const aiMesh* mesh);

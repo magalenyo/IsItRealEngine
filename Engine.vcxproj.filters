@@ -137,8 +137,6 @@
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>ImGui</Filter>
@@ -172,9 +170,24 @@
     <ClCompile Include="UIProperties.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Transformation.cpp" />
     <ClCompile Include="UISceneView.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="Component.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -416,8 +429,6 @@
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleTexture.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="debug_draw.hpp" />
@@ -470,9 +481,24 @@
     <ClInclude Include="UIProperties.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Transformation.h" />
     <ClInclude Include="UISceneView.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="Component.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -505,6 +531,9 @@
     </Filter>
     <Filter Include="Timers">
       <UniqueIdentifier>{89c545e7-f06a-4d9b-823f-2c192a418de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{f5bb81ef-3901-4063-8f0f-acd010ccdf16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
