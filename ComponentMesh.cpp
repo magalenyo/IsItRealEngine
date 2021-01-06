@@ -1,4 +1,5 @@
 #include "ComponentMesh.h"
+#include "Component.h"
 #include "GL/glew.h"
 #include "Math/float2.h"
 #include "Application.h"
@@ -8,11 +9,8 @@
 
 #include "MemoryLeakDetector.h"
 
-ComponentMesh::ComponentMesh()
-{
-}
 
-ComponentMesh::ComponentMesh(const aiMesh* mesh)
+ComponentMesh::ComponentMesh(const aiMesh* mesh) : Component()
 {
 	LoadVBO(mesh);
 	LoadEBO(mesh);

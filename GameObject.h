@@ -13,9 +13,11 @@ public:
 
 	void Update();
 
-	void AddComponent(const Component &component);
-	void AddGameObject(const GameObject &gameObject);
-	void SetParent(const GameObject& gameObject);
+	void AddComponent(Component *component);
+	void AddGameObject(GameObject *gameObject);
+	void SetParent(GameObject* gameObject);
+
+	bool HasComponents() const;
 
 private:
 	std::string uid;

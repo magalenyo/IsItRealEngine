@@ -190,6 +190,9 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GUIDGenerator.cpp" />
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -502,6 +505,9 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GUIDGenerator.h" />
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

@@ -5,6 +5,9 @@
 class Component
 {
 public:
+	Component();
+	~Component();
+
 	enum ComponentType {
 		Material,
 		Mesh,

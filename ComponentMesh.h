@@ -3,11 +3,12 @@
 #include "assimp/mesh.h"
 #include <vector>
 #include "Math/float3.h"
+#include "Component.h"
 
-class ComponentMesh
+
+class ComponentMesh : public Component
 {
 public:
-	ComponentMesh();
 	ComponentMesh(const aiMesh* mesh);
 	~ComponentMesh();
 
