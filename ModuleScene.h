@@ -1,9 +1,12 @@
 #pragma once
 #include "Module.h"
 #include <string>
+#include <vector>
 #include "assimp/scene.h"
 
 class GameObject;
+class ComponentMaterial;
+class ComponentMesh;
 
 class ModuleScene : public Module
 {
@@ -26,8 +29,10 @@ private:
 
 
     // TODO EXTERNALIZE INTO A MODEL LOADER
-    void LoadMaterials(const aiScene* scene, GameObject* gameObject);
-    void LoadMeshes(const aiScene* scene, GameObject* gameObject);
+    std::vector<ComponentMaterial*> LoadMaterials(const aiScene* scene);
+    std::vector<ComponentMesh*> LoadMeshes(const aiScene* scene);
+    GameObject* LoadRecursively(const aiScene* scene, const aiNode* node, GameObject* parent);
+
 
     std::string GetProcessedPath(const std::string& path);
     bool ExistsTexture(const std::string& path);

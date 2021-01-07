@@ -40,8 +40,15 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 		*(vertices++) = mesh->mVertices[i].x;
 		*(vertices++) = mesh->mVertices[i].y;
 		*(vertices++) = mesh->mVertices[i].z;
-		*(vertices++) = mesh->mTextureCoords[0][i].x;
-		*(vertices++) = mesh->mTextureCoords[0][i].y;
+		aiVector3D* textureVec = mesh->mTextureCoords[0];
+		if (textureVec != nullptr) {
+			*(vertices++) = mesh->mTextureCoords[0][i].x;
+			*(vertices++) = mesh->mTextureCoords[0][i].y;
+		}
+		else {
+			*(vertices++) = 0;
+			*(vertices++) = 0;
+		}
 
 		if (mesh->mVertices[i].z > currentPosition.z) {
 			currentPosition = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);

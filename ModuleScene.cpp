@@ -13,8 +13,8 @@
 
 bool ModuleScene::Init()
 {
-	root = new GameObject();
-	Load("./resources/models/BakerHouse.fbx");
+	root = new GameObject("Root GameObject", nullptr);
+	Load("./resources/models/turret cannon.fbx");
 	return true;
 }
 
@@ -30,13 +30,16 @@ void ModuleScene::Load(const char* file_name)
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
 	{
-		GameObject* gameObject = new GameObject(std::string(scene->mRootNode->mName.C_Str()), root);
-		LoadMaterials(scene, gameObject);
-
-		if (gameObject->HasComponents()) {
-			LoadMeshes(scene, gameObject);
+		//GameObject* gameObject = new GameObject(std::string(scene->mRootNode->mName.C_Str()), root);
+		std::vector<ComponentMaterial*> materials = LoadMaterials(scene);
+		materials.push_back(0);
+		if (!materials.empty()) {
+			//std::vector<ComponentMesh*> meshes = LoadMeshes(scene);
 			LOG("Model: %s loaded", file_name);
+
+			GameObject* gameObject = LoadRecursively(scene, scene->mRootNode, root);
 			root->AddGameObject(gameObject);
+
 		}
 		else {
 			LOG("ERROR Loading Model: %s. No texture found.", file_name);
@@ -67,8 +70,9 @@ void ModuleScene::Load(const char* file_name)
 //	}
 //}
 
-void ModuleScene::LoadMaterials(const aiScene* scene, GameObject* gameObject)
+std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const aiScene* scene)
 {
+	std::vector<ComponentMaterial*> result;
 	aiString file;
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
@@ -77,24 +81,44 @@ void ModuleScene::LoadMaterials(const aiScene* scene, GameObject* gameObject)
 		{
 			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());
 			if (textureId != ModuleTexture::TEXTURE_ERROR) {
-				gameObject->AddComponent(new ComponentMaterial(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
+				result.push_back(new ComponentMaterial(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
 			}
 		}
 	}
+	return result;
 }
 
-void ModuleScene::LoadMeshes(const aiScene* scene, GameObject* gameObject)
+std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
 {
+	std::vector<ComponentMesh*> result;
 	float3 furthestPosition = float3(0, 0, 0);
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[i]);
-		gameObject->AddComponent(mesh);
+		result.push_back(mesh);
 		if (mesh->GetFurthestPosition().z > furthestPosition.z) {
 			furthestPosition = mesh->GetFurthestPosition();
 		}
 	}
 	App->camera->FocusCamera(furthestPosition);
+	return result;
+}
+
+GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* node, GameObject* parent)
+{
+	GameObject* go = new GameObject(std::string(node->mName.C_Str()), parent);
+	// Add node components
+	for (int i = 0; i < node->mNumMeshes; i++) {
+		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]]);
+		go->AddComponent(mesh);
+	}
+
+	// Add Children
+	for (int i = 0; i < node->mNumChildren; i++) {
+		go->AddGameObject(LoadRecursively(scene, node->mChildren[i], go));
+	}
+
+	return go;
 }
 
 std::string ModuleScene::GetProcessedPath(const std::string& path)
