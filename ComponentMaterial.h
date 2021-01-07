@@ -2,10 +2,12 @@
 
 #include "Component.h"
 
+class GameObject;
+
 class ComponentMaterial : public Component
 {
 public:
-	ComponentMaterial(unsigned int _textureID, float _width, float _height);
+	ComponentMaterial(unsigned int _textureID, float _width, float _height, GameObject* owner);
 
 	void SetWidth(float _width);
 	void SetHeight(float _height);

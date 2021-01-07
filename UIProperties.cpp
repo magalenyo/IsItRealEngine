@@ -34,11 +34,11 @@ void UIProperties::Draw()
         if (ImGui::CollapsingHeader("Transformation")) 
         {
             ImGui::Text("Position");
-            ComponentTransform modelTransform = model->GetTransformation();
+            /*ComponentTransform modelTransform = model->GetTransformation();
             float3 modelPosition = modelTransform.GetPosition();
             ImGui::Text("X: %.1f", modelPosition.x); ImGui::SameLine();
             ImGui::Text("Y: %.1f", modelPosition.y); ImGui::SameLine();
-            ImGui::Text("Z: %.1f", modelPosition.z);
+            ImGui::Text("Z: %.1f", modelPosition.z);*/
 
             ImGui::Text("");
 
@@ -52,11 +52,11 @@ void UIProperties::Draw()
 			ImGui::Text("");
 
 			ImGui::Text("Scale"); 
-            float3 modelScale = modelTransform.GetScale();
+            /*float3 modelScale = modelTransform.GetScale();
             ImGui::Text("X: %.1f", modelScale.x); ImGui::SameLine();
             ImGui::Text("Y: %.1f", modelScale.y); ImGui::SameLine();
             ImGui::Text("Z: %.1f", modelScale.z);
-            ImGui::Text("");
+            ImGui::Text("");*/
         }
 
 	    if (ImGui::CollapsingHeader("Geometry")) 

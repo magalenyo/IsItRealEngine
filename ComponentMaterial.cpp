@@ -1,6 +1,6 @@
 #include "ComponentMaterial.h"
 
-ComponentMaterial::ComponentMaterial(unsigned int _textureID, float _width, float _height) : textureID(_textureID), width(_width), height(_height), Component() {}
+ComponentMaterial::ComponentMaterial(unsigned int _textureID, float _width, float _height, GameObject* owner) : textureID(_textureID), width(_width), height(_height), Component(owner, ComponentType::Material) {}
 
 void ComponentMaterial::SetWidth(float _width)
 {

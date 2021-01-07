@@ -33,7 +33,7 @@ void Model::Load(const char* file_name)
 	LOG("Loading model: %s...", file_name)
 	numVertices = 0;
 	numIndices = 0;
-	transform.Reset();
+	//transform.Reset();
 
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
@@ -141,9 +141,10 @@ int Model::GetNumIndices() const
 	return numIndices;
 }
 
-ComponentTransform Model::GetTransformation() const
+ComponentTransform* Model::GetTransformation() const
 {
-	return transform;
+	//return transform;
+	return nullptr;
 }
 
 void Model::LoadMaterials(const aiScene* scene)
@@ -170,7 +171,7 @@ void Model::LoadMeshes(const aiScene* scene)
 	meshes.reserve(scene->mNumMeshes);
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
-		meshes.push_back(new ComponentMesh(scene->mMeshes[i]));
+		meshes.push_back(new ComponentMesh(scene->mMeshes[i], nullptr));
 		numVertices += meshes[i]->GetNumVertices();
 		numIndices += meshes[i]->GetNumIndices();
 		if (meshes[i]->GetFurthestPosition().z > furthestPosition.z) {

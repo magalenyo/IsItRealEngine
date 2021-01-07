@@ -5,11 +5,12 @@
 #include "Math/float3.h"
 #include "Component.h"
 
+class GameObject;
 
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh(const aiMesh* mesh);
+	ComponentMesh(const aiMesh* mesh, GameObject* owner);
 	~ComponentMesh();
 
 	void LoadVBO(const aiMesh* mesh);

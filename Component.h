@@ -2,17 +2,20 @@
 
 #include <string>
 
+class GameObject;
+
 class Component
 {
 public:
-	Component();
-	~Component();
-
 	enum ComponentType {
 		Material,
 		Mesh,
 		Transform
 	};
+
+	Component();
+	Component(GameObject* owner, ComponentType type);
+	~Component();
 
 	virtual void Enable() {};
 	virtual void Update() {};
@@ -21,5 +24,7 @@ public:
 private:
 	ComponentType type;
 	std::string uid;
+	bool enabled = true;
+	GameObject* owner;
 };
 

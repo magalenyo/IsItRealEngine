@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
@@ -14,7 +15,7 @@
 bool ModuleScene::Init()
 {
 	root = new GameObject("Root GameObject", nullptr);
-	Load("./resources/models/turret cannon.fbx");
+	Load("./resources/models/turret cannon colored.fbx");
 	return true;
 }
 
@@ -81,7 +82,7 @@ std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const aiScene* scene)
 		{
 			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());
 			if (textureId != ModuleTexture::TEXTURE_ERROR) {
-				result.push_back(new ComponentMaterial(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
+				result.push_back(new ComponentMaterial(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), nullptr));
 			}
 		}
 	}
@@ -94,7 +95,7 @@ std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
 	float3 furthestPosition = float3(0, 0, 0);
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
-		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[i]);
+		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[i], nullptr);
 		result.push_back(mesh);
 		if (mesh->GetFurthestPosition().z > furthestPosition.z) {
 			furthestPosition = mesh->GetFurthestPosition();
@@ -109,9 +110,22 @@ GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* nod
 	GameObject* go = new GameObject(std::string(node->mName.C_Str()), parent);
 	// Add node components
 	for (int i = 0; i < node->mNumMeshes; i++) {
-		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]]);
+		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
 		go->AddComponent(mesh);
 	}
+	
+	// Add transformation component
+	aiVector3D translation;
+	aiVector3D scale;
+	aiQuaternion rotation;
+	node->mTransformation.Decompose(scale, rotation, translation);
+	go->AddComponent(
+		new ComponentTransform(
+			float3(translation.x, translation.y, translation.z),
+			float3(scale.x, scale.y, scale.z),
+			Quat(rotation.x, rotation.y, rotation.z, rotation.w)
+		, go)
+	);
 
 	// Add Children
 	for (int i = 0; i < node->mNumChildren; i++) {
