@@ -15,7 +15,7 @@
 bool ModuleScene::Init()
 {
 	root = new GameObject("Root GameObject", nullptr);
-	Load("./resources/models/turret cannon colored.fbx");
+	Load("./resources/models/turret cannon multicolored.fbx");
 	return true;
 }
 
@@ -33,18 +33,17 @@ void ModuleScene::Load(const char* file_name)
 	{
 		//GameObject* gameObject = new GameObject(std::string(scene->mRootNode->mName.C_Str()), root);
 		std::vector<ComponentMaterial*> materials = LoadMaterials(scene);
-		materials.push_back(0);
 		if (!materials.empty()) {
 			//std::vector<ComponentMesh*> meshes = LoadMeshes(scene);
 			LOG("Model: %s loaded", file_name);
 
 			GameObject* gameObject = LoadRecursively(scene, scene->mRootNode, root);
 			root->AddGameObject(gameObject);
-
 		}
 		else {
 			LOG("ERROR Loading Model: %s. No texture found.", file_name);
 		}
+		aiReleaseImport(scene);
 	}
 	else
 	{
@@ -112,8 +111,9 @@ GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* nod
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
 		go->AddComponent(mesh);
+		// create material
 	}
-	
+
 	// Add transformation component
 	aiVector3D translation;
 	aiVector3D scale;

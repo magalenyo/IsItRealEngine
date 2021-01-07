@@ -21,5 +21,6 @@ private:
 	float width = 1;
 	float height = 1;
 	unsigned int textureID;
+
 };
 
