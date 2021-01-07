@@ -9,6 +9,7 @@ class UIConsole;
 class UIConfiguration;
 class UIProperties;
 class UISceneView;
+class UIHierarchy;
 
 class ModuleEditor : public Module
 {
@@ -28,6 +29,7 @@ public:
 	bool& GetShowConfiguration();
 	bool& GetShowProperties();
 	bool& GetShowSceneView();
+	bool& GetShowHierarchyView();
 
 public:
 	bool isReady = false;
@@ -36,6 +38,7 @@ public:
 	UIConfiguration* configuration = nullptr;
 	UIProperties* properties = nullptr;
 	UISceneView* scene = nullptr;
+	UIHierarchy* hierarchy = nullptr;
 
 private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
@@ -46,5 +49,6 @@ private:
 	bool show_configuration = true;
 	bool show_properties = true;
 	bool show_scene = true;
+	bool show_hierarchy = true;
 };
 

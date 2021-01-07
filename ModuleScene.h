@@ -17,6 +17,7 @@ public:
     void Load(const char* file_name);
     void LoadSingleTexture(const std::string& file_name);
 
+    GameObject* GetRootNode() const;
 
 private:
     const std::string PATH_TEXTURES = "./resources/textures/";

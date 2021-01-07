@@ -24,3 +24,18 @@ bool GameObject::HasComponents() const
 {
 	return !components.empty();
 }
+
+bool GameObject::IsLeaf() const
+{
+	return children.empty();
+}
+
+std::string GameObject::GetName() const
+{
+	return name;
+}
+
+std::vector<GameObject*> GameObject::GetChildren() const
+{
+	return children;
+}

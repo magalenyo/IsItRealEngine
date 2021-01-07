@@ -18,6 +18,10 @@ public:
 	void SetParent(GameObject* gameObject);
 
 	bool HasComponents() const;
+	bool IsLeaf() const;
+
+	std::string GetName() const;
+	std::vector<GameObject*> GetChildren() const;
 
 private:
 	std::string uid;
@@ -27,4 +31,3 @@ private:
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
 };
-

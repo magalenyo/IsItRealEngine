@@ -33,7 +33,7 @@ void ModuleScene::Load(const char* file_name)
 	{
 		//GameObject* gameObject = new GameObject(std::string(scene->mRootNode->mName.C_Str()), root);
 		std::vector<ComponentMaterial*> materials = LoadMaterials(scene);
-		if (!materials.empty()) {
+		if (materials.empty()) {
 			//std::vector<ComponentMesh*> meshes = LoadMeshes(scene);
 			LOG("Model: %s loaded", file_name);
 
@@ -49,6 +49,11 @@ void ModuleScene::Load(const char* file_name)
 	{
 		LOG("Error loading %s: %s", file_name, aiGetErrorString());
 	}
+}
+
+GameObject* ModuleScene::GetRootNode() const
+{
+	return root;
 }
 
 //void ModuleScene::LoadSingleTexture(const std::string& file_name)
@@ -76,7 +81,7 @@ std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const aiScene* scene)
 	aiString file;
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
-		aiReturn returnType = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
+ 		aiReturn returnType = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
 		if (returnType == AI_SUCCESS)
 		{
 			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());

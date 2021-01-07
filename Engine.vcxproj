@@ -257,6 +257,7 @@
     <ClInclude Include="UIConsole.h" />
     <ClInclude Include="UIMainMenu.h" />
     <ClInclude Include="UIProperties.h" />
+    <ClInclude Include="UIHierarchy.h" />
     <ClInclude Include="UISceneView.h" />
   </ItemGroup>
   <ItemGroup>
@@ -333,6 +334,7 @@
     <ClCompile Include="UIConsole.cpp" />
     <ClCompile Include="UIMainMenu.cpp" />
     <ClCompile Include="UIProperties.cpp" />
+    <ClCompile Include="UIHierarchy.cpp" />
     <ClCompile Include="UISceneView.cpp" />
   </ItemGroup>
   <ItemGroup>

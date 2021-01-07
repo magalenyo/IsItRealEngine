@@ -193,6 +193,9 @@
     <ClCompile Include="ComponentMaterial.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="UIHierarchy.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -507,6 +510,9 @@
     <ClInclude Include="GUIDGenerator.h" />
     <ClInclude Include="ComponentMaterial.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHierarchy.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

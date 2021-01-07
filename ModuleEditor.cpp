@@ -9,6 +9,7 @@
 #include "UIConfiguration.h"
 #include "UIProperties.h"
 #include "UISceneView.h"
+#include "UIHierarchy.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -41,6 +42,7 @@ bool ModuleEditor::Init()
     components.push_back(configuration = new UIConfiguration());
     components.push_back(properties = new UIProperties());
     components.push_back(scene = new UISceneView());
+    components.push_back(hierarchy = new UIHierarchy());
 
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // Enable Docking
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows     
@@ -98,6 +100,12 @@ update_status ModuleEditor::Update()
     if (show_scene) {
         scene->Draw();
     }
+
+    if (show_hierarchy) {
+        hierarchy->Draw();
+    }
+
+    ImGui::ShowDemoWindow();
 
     return updateStatus;
 }
@@ -158,5 +166,10 @@ bool& ModuleEditor::GetShowProperties()
 bool& ModuleEditor::GetShowSceneView()
 {
     return show_scene;
+}
+
+bool& ModuleEditor::GetShowHierarchyView()
+{
+    return show_hierarchy;
 }
 

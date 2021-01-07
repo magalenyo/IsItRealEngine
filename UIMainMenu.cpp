@@ -142,6 +142,9 @@ void UIMainMenu::Draw()
             bool& showSceneView = App->editor->GetShowSceneView();
             ImGui::MenuItem("GameView Window", NULL, &showSceneView);
 
+            bool& showHierarchyView = App->editor->GetShowHierarchyView();
+            ImGui::MenuItem("Hierarchy Window", NULL, &showHierarchyView);
+
             ImGui::EndMenu();
         }
 
