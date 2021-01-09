@@ -10,7 +10,7 @@
 #include "MemoryLeakDetector.h"
 
 
-ComponentMesh::ComponentMesh(const aiMesh* mesh, GameObject* owner) : Component(owner, ComponentType::Mesh)
+ComponentMesh::ComponentMesh(const aiMesh* mesh, GameObject* owner) : Component(owner, ComponentType::MESH)
 {
 	LoadVBO(mesh);
 	LoadEBO(mesh);

@@ -8,9 +8,10 @@ class Component
 {
 public:
 	enum ComponentType {
-		Material,
-		Mesh,
-		Transform
+		MATERIAL,
+		MESH,
+		TRANSFORM,
+		UNDEFINED
 	};
 
 	Component();
@@ -22,7 +23,7 @@ public:
 	virtual void Disable() {};
 
 private:
-	ComponentType type;
+	ComponentType type = ComponentType::UNDEFINED;
 	std::string uid;
 	bool enabled = true;
 	GameObject* owner;

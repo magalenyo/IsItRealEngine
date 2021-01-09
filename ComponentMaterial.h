@@ -1,26 +1,29 @@
 #pragma once
 
 #include "Component.h"
+#include <vector>
 
 class GameObject;
+class Texture;
 
 class ComponentMaterial : public Component
 {
 public:
-	ComponentMaterial(unsigned int _textureID, float _width, float _height, GameObject* owner);
+	ComponentMaterial(GameObject* owner);
+	~ComponentMaterial();
 
-	void SetWidth(float _width);
-	void SetHeight(float _height);
-	void SetTextureID(unsigned int _textureID);
+	void AddTexture(Texture* texture);
 
-	float GetWidth();
-	float GetHeight();
-	unsigned int GetTextureID();
+	bool HasTextures() const;
 
 private:
-	float width = 1;
-	float height = 1;
-	unsigned int textureID;
+	std::vector<Texture*> textures;
+
+	Texture* diffuse	= nullptr;
+	Texture* specular	= nullptr;
+	Texture* emissive	= nullptr;
+	Texture* normal		= nullptr;
+	float shinines		= 0;
 
 };
 

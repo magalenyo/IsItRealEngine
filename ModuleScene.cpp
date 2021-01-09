@@ -6,6 +6,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "Texture.h"
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
@@ -15,7 +16,9 @@
 bool ModuleScene::Init()
 {
 	root = new GameObject("Root GameObject", nullptr);
-	Load("./resources/models/turret cannon multicolored.fbx");
+	//Load("./resources/models/turret cannon multicolored.fbx");
+	Load("./resources/scene/Clock/Clock.fbx");
+	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	return true;
 }
 
@@ -31,18 +34,17 @@ void ModuleScene::Load(const char* file_name)
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
 	{
-		//GameObject* gameObject = new GameObject(std::string(scene->mRootNode->mName.C_Str()), root);
-		std::vector<ComponentMaterial*> materials = LoadMaterials(scene);
-		if (materials.empty()) {
-			//std::vector<ComponentMesh*> meshes = LoadMeshes(scene);
-			LOG("Model: %s loaded", file_name);
+		std::vector<ComponentMaterial*> materials = LoadMaterials(file_name, scene->mMaterials, scene->mNumMaterials);
 
-			GameObject* gameObject = LoadRecursively(scene, scene->mRootNode, root);
-			root->AddGameObject(gameObject);
-		}
-		else {
-			LOG("ERROR Loading Model: %s. No texture found.", file_name);
-		}
+		//if (!materials.empty()) {
+		//	LOG("Model: %s loaded", file_name);
+		//}
+		//else {
+		//	LOG("ERROR Loading Model: %s. No texture found.", file_name);
+		//}
+
+		GameObject* gameObject = LoadRecursively(scene, scene->mRootNode, root);
+		root->AddGameObject(gameObject);
 		aiReleaseImport(scene);
 	}
 	else
@@ -75,20 +77,61 @@ GameObject* ModuleScene::GetRootNode() const
 //	}
 //}
 
-std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const aiScene* scene)
+// TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
+std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials)
 {
 	std::vector<ComponentMaterial*> result;
 	aiString file;
-	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
+	for (unsigned i = 0; i < mNumMaterials; ++i)
 	{
- 		aiReturn returnType = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
-		if (returnType == AI_SUCCESS)
+		
+		for (unsigned j = 0; j < mMaterials[i]->mNumProperties ; ++j)
 		{
-			int textureId = App->textures->LoadTexture(GetProcessedPath(file.data).c_str());
+			LOG(mMaterials[i]->mProperties[j]->mKey.C_Str());
+		}
+
+		aiString materialName;//The name of the material found in mesh file
+		aiReturn ret;//Code which says whether loading something has been successful of not
+		ret = mMaterials[i]->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)e)
+		float shininess = 0;
+		mMaterials[i]->Get(AI_MATKEY_SHININESS, shininess);
+
+		ComponentMaterial* material = new ComponentMaterial(nullptr);
+
+		aiReturn returnTexture = mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
+		if (returnTexture == AI_SUCCESS)
+		{
+			int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 			if (textureId != ModuleTexture::TEXTURE_ERROR) {
-				result.push_back(new ComponentMaterial(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), nullptr));
+				material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE));
 			}
 		}
+
+		returnTexture = mMaterials[i]->GetTexture(aiTextureType_SPECULAR, 0, &file);
+		if (returnTexture == AI_SUCCESS)
+		{
+			int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
+			if (textureId != ModuleTexture::TEXTURE_ERROR) {
+				material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR));
+			}
+		}
+
+		returnTexture = mMaterials[i]->GetTexture(aiTextureType_NORMALS, 0, &file);
+		if (returnTexture == AI_SUCCESS)
+		{
+			int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
+			if (textureId != ModuleTexture::TEXTURE_ERROR) {
+				material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL));
+			}
+		}
+
+		if (material->HasTextures()) {
+			result.push_back(material);
+		}
+		else {
+			delete material;
+		}
+
 	}
 	return result;
 }
@@ -116,7 +159,6 @@ GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* nod
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
 		go->AddComponent(mesh);
-		// create material
 	}
 
 	// Add transformation component
@@ -129,7 +171,7 @@ GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* nod
 			float3(translation.x, translation.y, translation.z),
 			float3(scale.x, scale.y, scale.z),
 			Quat(rotation.x, rotation.y, rotation.z, rotation.w)
-		, go)
+			, go)
 	);
 
 	// Add Children
@@ -140,26 +182,36 @@ GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* nod
 	return go;
 }
 
-std::string ModuleScene::GetProcessedPath(const std::string& path)
+std::string ModuleScene::GetProcessedPath(const char* modelPath, const std::string& textureName)
 {
-	std::string currentPath = path;
-	if (ExistsTexture(currentPath)) {
-		LOG("Found texture in %s", currentPath.c_str());
-		return currentPath;
-	}
-	LOG("Texture %s NOT found in default path", path.c_str());
+	std::string currentPath = textureName;
 
-	if (ExistsTexture(currentPath = PATH_MODELS + path)) {
-		LOG("Found texture in %s", currentPath.c_str());
-		return currentPath;
-	}
-	LOG("Texture %s NOT found in models path", path.c_str());
+	char sourceDirectory[_MAX_DIR];
+	_splitpath_s(modelPath, NULL, 0, sourceDirectory, _MAX_DIR, NULL, 0, NULL, 0);
 
-	if (ExistsTexture(currentPath = PATH_TEXTURES + path)) {
+	if (ExistsTexture(currentPath = std::string(sourceDirectory) + textureName)){
 		LOG("Found texture in %s", currentPath.c_str());
 		return currentPath;
 	}
-	LOG("Texture %s not found", path.c_str());
+	LOG("Texture %s NOT found in fbx path", textureName.c_str());
+
+	if (ExistsTexture(currentPath = textureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in default (GAME) path", textureName.c_str());
+
+	if (ExistsTexture(currentPath = PATH_MODELS + textureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in models path", textureName.c_str());
+
+	if (ExistsTexture(currentPath = PATH_TEXTURES + textureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s not found", textureName.c_str());
 	return "";
 }
 

@@ -1,33 +1,26 @@
 #include "ComponentMaterial.h"
 
-ComponentMaterial::ComponentMaterial(unsigned int _textureID, float _width, float _height, GameObject* owner) : textureID(_textureID), width(_width), height(_height), Component(owner, ComponentType::Material) {}
+ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(owner, ComponentType::MATERIAL) {}
 
-void ComponentMaterial::SetWidth(float _width)
+ComponentMaterial::~ComponentMaterial()
 {
-	width = _width;
+	for (Texture* texture : textures) {
+		if (texture != nullptr) {
+			delete texture;
+		}
+	}
+	textures.clear();
+	// TODO delete each pointer of texture if needed
 }
 
-void ComponentMaterial::SetHeight(float _height)
+void ComponentMaterial::AddTexture(Texture* texture)
 {
-	height = _height;
+	if (texture != nullptr) {
+		textures.push_back(texture);
+	}
 }
 
-void ComponentMaterial::SetTextureID(unsigned int _textureID)
+bool ComponentMaterial::HasTextures() const
 {
-	textureID = _textureID;
-}
-
-float ComponentMaterial::GetWidth()
-{
-	return width;
-}
-
-float ComponentMaterial::GetHeight()
-{
-	return height;
-}
-
-unsigned int ComponentMaterial::GetTextureID()
-{
-	return textureID;
+	return !textures.empty();
 }

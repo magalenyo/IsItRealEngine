@@ -196,6 +196,7 @@
     <ClCompile Include="UIHierarchy.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -514,6 +515,7 @@
     <ClInclude Include="UIHierarchy.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

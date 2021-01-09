@@ -30,12 +30,12 @@ private:
 
 
     // TODO EXTERNALIZE INTO A MODEL LOADER
-    std::vector<ComponentMaterial*> LoadMaterials(const aiScene* scene);
+    std::vector<ComponentMaterial*> LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials);
     std::vector<ComponentMesh*> LoadMeshes(const aiScene* scene);
     GameObject* LoadRecursively(const aiScene* scene, const aiNode* node, GameObject* parent);
 
 
-    std::string GetProcessedPath(const std::string& path);
+    std::string GetProcessedPath(const char* modelPath, const std::string& textureName);
     bool ExistsTexture(const std::string& path);
 };
 
