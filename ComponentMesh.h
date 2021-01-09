@@ -21,6 +21,7 @@ public:
 
 	bool CleanUp();
 
+	unsigned int GetMaterialIndex() const;
 	unsigned int GetNumVertices() const;
 	unsigned int GetNumIndices() const;
 	unsigned int GetTriangles() const;

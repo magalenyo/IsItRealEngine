@@ -130,6 +130,11 @@ bool ComponentMesh::CleanUp()
 	return true;
 }
 
+unsigned int ComponentMesh::GetMaterialIndex() const
+{
+	return materialIndex;
+}
+
 unsigned int ComponentMesh::GetNumVertices() const
 {
 	return numVertices;

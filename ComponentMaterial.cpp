@@ -20,6 +20,21 @@ void ComponentMaterial::AddTexture(Texture* texture)
 	}
 }
 
+void ComponentMaterial::SetDiffuseColor(float3 _diffuseColor)
+{
+	diffuseColor = _diffuseColor;
+}
+
+void ComponentMaterial::SetSpecularColor(float3 _specularColor)
+{
+	specularColor = _specularColor;
+}
+
+void ComponentMaterial::SetShininess(float _shininess)
+{
+	shininess = _shininess;
+}
+
 bool ComponentMaterial::HasTextures() const
 {
 	return !textures.empty();

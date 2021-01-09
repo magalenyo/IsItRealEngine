@@ -8,3 +8,8 @@ Component::Component(GameObject* owner, ComponentType type) : uid(GenerateUID())
 Component::~Component()
 {
 }
+
+void Component::SetParent(GameObject* parent)
+{
+	owner = parent;
+}

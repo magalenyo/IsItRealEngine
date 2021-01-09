@@ -17,7 +17,7 @@ bool ModuleScene::Init()
 {
 	root = new GameObject("Root GameObject", nullptr);
 	//Load("./resources/models/turret cannon multicolored.fbx");
-	Load("./resources/scene/Clock/Clock.fbx");
+	Load("./resources/scene/Clock/ClockCustom.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	return true;
 }
@@ -35,15 +35,7 @@ void ModuleScene::Load(const char* file_name)
 	if (scene)
 	{
 		std::vector<ComponentMaterial*> materials = LoadMaterials(file_name, scene->mMaterials, scene->mNumMaterials);
-
-		//if (!materials.empty()) {
-		//	LOG("Model: %s loaded", file_name);
-		//}
-		//else {
-		//	LOG("ERROR Loading Model: %s. No texture found.", file_name);
-		//}
-
-		GameObject* gameObject = LoadRecursively(scene, scene->mRootNode, root);
+		GameObject* gameObject = LoadRecursively(file_name, scene, scene->mRootNode, root);
 		root->AddGameObject(gameObject);
 		aiReleaseImport(scene);
 	}
@@ -136,6 +128,73 @@ std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const char* file_name
 	return result;
 }
 
+ //TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
+ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial* const mMaterial)
+{
+	std::vector<ComponentMaterial*> result;
+	aiString file;
+	
+	for (unsigned j = 0; j < mMaterial->mNumProperties; ++j)
+	{
+		LOG(mMaterial->mProperties[j]->mKey.C_Str());
+	}
+
+	aiString materialName;//The name of the material found in mesh file
+	aiReturn ret;//Code which says whether loading something has been successful of not
+	ret = mMaterial->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)e)
+
+	ComponentMaterial* material = new ComponentMaterial(nullptr);
+
+	aiReturn returnTexture = mMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &file);
+	if (returnTexture == AI_SUCCESS)
+	{
+		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
+		if (textureId != ModuleTexture::TEXTURE_ERROR) {
+			material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE));
+		}
+	}
+
+	returnTexture = mMaterial->GetTexture(aiTextureType_SPECULAR, 0, &file);
+	if (returnTexture == AI_SUCCESS)
+	{
+		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
+		if (textureId != ModuleTexture::TEXTURE_ERROR) {
+			material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR));
+		}
+	}
+
+	returnTexture = mMaterial->GetTexture(aiTextureType_NORMALS, 0, &file);
+	if (returnTexture == AI_SUCCESS)
+	{
+		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
+		if (textureId != ModuleTexture::TEXTURE_ERROR) {
+			material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL));
+		}
+	}
+
+	aiColor3D colorDiffuse(0.f, 0.f, 0.f);
+	mMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, colorDiffuse);
+	material->SetDiffuseColor(float3(colorDiffuse.r, colorDiffuse.g, colorDiffuse.b));
+
+	aiColor3D colorSpecular(0.f, 0.f, 0.f);
+	mMaterial->Get(AI_MATKEY_COLOR_SPECULAR, colorSpecular);
+	material->SetSpecularColor(float3(colorSpecular.r, colorSpecular.g, colorSpecular.b));
+
+	float shininess = 0;
+	mMaterial->Get(AI_MATKEY_SHININESS, shininess);
+	material->SetShininess(shininess);
+
+
+	/*if (material->HasTextures()) {
+		result.push_back(material);
+	}
+	else {
+		delete material;
+	}*/
+
+	return material;
+}
+
 std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
 {
 	std::vector<ComponentMesh*> result;
@@ -152,13 +211,16 @@ std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
 	return result;
 }
 
-GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* node, GameObject* parent)
+GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent)
 {
 	GameObject* go = new GameObject(std::string(node->mName.C_Str()), parent);
 	// Add node components
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
 		go->AddComponent(mesh);
+		ComponentMaterial* material = LoadMaterials(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
+		material->SetParent(go);
+		go->AddComponent(material);
 	}
 
 	// Add transformation component
@@ -176,7 +238,7 @@ GameObject* ModuleScene::LoadRecursively(const aiScene* scene, const aiNode* nod
 
 	// Add Children
 	for (int i = 0; i < node->mNumChildren; i++) {
-		go->AddGameObject(LoadRecursively(scene, node->mChildren[i], go));
+		go->AddGameObject(LoadRecursively(file_name, scene, node->mChildren[i], go));
 	}
 
 	return go;
