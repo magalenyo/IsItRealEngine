@@ -15,7 +15,9 @@ public:
 
 	void AddComponent(Component *component);
 	void AddGameObject(GameObject *gameObject);
+	void RemoveChild(GameObject* child);
 	void SetParent(GameObject* gameObject);
+	void Reparent(GameObject* newParent);
 
 	bool HasComponents() const;
 	bool IsLeaf() const;
@@ -24,7 +26,7 @@ public:
 	std::vector<GameObject*> GetChildren() const;
 
     template <class T> T* GetComponent() const;
-    template <class T> std::vector<T*> GetAllComponents() const;
+    template <class T> std::vector<T*> GetComponents() const;
 
 private:
 	std::string uid;
@@ -50,7 +52,7 @@ inline T* GameObject::GetComponent() const
 }
 
 template<class T>
-inline std::vector<T*> GameObject::GetAllComponents() const
+inline std::vector<T*> GameObject::GetComponents() const
 {
 	std::vector<T*> aux_components;
 	

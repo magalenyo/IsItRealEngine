@@ -17,7 +17,8 @@ bool ModuleScene::Init()
 {
 	root = new GameObject("Root GameObject", nullptr);
 	//Load("./resources/models/turret cannon multicolored.fbx");
-	Load("./resources/scene/Clock/ClockCustom.fbx");
+	//Load("./resources/scene/Clock/ClockCustom.fbx");
+	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	return true;
 }

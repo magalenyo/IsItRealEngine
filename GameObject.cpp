@@ -15,9 +15,24 @@ void GameObject::AddGameObject(GameObject* gameObject)
 	children.push_back(gameObject);
 }
 
+void GameObject::RemoveChild(GameObject* child)
+{
+	
+	children.erase(remove(children.begin(), children.end(), child));
+}
+
 void GameObject::SetParent(GameObject* gameObject)
 {
 	parent = gameObject;
+}
+
+void GameObject::Reparent(GameObject* newParent)
+{
+	if (parent != newParent) {
+		parent->RemoveChild(this);
+		SetParent(newParent);
+		newParent->AddGameObject(this);
+	}
 }
 
 bool GameObject::HasComponents() const
