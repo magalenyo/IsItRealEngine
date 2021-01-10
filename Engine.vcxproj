@@ -161,6 +161,7 @@
     <ClInclude Include="MemoryLeakDetector.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TimerMicro.h" />
     <ClInclude Include="Model.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="UIConfiguration.cpp" />
     <ClCompile Include="UIConsole.cpp" />
