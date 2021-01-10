@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <typeinfo> 
 
 class Component;
 
@@ -25,8 +26,11 @@ public:
 	std::string GetName() const;
 	std::vector<GameObject*> GetChildren() const;
 
-    template <class T> T* GetComponent() const;
-    template <class T> std::vector<T*> GetComponents() const;
+    template <class T> 
+	T* GetComponent() const;
+
+    template <class T> 
+	std::vector<T*> GetComponents() const;
 
 private:
 	std::string uid;
@@ -42,11 +46,11 @@ inline T* GameObject::GetComponent() const
 {
     for (Component* component : components)
     {
-        if (component->GetType() == T::static_type)
+        if (typeid(*component) == typeid(T))
         {
-            return (T)component;
+            return (T*) component;
         }
-    }
+    }	
 
     return nullptr;
 }
@@ -54,15 +58,16 @@ inline T* GameObject::GetComponent() const
 template<class T>
 inline std::vector<T*> GameObject::GetComponents() const
 {
-	std::vector<T*> aux_components;
-	
+	std::vector<T*> result;
+
 	for (Component* component : components)
-	{
-	    if (component->GetType() == T::static_type)
-	    {
-	        aux_components.push_back((T*)component);
-	    }
+	{	
+		if (typeid(*component) == typeid(T))
+		{
+			result.push_back((T*) component);
+		}
 	}
-	
-	return aux_components;
+
+	return result;
 }
+
