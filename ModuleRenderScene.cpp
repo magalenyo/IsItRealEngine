@@ -6,23 +6,70 @@
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 
+ModuleRenderScene::ModuleRenderScene()
+{
+}
+
+ModuleRenderScene::~ModuleRenderScene()
+{
+}
+
+bool ModuleRenderScene::Init()
+{
+}
+
 update_status ModuleRenderScene::Update()
 {
-    if (App->scene->GetRootNode() != nullptr) {
-        RenderGameObjectsRecursively(App->scene->GetRootNode());
+    if (App->scene->GetRootNode() != nullptr) 
+    {
+        if (App->renderer->cullingCamera.IsActive())
+        {
+            std::vector<GameObject*> candidatesToCull = App->scene->GetQuadtree()->GetObjectsCollided(App->renderer->cullingCamera.GetFrustum());
+            std::vector<GameObject*> objectsToCull = TestCulling(candidatesToCull);
+
+            for (unsigned int i = 0; i < objectsToCull.size(); ++i)
+            {
+                if (objectsToCull[i] != App->scene->GetRootNode())
+                {
+                    objectsToCull[i]->Draw();
+                }
+            }
+            candidatesToCull.clear();
+            objectsToCull.clear();
+        }
+        else
+        {
+            RenderGameObjectsRecursively(App->scene->GetRootNode());
+        }
     }
     return UPDATE_CONTINUE;
 }
 
 void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) const
 {
-    std::vector<ComponentMaterial*> materials = node->GetComponents<ComponentMaterial>();
-    ComponentTransform* transform = node->GetComponent<ComponentTransform>();
-    for (ComponentMesh* componentMesh : node->GetComponents<ComponentMesh>()) {
-        componentMesh->Draw(materials, transform->GetGlobalModelMatrix());
+    if (node != App->scene->GetRootNode())
+    {
+        node->Draw();
     }
 
-    for (GameObject* child : node->GetChildren()) {
-        RenderGameObjectsRecursively(child);
+    std::vector<GameObject*> children = node->GetChildren();
+    
+    for (unsigned int i = 0; i < children.size(); ++i)
+    {
+        RenderGameObjectsRecursively(children[i]);
     }
-} 
+}
+
+std::vector<GameObject*> ModuleRenderScene::TestCulling(const std::vector<GameObject*> candidatesToCull)
+{
+    std::vector<GameObject*> intersectingObjects;
+
+    for (unsigned int i = 0; i < candidatesToCull.size(); ++i)
+    {
+        if (App->renderer->cullingCamera->GetFrustum().Intersects(candidatesToCull[i]->GetAABB()))
+        {
+            intersectingObjects.push_back(candidatesToCull[i]);
+        }
+    }
+    return intersectingObjects;
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "Quadtree.h"
 #include <string>
 #include <vector>
 #include "assimp/scene.h"
@@ -16,6 +17,7 @@ public:
 
     void Load(const char* file_name);
     void LoadSingleTexture(const std::string& file_name);
+    Quadtree* GetQuadtree() { return quadtree; }
 
     GameObject* GetRootNode() const;
 
@@ -26,7 +28,7 @@ private:
 
     GameObject* root = nullptr;
 
-
+    Quadtree* quadtree = nullptr;
 
 
     // TODO EXTERNALIZE INTO A MODEL LOADER

@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
 
 class Component;
 
@@ -18,6 +20,11 @@ public:
 	void RemoveChild(GameObject* child);
 	void SetParent(GameObject* gameObject);
 	void Reparent(GameObject* newParent);
+	void Draw() const;
+
+	virtual void Enable() { enabled = true; }
+	virtual void Disable() { enabled = false; }
+	bool IsEnabled() { return enabled; }
 
 	bool HasComponents() const;
 	bool IsLeaf() const;
@@ -28,6 +35,9 @@ public:
     template <class T> T* GetComponent() const;
     template <class T> std::vector<T*> GetComponents() const;
 
+	AABB GetAABB() { return aabb; }
+	OBB GetOBB() { return obb; }
+
 private:
 	std::string uid;
 	std::string name = "Default name";
@@ -35,6 +45,11 @@ private:
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
+
+	AABB aabb;
+	OBB obb;
+
+	bool enabled = true;
 };
 
 template<class T>

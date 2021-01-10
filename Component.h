@@ -7,7 +7,7 @@ class GameObject;
 class Component
 {
 public:
-	enum ComponentType {
+	enum class ComponentType {
 		MATERIAL,
 		MESH,
 		TRANSFORM,
@@ -18,9 +18,9 @@ public:
 	Component(GameObject* owner, ComponentType type);
 	~Component();
 
-	virtual void Enable() {};
-	virtual void Update() {};
-	virtual void Disable() {};
+	virtual void Enable() { enabled = true; }
+	virtual void Disable() { enabled = false; }
+	virtual void Update() {}
 
 	void SetParent(GameObject* parent);
 
@@ -28,6 +28,6 @@ private:
 	ComponentType type = ComponentType::UNDEFINED;
 	std::string uid;
 	bool enabled = true;
-	GameObject* owner;
+	GameObject* owner = nullptr;
 };
 

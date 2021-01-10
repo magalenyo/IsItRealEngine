@@ -20,11 +20,16 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
 	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
+
+	quadtree = new Quadtree();
+	
 	return true;
 }
 
 bool ModuleScene::CleanUp()
 {
+	delete quadtree;
+	quadtree = nullptr;
 	return true;
 }
 

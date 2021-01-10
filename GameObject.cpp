@@ -1,5 +1,8 @@
 #include "GameObject.h"
 #include "GUIDGenerator.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject() : uid(GenerateUID()) {}
 
@@ -32,6 +35,21 @@ void GameObject::Reparent(GameObject* newParent)
 		parent->RemoveChild(this);
 		SetParent(newParent);
 		newParent->AddGameObject(this);
+	}
+}
+
+void GameObject::Draw() const
+{
+	if (enabled && parent->IsEnabled())
+	{
+		ComponentTransform* transform = GetComponent<ComponentTransform>();
+		std::vector<ComponentMesh*> meshes = GetComponents<ComponentMesh>();
+		std::vector<ComponentMaterial*> materials = GetComponents<ComponentMaterial>();
+
+		for (ComponentMesh* mesh : meshes)
+		{
+			mesh->Draw(materials, transform->GetGlobalModelMatrix());
+		}
 	}
 }
 
