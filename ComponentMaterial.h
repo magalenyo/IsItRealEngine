@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include <vector>
+#include "Math/float3.h"
 
 class GameObject;
 class Texture;
@@ -13,17 +14,22 @@ public:
 	~ComponentMaterial();
 
 	void AddTexture(Texture* texture);
+	void SetDiffuseColor(float3 _diffuseColor);
+	void SetSpecularColor(float3 _specularColor);
+	void SetShininess(float _shininess);
 
 	bool HasTextures() const;
 
 private:
 	std::vector<Texture*> textures;
 
-	Texture* diffuse	= nullptr;
-	Texture* specular	= nullptr;
-	Texture* emissive	= nullptr;
-	Texture* normal		= nullptr;
-	float shinines		= 0;
+	float3 diffuseColor		= float3(0, 0, 0);
+	float3 specularColor	= float3(0, 0, 0);
+	Texture* diffuse		= nullptr;
+	Texture* specular		= nullptr;
+	Texture* emissive		= nullptr;
+	Texture* normal			= nullptr;
+	float shininess			= 0;
 
 };
 

@@ -16,6 +16,7 @@ class ModuleTexture;
 class ModuleEditor;
 class ModuleDebugDraw;
 class ModuleScene;
+class ModuleSceneRender;
 
 class Application
 {
@@ -40,6 +41,7 @@ public:
 	ModuleEditor* editor = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
 	ModuleScene* scene = nullptr;
+	ModuleRenderScene* sceneRender = nullptr;
 
 private:
 
