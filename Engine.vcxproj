@@ -160,6 +160,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="MemoryLeakDetector.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ModuleRenderScene.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TimerMicro.h" />
@@ -326,6 +327,7 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="ModuleRenderScene.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
