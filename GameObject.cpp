@@ -1,9 +1,25 @@
 #include "GameObject.h"
 #include "GUIDGenerator.h"
+#include "MemoryLeakDetector.h"
 
 GameObject::GameObject() : uid(GenerateUID()) {}
 
 GameObject::GameObject(const std::string& name, GameObject* parent) : name(name), parent(parent), uid(GenerateUID()) {}
+
+GameObject::~GameObject()
+{
+	for (Component* component : components) {
+		delete component;
+		component = nullptr;
+	}
+	components.clear();
+
+	for (GameObject* gameObject : children) {
+		delete gameObject;
+		gameObject = nullptr;
+	}
+	children.clear();
+}
 
 void GameObject::AddComponent(Component* component)
 {

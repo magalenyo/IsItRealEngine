@@ -11,6 +11,7 @@ class GameObject
 public:
 	GameObject();
 	GameObject(const std::string& name, GameObject* parent);
+	~GameObject();
 
 	void Update();
 
