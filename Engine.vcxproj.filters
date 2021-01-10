@@ -197,7 +197,7 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="ModuleRenderScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -517,7 +517,7 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="ModuleRenderScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

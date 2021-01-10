@@ -25,4 +25,4 @@ void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) con
     for (GameObject* child : node->GetChildren()) {
         RenderGameObjectsRecursively(child);
     }
-}
+} 

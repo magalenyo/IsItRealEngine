@@ -10,5 +10,5 @@ public:
 
 private:
 	void RenderGameObjectsRecursively(const GameObject* node) const;
-};
+}; 
 
