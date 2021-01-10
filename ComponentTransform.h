@@ -25,6 +25,7 @@ public:
 
 	float3 GetRotationMatrix() const { return rotation.ToEulerXYZ(); };
 	float4x4 GetGlobalModelMatrix() const { return globalMatrix; }
+	void CalculateGlobalMatrix(const GameObject* parent);
 
 private:
 

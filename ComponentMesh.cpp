@@ -7,6 +7,7 @@
 #include "ModuleCamera.h"
 #include "Math/float3.h"
 #include "ComponentMaterial.h"
+#include "Texture.h"
 
 #include "MemoryLeakDetector.h"
 
@@ -72,10 +73,18 @@ void ComponentMesh::LoadEBO(const aiMesh* mesh)
 	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 	for (unsigned i = 0; i < mesh->mNumFaces; ++i)
 	{
-		assert(mesh->mFaces[i].mNumIndices == 3); // note: assume triangles = 3 indices per face
-		*(indices++) = mesh->mFaces[i].mIndices[0];
-		*(indices++) = mesh->mFaces[i].mIndices[1];
-		*(indices++) = mesh->mFaces[i].mIndices[2];
+		//assert(mesh->mFaces[i].mNumIndices == 3); // note: assume triangles = 3 indices per face
+		if (mesh->mFaces[i].mNumIndices == 3) {
+			*(indices++) = mesh->mFaces[i].mIndices[0];
+			*(indices++) = mesh->mFaces[i].mIndices[1];
+			*(indices++) = mesh->mFaces[i].mIndices[2];
+		}
+		else if (mesh->mFaces[i].mNumIndices == 2) {
+			*(indices++) = mesh->mFaces[i].mIndices[0];
+			*(indices++) = mesh->mFaces[i].mIndices[1];
+			*(indices++) = 0;
+		}
+		
 	}
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 	numIndices = mesh->mNumFaces * 3;
@@ -106,18 +115,23 @@ void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const
 	const float4x4& view = App->camera->GetViewMatrix();
 	const float4x4& proj = App->camera->GetProjectionMatrix();
 	//float4x4 model = float4x4::identity;
-	/*float4x4 model = float4x4(1, 0, 0, 10,
-							  0, 3, 0, 0,
-							  0, 0, 1, 0,
-						      0, 0, 0, 1);*/
+	//float4x4 model = float4x4(1, 0, 0, 1,
+	//						  0, 1, 0, 1,
+	//						  0, 0, 1, 1,
+	//					      0, 0, 0, 1);
 	float4x4 model = modelMatrix;
+
+	unsigned int textureId = App->renderer->GetMissingTexture();
+	if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr) {
+		textureId = materials[materialIndex]->GetDiffuseTexture()->GetTextureID();
+	}
 
 	glUseProgram(program);
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, model_textures[materialIndex]);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);

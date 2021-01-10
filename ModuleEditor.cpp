@@ -105,8 +105,6 @@ update_status ModuleEditor::Update()
         hierarchy->Draw();
     }
 
-    ImGui::ShowDemoWindow();
-
     return updateStatus;
 }
 

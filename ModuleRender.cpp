@@ -31,6 +31,7 @@ ModuleRender::ModuleRender()
 // Destructor
 ModuleRender::~ModuleRender()
 {
+	glDeleteTextures(1, &missingTextureID);
 }
 
 // Called before render is available
@@ -73,10 +74,14 @@ bool ModuleRender::Init()
 	unsigned fragmentShaderTexture = App->program->CompileShader(GL_FRAGMENT_SHADER, "./shaders/FragmentShaderTexture.glsl");
 	defaultProgram = App->program->CreateProgram(vertexShaderTexture, fragmentShaderTexture);
 
-	loadedModel = new Model("./resources/models/BakerHouse.fbx");
+	//loadedModel = new Model("./resources/models/BakerHouse.fbx");
 
 	gridColor = { 1.000000f, 1.000000f, 1.000000f };
 
+	missingTextureID = App->textures->LoadTexture("./resources/textures/missing_texture.png");
+	if (missingTextureID == ModuleTexture::TEXTURE_ERROR) {
+		missingTextureID = 0;
+	}
 	
 	// generate texture
 	glGenTextures(1, &sceneTexture);
@@ -139,10 +144,10 @@ update_status ModuleRender::Update()
 	RenderAxis();
 	RenderGrid();
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
-	RenderModel();
+	//RenderModel();
 
 	// unbind FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
 	// trigger mipmaps generation explicitly
 	// NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
@@ -159,7 +164,8 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
-	
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	SDL_GL_SwapWindow(App->window->GetWindow());
 	return UPDATE_CONTINUE;
 }
