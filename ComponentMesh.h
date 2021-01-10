@@ -17,7 +17,7 @@ public:
 	void LoadEBO(const aiMesh* mesh);
 	void CreateVAO();
 	void SetMaterialIndex(unsigned int newMaterialIndex);
-	void Draw(const std::vector<unsigned>& model_textures);
+	void Draw(const std::vector<ComponentMaterial*>& materials, const float4x4& modelMatrix);
 
 	bool CleanUp();
 

@@ -56,11 +56,11 @@ inline std::vector<T*> GameObject::GetComponents() const
 {
 	std::vector<T*> aux_components;
 	
-	for (component component : components)
+	for (Component* component : components)
 	{
-	    if (component->gettype() == t::static_type)
+	    if (component->GetType() == T::static_type)
 	    {
-	        aux_components.push_back((t*)component);
+	        aux_components.push_back((T*)component);
 	    }
 	}
 	

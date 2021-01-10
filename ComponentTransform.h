@@ -24,6 +24,7 @@ public:
 	Quat GetRotation() const { return rotation; };
 
 	float3 GetRotationMatrix() const { return rotation.ToEulerXYZ(); };
+	float4x4 GetGlobalModelMatrix() const { return globalMatrix; }
 
 private:
 

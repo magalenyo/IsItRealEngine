@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "Math/float3.h"
+#include "ComponentMaterial.h"
 
 #include "MemoryLeakDetector.h"
 
@@ -99,16 +100,17 @@ void ComponentMesh::SetMaterialIndex(unsigned int newMaterialIndex)
 	materialIndex = newMaterialIndex;
 }
 
-void ComponentMesh::Draw(const std::vector<unsigned>& model_textures)
+void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const float4x4 &modelMatrix)
 {
 	unsigned program = App->renderer->GetDefaultProgram();
 	const float4x4& view = App->camera->GetViewMatrix();
 	const float4x4& proj = App->camera->GetProjectionMatrix();
 	//float4x4 model = float4x4::identity;
-	float4x4 model = float4x4(1, 0, 0, 10,
+	/*float4x4 model = float4x4(1, 0, 0, 10,
 							  0, 3, 0, 0,
 							  0, 0, 1, 0,
-						      0, 0, 0, 1);
+						      0, 0, 0, 1);*/
+	float4x4 model = modelMatrix;
 
 	glUseProgram(program);
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
