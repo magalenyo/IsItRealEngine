@@ -116,13 +116,14 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
         }
         else {
             bool node_open = ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
+
             if (ImGui::IsItemClicked()) {
                 clickedNode = gameObject;
             }
-                
+
             if (ImGui::BeginDragDropSource())
             {
-                ImGui::SetDragDropPayload("GAMEOBJECT", (void*) gameObject, sizeof(gameObject));
+                ImGui::SetDragDropPayload("GAMEOBJECT", (void*)gameObject, sizeof(gameObject));
                 char hint[55];
                 sprintf_s(hint, 55, "Dropping %s...", gameObject->GetName().c_str());
                 ImGui::Text(hint);
@@ -136,7 +137,7 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                     LOG(("Dropping " + clickedNode->GetName() + " in " + gameObject->GetName()).c_str());
                     clickedNode->Reparent(gameObject);
                 }
-                
+
                 ImGui::EndDragDropTarget();
             }
 
@@ -147,6 +148,17 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                 }
                 ImGui::TreePop();
             }
+        }
+
+        if (ImGui::BeginPopupContextItem("GameObject"))
+        {
+            if (ImGui::Selectable("Create empty GameObject")) {
+                GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
+                gameObject->AddGameObject(emptyGameObject);
+                emptyGameobjectCounter++;
+                LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
+            }
+            ImGui::EndPopup();
         }
     }
 }

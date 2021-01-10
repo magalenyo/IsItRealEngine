@@ -12,5 +12,6 @@ private:
 	void RenderRecursively(GameObject* gameObject);
 
 	GameObject* clickedNode = nullptr;
+	unsigned int emptyGameobjectCounter = 0;
 };
 
