@@ -24,6 +24,8 @@ public:
 	virtual void RenderToEditor() {}
 
 	void SetParent(GameObject* parent);
+	
+	std::string GetUID() const { return uid; };
 
 private:
 	std::string uid;
