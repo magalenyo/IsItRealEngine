@@ -26,6 +26,11 @@ GameObject::~GameObject()
 	children.clear();
 }
 
+void GameObject::Update()
+{
+
+}
+
 void GameObject::AddComponent(Component* component)
 {
 	components.push_back(component);

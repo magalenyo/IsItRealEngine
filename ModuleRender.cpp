@@ -143,7 +143,7 @@ update_status ModuleRender::Update()
 	LoadRenderConfiguration();
 	RenderAxis();
 	RenderGrid();
-	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
+	App->debugDraw->Draw(App->camera->GetCamera()->GetViewMatrix(), App->camera->GetCamera()->GetProjectionMatrix(), viewportWidth, viewportHeight);
 	//RenderModel();
 
 	// unbind FBO

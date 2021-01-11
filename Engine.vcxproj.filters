@@ -198,6 +198,10 @@
     </ClCompile>
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ModuleRenderScene.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -518,6 +522,10 @@
     </ClInclude>
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ModuleRenderScene.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

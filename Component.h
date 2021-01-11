@@ -11,6 +11,7 @@ public:
 		MATERIAL,
 		MESH,
 		TRANSFORM,
+		CAMERA,
 		UNDEFINED
 	};
 

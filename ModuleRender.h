@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Model.h"
+#include "ComponentCamera.h"
 #include "Math/float3.h"
 
 struct SDL_Texture;
@@ -11,7 +12,6 @@ struct SDL_Rect;
 class ModuleRender : public Module
 {
 public:
-
 
 	ModuleRender();
 	~ModuleRender();
@@ -49,6 +49,8 @@ public:
 public:
 	unsigned int viewportWidth = 0;
 	unsigned int viewportHeight = 0;
+	ComponentCamera* mainCamera = nullptr;
+	ComponentCamera* cullingCamera = nullptr;
 
 private:
 	
