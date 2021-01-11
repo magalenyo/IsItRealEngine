@@ -20,6 +20,7 @@ public:
 	void CreateVAO();
 	void SetMaterialIndex(unsigned int newMaterialIndex);
 	void Draw(const std::vector<ComponentMaterial*>& materials, const float4x4& modelMatrix);
+	void RenderToEditor() override;
 
 	bool CleanUp();
 

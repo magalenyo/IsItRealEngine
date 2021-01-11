@@ -8,6 +8,7 @@
 #include "Math/float3.h"
 #include "ComponentMaterial.h"
 #include "Texture.h"
+#include "imgui.h"
 
 #include "MemoryLeakDetector.h"
 
@@ -136,6 +137,23 @@ void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(BIND_VERTEX_ARRAY_END);
+}
+
+void ComponentMesh::RenderToEditor()
+{
+	ImGui::PushID(GetUID().c_str());
+	ImGui::Checkbox("Mesh component", &enabled);
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		ImGui::Text("Material Index: %u", materialIndex);
+		ImGui::Text("Num vertices: %u", numVertices);
+		ImGui::Text("Num indices: %u", numIndices);
+		ImGui::Text("Num faces: %u", numFaces);
+		ImGui::Text("");
+	}
+	
+	ImGui::Separator();
+	ImGui::PopID();
 }
 
 bool ComponentMesh::CleanUp()
