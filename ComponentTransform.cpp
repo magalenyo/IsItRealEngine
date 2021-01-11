@@ -12,7 +12,7 @@ ComponentTransform::ComponentTransform(float3 position, float3 scale, Quat rotat
 
 void ComponentTransform::RenderToEditor()
 {
-    static ImGuiSliderFlags flags = ImGuiSliderFlags_None;
+    ImGui::PushID(GetUID().c_str());
     ImGui::Checkbox("Transform component", &enabled);
     if (ImGui::CollapsingHeader("Transform"))
     {
@@ -36,9 +36,9 @@ void ComponentTransform::RenderToEditor()
 
         CalculateGlobalMatrix(owner);
     }
-    
 
     ImGui::Separator();
+    ImGui::PopID();
 }
 
 void ComponentTransform::CalculateGlobalMatrix(const GameObject* parent)
