@@ -21,12 +21,15 @@ public:
 	virtual void Enable() {}
 	virtual void Update() {}
 	virtual void Disable() {}
+	virtual void RenderToEditor() {}
 
 	void SetParent(GameObject* parent);
 
 private:
-	ComponentType type = ComponentType::UNDEFINED;
 	std::string uid;
+	ComponentType type = ComponentType::UNDEFINED;
+
+protected:
 	bool enabled = true;
 	GameObject* owner;
 };

@@ -15,17 +15,17 @@ public:
 
 	void Update();
 
-	void AddComponent(Component *component);
-	void AddGameObject(GameObject *gameObject);
-	void RemoveChild(GameObject* child);
-	void SetParent(GameObject* gameObject);
-	void Reparent(GameObject* newParent);
-
-	bool HasComponents() const;
-	bool IsLeaf() const;
-
-	std::string GetName() const;
-	std::vector<GameObject*> GetChildren() const;
+	void AddComponent(Component *component);				// Adds component to components list
+	void AddGameObject(GameObject *gameObject);				// Adds gameObject to children list
+	void RemoveChild(GameObject* child);					// Removes child from children list
+	void SetParent(GameObject* newParent);					// Set this.parent to newParent
+	void Reparent(GameObject* newParent);					// Removes this gameObject from the current Parent, sets this.parent to newParent, adds this gameObject to newParent's children 
+	
+	bool HasComponents() const;								// Returns true if components list is not empty
+	bool IsLeaf() const;									// Returns true if this gameObject does not have any children
+	std::string GetName() const;							// Returns the name of this GameObject
+	std::vector<GameObject*> GetChildren() const;			// Returns the list of Children
+	void RenderToEditor();
 
     template <class T> 
 	T* GetComponent() const;
@@ -37,6 +37,7 @@ private:
 	std::string uid;
 	std::string name = "Default name";
 	GameObject* parent = nullptr;
+	bool enabled = true;
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;

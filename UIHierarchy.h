@@ -7,11 +7,12 @@ class UIHierarchy : public UIComponent
 {
 public:
 	void Draw() override;
+	GameObject* GetSelectedGameObject() { return selectedGameObject; };
 
 private:
 	void RenderRecursively(GameObject* gameObject);
 
-	GameObject* clickedNode = nullptr;
+	GameObject* selectedGameObject = nullptr;
 	unsigned int emptyGameobjectCounter = 0;
 };
 

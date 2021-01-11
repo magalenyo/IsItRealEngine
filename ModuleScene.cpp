@@ -20,9 +20,9 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
 	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
-	//Load("./resources/models/BakerHouse.fbx");
+	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
-	Load("./resources/Street_Environment/Street_environment_V01.FBX");
+	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 	return true;
 }
 
@@ -243,6 +243,8 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	// THERE'S N EASY WAY TO SET THE UNIT SCALE FACTOR
 	double factor(0.0);
 	scene->mMetaData->Get("UnitScaleFactor", factor);
+	scene->mMetaData->Get("OriginalUnitScaleFactor", factor);
+	
 
 	float scaleFactor = 1;
 	if (factor == 100) {

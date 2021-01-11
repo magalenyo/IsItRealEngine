@@ -10,6 +10,8 @@ public:
 	ComponentTransform(float3 position, float3 scale, Quat rotation, GameObject* owner);
 	~ComponentTransform() {};
 
+	void RenderToEditor() override;
+
 	void SetPosition(float3 pos) { position = pos; }
 	void SetScale(float3 sca) { scale = sca; }
 	void SetRotation(Quat rot) { rotation = rot; }
@@ -26,6 +28,7 @@ public:
 	float3 GetRotationMatrix() const { return rotation.ToEulerXYZ(); };
 	float4x4 GetGlobalModelMatrix() const { return globalMatrix; }
 	void CalculateGlobalMatrix(const GameObject* parent);
+	void RegenerateGlobalMatrix();
 
 private:
 

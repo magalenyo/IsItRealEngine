@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "GUIDGenerator.h"
+#include "imgui.h"
 #include "MemoryLeakDetector.h"
+#include "Component.h"
 
 GameObject::GameObject() : uid(GenerateUID()) {}
 
@@ -69,4 +71,29 @@ std::string GameObject::GetName() const
 std::vector<GameObject*> GameObject::GetChildren() const
 {
 	return children;
+}
+
+void GameObject::RenderToEditor()
+{
+	ImGui::Checkbox("Enabled", &enabled); ImGui::SameLine();
+
+	std::string editorTitle = name;
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 255, 255)));
+	ImGui::TextWrapped(editorTitle.c_str());
+	ImGui::PopStyleColor(1);
+
+
+	std::string editorUID = " [UID: " + uid + "]";
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(245, 66, 66)));
+	ImGui::TextWrapped(editorUID.c_str());
+	ImGui::PopStyleColor(1);
+
+
+	ImGui::Separator();
+	if (enabled) {
+		for (Component* component : components) {
+			component->RenderToEditor();
+		}
+	}
+
 }
