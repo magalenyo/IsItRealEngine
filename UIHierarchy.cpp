@@ -91,7 +91,7 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
             node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
             ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
             if (ImGui::IsItemClicked()){
-                clickedNode = gameObject;
+                selectedGameObject = gameObject;
             }
                 
             if (ImGui::BeginDragDropSource())
@@ -107,8 +107,8 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                 const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT");
                 if (payload)
                 {
-                    LOG(("Dropping " + clickedNode->GetName() + " in " + gameObject->GetName()).c_str());
-                    clickedNode->Reparent(gameObject);
+                    LOG(("Dropping " + selectedGameObject->GetName() + " in " + gameObject->GetName()).c_str());
+                    selectedGameObject->Reparent(gameObject);
                 }
 
                 ImGui::EndDragDropTarget();
@@ -118,7 +118,7 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
             bool node_open = ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
 
             if (ImGui::IsItemClicked()) {
-                clickedNode = gameObject;
+                selectedGameObject = gameObject;
             }
 
             if (ImGui::BeginDragDropSource())
@@ -134,8 +134,8 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                 const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT");
                 if (payload)
                 {
-                    LOG(("Dropping " + clickedNode->GetName() + " in " + gameObject->GetName()).c_str());
-                    clickedNode->Reparent(gameObject);
+                    LOG(("Dropping " + selectedGameObject->GetName() + " in " + gameObject->GetName()).c_str());
+                    selectedGameObject->Reparent(gameObject);
                 }
 
                 ImGui::EndDragDropTarget();

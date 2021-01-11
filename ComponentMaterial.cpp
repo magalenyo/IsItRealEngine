@@ -25,9 +25,19 @@ void ComponentMaterial::SetDiffuseColor(float3 _diffuseColor)
 	diffuseColor = _diffuseColor;
 }
 
+void ComponentMaterial::SetDiffuseTexture(Texture* texture)
+{
+	diffuse = texture;
+}
+
 void ComponentMaterial::SetSpecularColor(float3 _specularColor)
 {
 	specularColor = _specularColor;
+}
+
+void ComponentMaterial::SetSpecularTexture(Texture* texture)
+{
+	specular = texture;
 }
 
 void ComponentMaterial::SetShininess(float _shininess)
@@ -38,4 +48,9 @@ void ComponentMaterial::SetShininess(float _shininess)
 bool ComponentMaterial::HasTextures() const
 {
 	return !textures.empty();
+}
+
+Texture* ComponentMaterial::GetDiffuseTexture() const
+{
+	return diffuse;
 }

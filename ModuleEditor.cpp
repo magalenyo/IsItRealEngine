@@ -81,27 +81,27 @@ bool ModuleEditor::CleanUp()
 
 update_status ModuleEditor::Update()
 {
-    if (show_mainMenu) {
+    if (showMainMenu) {
         mainMenu->Draw();
     }
 
-    if (show_console) {
+    if (showConsole) {
         console->Draw();
     }
 
-    if (show_configuration) {
+    if (showConfiguration) {
         configuration->Draw();
     }
     
-    if (show_properties) {
+    if (showProperties) {
         properties->Draw();
     }
 
-    if (show_scene) {
+    if (showScene) {
         scene->Draw();
     }
 
-    if (show_hierarchy) {
+    if (showHierarchy) {
         hierarchy->Draw();
     }
 
@@ -150,26 +150,34 @@ void ModuleEditor::ExitApplication()
 
 bool& ModuleEditor::GetShowConsole()
 {
-    return show_console;
+    return showConsole;
 }
 
 bool& ModuleEditor::GetShowConfiguration()
 {
-    return show_configuration;
+    return showConfiguration;
 }
 
 bool& ModuleEditor::GetShowProperties()
 {
-    return show_properties;
+    return showProperties;
 }
 
 bool& ModuleEditor::GetShowSceneView()
 {
-    return show_scene;
+    return showScene;
 }
 
 bool& ModuleEditor::GetShowHierarchyView()
 {
-    return show_hierarchy;
+    return showHierarchy;
+}
+
+GameObject* ModuleEditor::GetSelectedGameObject()
+{
+    if (hierarchy != nullptr) {
+        return hierarchy->GetSelectedGameObject();
+    }
+    else return nullptr;
 }
 

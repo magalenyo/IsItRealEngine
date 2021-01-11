@@ -3,7 +3,9 @@
 #include "assimp/mesh.h"
 #include <vector>
 #include "Math/float3.h"
+#include "Math/float4x4.h"
 #include "Component.h"
+#include "ComponentMaterial.h"
 
 class GameObject;
 

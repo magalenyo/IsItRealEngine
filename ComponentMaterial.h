@@ -15,10 +15,13 @@ public:
 
 	void AddTexture(Texture* texture);
 	void SetDiffuseColor(float3 _diffuseColor);
+	void SetDiffuseTexture(Texture* texture);
 	void SetSpecularColor(float3 _specularColor);
+	void SetSpecularTexture(Texture* texture);
 	void SetShininess(float _shininess);
 
 	bool HasTextures() const;
+	Texture* GetDiffuseTexture() const;
 
 private:
 	std::vector<Texture*> textures;

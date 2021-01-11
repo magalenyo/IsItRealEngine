@@ -94,7 +94,7 @@ bool Model::CleanUp()
 void Model::Draw()
 {
 	for (ComponentMesh* mesh : meshes) {
-		mesh->Draw(textures);
+		//mesh->Draw(textures);
 	}
 }
 

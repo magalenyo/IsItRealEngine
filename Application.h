@@ -16,7 +16,7 @@ class ModuleTexture;
 class ModuleEditor;
 class ModuleDebugDraw;
 class ModuleScene;
-class ModuleSceneRender;
+class ModuleRenderScene;
 
 class Application
 {

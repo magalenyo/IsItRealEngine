@@ -1,5 +1,8 @@
 #include "GameObject.h"
 #include "GUIDGenerator.h"
+#include "imgui.h"
+#include "MemoryLeakDetector.h"
+#include "Component.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
@@ -7,6 +10,21 @@
 GameObject::GameObject() : uid(GenerateUID()) {}
 
 GameObject::GameObject(const std::string& name, GameObject* parent) : name(name), parent(parent), uid(GenerateUID()) {}
+
+GameObject::~GameObject()
+{
+	for (Component* component : components) {
+		delete component;
+		component = nullptr;
+	}
+	components.clear();
+
+	for (GameObject* gameObject : children) {
+		delete gameObject;
+		gameObject = nullptr;
+	}
+	children.clear();
+}
 
 void GameObject::AddComponent(Component* component)
 {
@@ -71,4 +89,29 @@ std::string GameObject::GetName() const
 std::vector<GameObject*> GameObject::GetChildren() const
 {
 	return children;
+}
+
+void GameObject::RenderToEditor()
+{
+	ImGui::Checkbox("Enabled", &enabled); ImGui::SameLine();
+
+	std::string editorTitle = name;
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 255, 255)));
+	ImGui::TextWrapped(editorTitle.c_str());
+	ImGui::PopStyleColor(1);
+
+
+	std::string editorUID = " [UID: " + uid + "]";
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(245, 66, 66)));
+	ImGui::TextWrapped(editorUID.c_str());
+	ImGui::PopStyleColor(1);
+
+
+	ImGui::Separator();
+	if (enabled) {
+		for (Component* component : components) {
+			component->RenderToEditor();
+		}
+	}
+
 }

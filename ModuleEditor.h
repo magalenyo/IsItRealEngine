@@ -1,7 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "UIComponent.h"
-
 #include <vector>
 
 class UIMainMenu;
@@ -10,6 +9,7 @@ class UIConfiguration;
 class UIProperties;
 class UISceneView;
 class UIHierarchy;
+class GameObject;
 
 class ModuleEditor : public Module
 {
@@ -18,11 +18,11 @@ public:
 	ModuleEditor();
 	~ModuleEditor();
 
-	bool Init();
-	bool CleanUp();
-	update_status Update();
-	update_status PreUpdate();
-	update_status PostUpdate();
+	bool Init() override;
+	bool CleanUp() override;
+	update_status Update() override;
+	update_status PreUpdate() override;
+	update_status PostUpdate() override;
 	void ExitApplication(); // Sets the value of updateStatus to UPDATE_STOP
 
 	bool& GetShowConsole();
@@ -30,6 +30,7 @@ public:
 	bool& GetShowProperties();
 	bool& GetShowSceneView();
 	bool& GetShowHierarchyView();
+	GameObject* GetSelectedGameObject();
 
 public:
 	bool isReady = false;
@@ -44,11 +45,11 @@ private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
 	update_status updateStatus = UPDATE_CONTINUE;		// The return type for the Update function
 
-	bool show_mainMenu = true;
-	bool show_console = true;
-	bool show_configuration = true;
-	bool show_properties = true;
-	bool show_scene = true;
-	bool show_hierarchy = true;
+	bool showMainMenu = true;
+	bool showConsole = true;
+	bool showConfiguration = true;
+	bool showProperties = true;
+	bool showScene = true;
+	bool showHierarchy = true;
 };
 

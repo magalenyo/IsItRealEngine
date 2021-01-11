@@ -5,7 +5,9 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "SDL/include/SDL.h"
+#include "imgui_impl_sdl.h"
 #include "MemoryLeakDetector.h"
+
 
 
 ModuleInput::ModuleInput()
@@ -37,7 +39,7 @@ bool ModuleInput::Init()
 }
 
 // Called every draw update
-update_status ModuleInput::Update()
+update_status ModuleInput::PreUpdate()
 {
 	static SDL_Event event;
 
@@ -76,6 +78,8 @@ update_status ModuleInput::Update()
 
 	while (SDL_PollEvent(&event) != 0)
 	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
+
 		switch (event.type)
 		{
 		case SDL_QUIT:

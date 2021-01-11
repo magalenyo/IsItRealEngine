@@ -39,6 +39,7 @@ public:
 
 	unsigned int GetSceneFBO() { return sceneFBO; }
 	unsigned int GetSceneTexture() { return sceneTexture; }
+	unsigned int GetMissingTexture() const { return missingTextureID; }
 
 	void TurnAxis(bool state);
 	void TurnGrid(bool state);
@@ -57,6 +58,7 @@ private:
 	unsigned int sceneFBO = 0;
 	unsigned int sceneRBO = 0;
 	unsigned int sceneTexture = 0;
+	unsigned int missingTextureID;			// This texture is used when there is no texture for a Mesh
 
 	
 
