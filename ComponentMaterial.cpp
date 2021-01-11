@@ -1,6 +1,7 @@
 #include "ComponentMaterial.h"
 #include "imgui.h"
 #include "Texture.h"
+#include "MemoryLeakDetector.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(owner, ComponentType::MATERIAL) {}
 
@@ -19,6 +20,11 @@ ComponentMaterial::~ComponentMaterial()
 	if (normal != nullptr) {
 		delete normal;
 		normal = nullptr;
+	}
+
+	if (emissive != nullptr) {
+		delete emissive;
+		emissive = nullptr;
 	}
 	// TODO delete each pointer of texture if needed
 }
