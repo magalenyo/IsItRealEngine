@@ -36,9 +36,9 @@ public:
 	ModuleInput();
 	~ModuleInput();
 
-	bool Init();
-	update_status Update();
-	bool CleanUp();
+	bool Init() override;
+	update_status PreUpdate() override;
+	bool CleanUp() override;
 
 	KeyState GetKey(int id) const { return keyboard[id]; }
 	KeyState GetMouseButtonDown(int id) const { return mouseButtons[id - 1]; }
