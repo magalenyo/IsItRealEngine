@@ -25,7 +25,6 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::RenderToEditor()
 {
-    static ImGuiSliderFlags flags = ImGuiSliderFlags_None;
 	ImGui::PushID(GetUID().c_str());
     ImGui::Checkbox("Material component", &enabled);
     if (ImGui::CollapsingHeader("Material"))
@@ -66,7 +65,6 @@ void ComponentMaterial::RenderToEditor()
 			ImGui::Text("");
 		}
 
-		//ImGuiColorEditFlags flags = ImGuiColorEditFlags_DisplayHSV;
 		ImGuiColorEditFlags flags = ImGuiColorEditFlags__OptionsDefault | ImGuiColorEditFlags_HEX;
 
 		ImGui::Text("Diffuse color");
@@ -82,8 +80,8 @@ void ComponentMaterial::RenderToEditor()
 		ImGui::DragFloat("Shininess", &shininess, 1, 0, INT_MAX, "%.3f");
 		ImGui::Text("");
     }
-	ImGui::PopID();
 	ImGui::Separator();
+	ImGui::PopID();
 }
 
 void ComponentMaterial::SetDiffuseColor(float3 _diffuseColor)
