@@ -16,7 +16,7 @@ public:
 
 	Component();
 	Component(GameObject* owner, ComponentType type);
-	~Component();
+	virtual ~Component();
 
 	virtual void Enable() {}
 	virtual void Update() {}
