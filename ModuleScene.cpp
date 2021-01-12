@@ -7,9 +7,12 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "Texture.h"
+#include "Model.h"
+
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
+
 
 #include "MemoryLeakDetector.h"
 
@@ -50,6 +53,23 @@ void ModuleScene::Load(const char* file_name)
 	else
 	{
 		LOG("Error loading %s: %s", file_name, aiGetErrorString());
+	}
+}
+
+void ModuleScene::LoadModel(std::string path)
+{
+	LOG("File %s dropped", path.c_str());
+	if (ModuleTexture::IsTexture(path)) {
+		LOG("File %s is a TEXTURE", path.c_str());
+		//loadedModel->LoadSingleTexture(path);
+		//TODO WHAT IT DOES?!
+	}
+	else if (Model::CanLoadFBX(path)) {
+		LOG("File %s is a MODEL", path.c_str());
+		Load(path.c_str());
+	}
+	else {
+		LOG("%s cannot be loaded", path.c_str());
 	}
 }
 

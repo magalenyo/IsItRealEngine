@@ -16,6 +16,7 @@ public:
 
     void Load(const char* file_name);
     void LoadSingleTexture(const std::string& file_name);
+    void LoadModel(std::string path);
 
     GameObject* GetRootNode() const;
 

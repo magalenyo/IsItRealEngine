@@ -24,12 +24,9 @@ public:
 
 	void* GetContext();
 	unsigned int GetDefaultProgram();
-	void LoadModel(std::string path);
 
 	void SetGridColor(float3 newColor);
 	float3 GetGridColor() const;
-
-	Model* GetModel() const;
 
 	bool& GetAxisState();
 	bool& GetGridState();
@@ -54,7 +51,6 @@ private:
 	
 	void* context;
 	unsigned int defaultProgram;
-	Model* loadedModel = nullptr;
 	unsigned int sceneFBO = 0;
 	unsigned int sceneRBO = 0;
 	unsigned int sceneTexture = 0;
@@ -73,5 +69,4 @@ private:
 	void LoadRenderConfiguration();
 	void RenderAxis();
 	void RenderGrid();
-	void RenderModel();
 };
