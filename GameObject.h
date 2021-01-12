@@ -20,12 +20,18 @@ public:
 	void RemoveChild(GameObject* child);					// Removes child from children list
 	void SetParent(GameObject* newParent);					// Set this.parent to newParent
 	void Reparent(GameObject* newParent);					// Removes this gameObject from the current Parent, sets this.parent to newParent, adds this gameObject to newParent's children 
+	void RemoveChildFromParent();							// Removes this child from parent's children and set this parent to nullptr
+	void MoveUpOnHiearchy();								// PRE: Parent needs to have at least 2 children and this can't be the first one. Result: From parent's children, moves this one position UP in parent->children vector.
+	void MoveDownOnHierarchy();								// PRE: Parent needs to have at least 2 children and this can't be the last one. Result: From parent's children, moves this one position DOWN in parent->children vector.
 	
 	bool HasComponents() const;								// Returns true if components list is not empty
 	bool IsLeaf() const;									// Returns true if this gameObject does not have any children
+	bool IsFirstChildOfParent() const;						// Returns true if this gameObject is the first in parent's children vector
+	bool IsLastChildOfParent() const;						// Returns true if this gameObject is the last in parent's children vector
 	std::string GetName() const;							// Returns the name of this GameObject
 	std::vector<GameObject*> GetChildren() const;			// Returns the list of Children
 	void RenderToEditor();
+	GameObject* GetParent();
 
     template <class T> 
 	T* GetComponent() const;
