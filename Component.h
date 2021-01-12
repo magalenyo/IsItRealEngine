@@ -17,13 +17,15 @@ public:
 
 	Component();
 	Component(GameObject* owner, ComponentType type);
-	~Component();
+	virtual ~Component();
 
 	virtual void Enable() { enabled = true; }
 	virtual void Disable() { enabled = false; }
 	virtual void Update() {}
 
 	void SetParent(GameObject* parent);
+	
+	std::string GetUID() const { return uid; };
 
 private:
 	ComponentType type = ComponentType::UNDEFINED;

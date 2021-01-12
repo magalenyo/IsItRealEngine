@@ -19,8 +19,8 @@ bool ModuleScene::Init()
 	//Load("./resources/models/turret cannon multicolored.fbx");
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
-	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
-	Load("./resources/models/BakerHouse.fbx");
+	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
+	//Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 
@@ -163,8 +163,7 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			//material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE));
-			material->SetDiffuseTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE));
+			material->SetDiffuseTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::DIFFUSE));
 		}
 	}
 
@@ -173,8 +172,7 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			//material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR));
-			material->SetSpecularTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR));
+			material->SetSpecularTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::SPECULAR));
 		}
 	}
 
@@ -183,7 +181,7 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL));
+			material->SetNormalTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::NORMAL));
 		}
 	}
 
@@ -252,7 +250,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	
 
 	float scaleFactor = 1;
-	if (factor == 100) {
+	if (scale.x == 100) {
 		scaleFactor = 0.01;
 	}
 

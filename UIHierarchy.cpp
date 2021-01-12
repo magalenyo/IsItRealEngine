@@ -113,6 +113,19 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
 
                 ImGui::EndDragDropTarget();
             }
+
+            ImGui::PushID(gameObject);
+            if (ImGui::BeginPopupContextItem("GameObject"))
+            {
+                if (ImGui::Selectable("Create empty GameObject")) {
+                    GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
+                    gameObject->AddGameObject(emptyGameObject);
+                    emptyGameobjectCounter++;
+                    LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
+                }
+                ImGui::EndPopup();
+            }
+            ImGui::PopID();
         }
         else {
             bool node_open = ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
@@ -141,6 +154,19 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                 ImGui::EndDragDropTarget();
             }
 
+            ImGui::PushID(gameObject);
+            if (ImGui::BeginPopupContextItem("GameObject"))
+            {
+                if (ImGui::Selectable("Create empty GameObject")) {
+                    GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
+                    gameObject->AddGameObject(emptyGameObject);
+                    emptyGameobjectCounter++;
+                    LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
+                }
+                ImGui::EndPopup();
+            }
+            ImGui::PopID();
+
             if (node_open)
             {
                 for (GameObject* go : gameObject->GetChildren()) {
@@ -149,16 +175,6 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                 ImGui::TreePop();
             }
         }
-
-        if (ImGui::BeginPopupContextItem("GameObject"))
-        {
-            if (ImGui::Selectable("Create empty GameObject")) {
-                GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
-                gameObject->AddGameObject(emptyGameObject);
-                emptyGameobjectCounter++;
-                LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
-            }
-            ImGui::EndPopup();
-        }
+        
     }
 }

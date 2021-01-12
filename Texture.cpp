@@ -25,17 +25,17 @@ void Texture::SetTextureID(unsigned int _textureID)
 	textureID = _textureID;
 }
 
-float Texture::GetWidth()
+float Texture::GetWidth() const
 {
 	return width;
 }
 
-float Texture::GetHeight()
+float Texture::GetHeight() const
 {
 	return height;
 }
 
-unsigned int Texture::GetTextureID()
+unsigned int Texture::GetTextureID() const
 {
 	return textureID;
 }

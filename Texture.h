@@ -17,9 +17,9 @@ public:
 	void SetHeight(float _height);
 	void SetTextureID(unsigned int _textureID);
 
-	float GetWidth();
-	float GetHeight();
-	unsigned int GetTextureID();
+	float GetWidth() const;
+	float GetHeight() const;
+	unsigned int GetTextureID() const;
 
 private:
 	unsigned int textureID;

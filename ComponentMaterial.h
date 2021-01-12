@@ -13,19 +13,17 @@ public:
 	ComponentMaterial(GameObject* owner);
 	~ComponentMaterial();
 
-	void AddTexture(Texture* texture);
+	void RenderToEditor() override;
 	void SetDiffuseColor(float3 _diffuseColor);
 	void SetDiffuseTexture(Texture* texture);
 	void SetSpecularColor(float3 _specularColor);
 	void SetSpecularTexture(Texture* texture);
+	void SetNormalTexture(Texture* texture);
 	void SetShininess(float _shininess);
 
-	bool HasTextures() const;
 	Texture* GetDiffuseTexture() const;
 
 private:
-	std::vector<Texture*> textures;
-
 	float3 diffuseColor		= float3(0, 0, 0);
 	float3 specularColor	= float3(0, 0, 0);
 	Texture* diffuse		= nullptr;
