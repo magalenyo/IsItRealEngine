@@ -20,6 +20,8 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
 	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
+	//Load("./resources/scene/Zombunny/Zombunny.fbx");
+
 	//Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
@@ -192,14 +194,6 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 	mMaterial->Get(AI_MATKEY_SHININESS, shininess);
 	material->SetShininess(shininess);
 
-
-	/*if (material->HasTextures()) {
-		result.push_back(material);
-	}
-	else {
-		delete material;
-	}*/
-
 	return material;
 }
 
@@ -255,7 +249,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		Quat(rotation.x, rotation.y, rotation.z, rotation.w)
 		, go);
 	
-	transform->CalculateGlobalMatrix(parent);
+	transform->CalculateGlobalMatrix();
 	go->AddComponent(transform);
 	
 	
