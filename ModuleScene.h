@@ -11,6 +11,9 @@ class ComponentMesh;
 class ModuleScene : public Module
 {
 public:
+    const std::string PATH_TEXTURES = "./resources/textures/";
+    const std::string PATH_MODELS = "./resources/models/";
+
     bool Init() override;
     bool CleanUp() override;
 
@@ -21,13 +24,10 @@ public:
     GameObject* GetRootNode() const;
 
 private:
-    const std::string PATH_TEXTURES = "./resources/textures/";
-    const std::string PATH_MODELS = "./resources/models/";
+
     const std::string MODEL_EXTENSION_FBX = ".fbx";
 
     GameObject* root = nullptr;
-
-
 
 
     // TODO EXTERNALIZE INTO A MODEL LOADER

@@ -2,10 +2,7 @@
 
 #include "MemoryLeakDetector.h"
 
-const std::string Model::PATH_TEXTURES			= "./resources/textures/"; 
-const std::string Model::PATH_MODELS			= "./resources/models/";
 const std::string Model::MODEL_EXTENSION_FBX	= ".fbx";
-
 
 bool Model::CanLoadFBX(const std::string& path)
 {
