@@ -28,6 +28,10 @@ bool ModuleScene::Init()
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 
+	camera = new GameObject("Camera", root);
+	camera->AddComponent(new ComponentCamera(camera));
+	camera->AddComponent(new ComponentTransform(float3(0, 0, 0), float3(0, 0, 0), Quat(0, 0, 0, 0), camera));
+
 	quadtree = new Quadtree();
 	
 	return true;
