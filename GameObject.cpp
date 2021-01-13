@@ -1,13 +1,11 @@
 #include "GameObject.h"
 #include "GUIDGenerator.h"
 #include "imgui.h"
+#include "MemoryLeakDetector.h"
 #include "Component.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
-
-#include "MemoryLeakDetector.h"
-
 
 GameObject::GameObject() : uid(GenerateUID()) {}
 
@@ -78,38 +76,6 @@ void GameObject::Draw() const
 	}
 }
 
-void GameObject::RemoveChildFromParent()
-{
-	if (parent != nullptr) {
-		parent->RemoveChild(this);
-		SetParent(nullptr);
-	}
-}
-
-void GameObject::MoveUpOnHiearchy()
-{
-	for (int i = 0; i < parent->children.size(); ++i) {
-		if (parent->children[i] == this) {
-			GameObject* aux = parent->children[i];
-			parent->children[i] = parent->children[i - 1];
-			parent->children[i - 1] = aux;
-			break;
-		}
-	}
-}
-
-void GameObject::MoveDownOnHierarchy()
-{
-	for (int i = 0; i < parent->children.size(); ++i) {
-		if (parent->children[i] == this) {
-			GameObject* aux = parent->children[i];
-			parent->children[i] = parent->children[i + 1];
-			parent->children[i + 1] = aux;
-			break;
-		}
-	}
-}
-
 bool GameObject::HasComponents() const
 {
 	return !components.empty();
@@ -118,22 +84,6 @@ bool GameObject::HasComponents() const
 bool GameObject::IsLeaf() const
 {
 	return children.empty();
-}
-
-bool GameObject::IsFirstChildOfParent() const
-{
-	if (parent->children[0] == this) {
-		return true;
-	}
-	return false;
-}
-
-bool GameObject::IsLastChildOfParent() const
-{
-	if (parent->children[parent->children.size() - 1] == this) {
-		return true;
-	}
-	return false;
 }
 
 std::string GameObject::GetName() const
@@ -169,9 +119,4 @@ void GameObject::RenderToEditor()
 		}
 	}
 
-}
-
-GameObject* GameObject::GetParent()
-{
-	return parent;
 }

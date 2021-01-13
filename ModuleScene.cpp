@@ -7,12 +7,9 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "Texture.h"
-#include "Model.h"
-
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
-
 
 #include "MemoryLeakDetector.h"
 
@@ -22,10 +19,8 @@ bool ModuleScene::Init()
 	//Load("./resources/models/turret cannon multicolored.fbx");
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
-	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
-	//Load("./resources/scene/Zombunny/Zombunny.fbx");
-
-	Load("./resources/models/BakerHouse.fbx");
+	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
+	//Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 
@@ -58,23 +53,6 @@ void ModuleScene::Load(const char* file_name)
 	else
 	{
 		LOG("Error loading %s: %s", file_name, aiGetErrorString());
-	}
-}
-
-void ModuleScene::LoadModel(std::string path)
-{
-	LOG("File %s dropped", path.c_str());
-	if (ModuleTexture::IsTexture(path)) {
-		LOG("File %s is a TEXTURE", path.c_str());
-		//loadedModel->LoadSingleTexture(path);
-		//TODO WHAT IT DOES?!
-	}
-	else if (Model::CanLoadFBX(path)) {
-		LOG("File %s is a MODEL", path.c_str());
-		Load(path.c_str());
-	}
-	else {
-		LOG("%s cannot be loaded", path.c_str());
 	}
 }
 
@@ -219,6 +197,14 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 	mMaterial->Get(AI_MATKEY_SHININESS, shininess);
 	material->SetShininess(shininess);
 
+
+	/*if (material->HasTextures()) {
+		result.push_back(material);
+	}
+	else {
+		delete material;
+	}*/
+
 	return material;
 }
 
@@ -274,7 +260,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		Quat(rotation.x, rotation.y, rotation.z, rotation.w)
 		, go);
 	
-	transform->CalculateGlobalMatrix();
+	transform->CalculateGlobalMatrix(parent);
 	go->AddComponent(transform);
 	
 	

@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleScene.h"
+#include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "SDL/include/SDL.h"
@@ -136,7 +136,7 @@ update_status ModuleInput::PreUpdate()
 		case SDL_DROPFILE:
 			char* dropped_filedir = event.drop.file;
 			std::string dropped_file = event.drop.file;
-			App->scene->LoadModel(dropped_file);
+			App->renderer->LoadModel(dropped_file);
 			SDL_free(dropped_filedir);
 		
 			break;

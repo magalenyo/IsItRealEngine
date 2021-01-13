@@ -90,15 +90,84 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
         if (gameObject->IsLeaf()) {
             node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
             ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
-            
-            RenderActionsForGameObject(gameObject);
+            if (ImGui::IsItemClicked()){
+                selectedGameObject = gameObject;
+            }
+                
+            if (ImGui::BeginDragDropSource())
+            {
+                ImGui::SetDragDropPayload("GAMEOBJECT", (void*) gameObject, sizeof(gameObject));
+                char hint[55];
+                sprintf_s(hint, 55, "Dropping %s...", gameObject->GetName().c_str());
+                ImGui::Text(hint);
+                ImGui::EndDragDropSource();
+            }
+            if (ImGui::BeginDragDropTarget())
+            {
+                const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT");
+                if (payload)
+                {
+                    LOG(("Dropping " + selectedGameObject->GetName() + " in " + gameObject->GetName()).c_str());
+                    selectedGameObject->Reparent(gameObject);
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            ImGui::PushID(gameObject);
+            if (ImGui::BeginPopupContextItem("GameObject"))
+            {
+                if (ImGui::Selectable("Create empty GameObject")) {
+                    GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
+                    gameObject->AddGameObject(emptyGameObject);
+                    emptyGameobjectCounter++;
+                    LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
+                }
+                ImGui::EndPopup();
+            }
+            ImGui::PopID();
         }
         else {
             bool node_open = ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
 
-            RenderActionsForGameObject(gameObject);
+            if (ImGui::IsItemClicked()) {
+                selectedGameObject = gameObject;
+            }
 
-            if (gameObject != nullptr && node_open)
+            if (ImGui::BeginDragDropSource())
+            {
+                ImGui::SetDragDropPayload("GAMEOBJECT", (void*)gameObject, sizeof(gameObject));
+                char hint[55];
+                sprintf_s(hint, 55, "Dropping %s...", gameObject->GetName().c_str());
+                ImGui::Text(hint);
+                ImGui::EndDragDropSource();
+            }
+            if (ImGui::BeginDragDropTarget())
+            {
+                const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT");
+                if (payload)
+                {
+                    LOG(("Dropping " + selectedGameObject->GetName() + " in " + gameObject->GetName()).c_str());
+                    selectedGameObject->Reparent(gameObject);
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            ImGui::PushID(gameObject);
+            if (ImGui::BeginPopupContextItem("GameObject"))
+            {
+                if (ImGui::Selectable("Create empty GameObject")) {
+                    GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
+                    gameObject->AddGameObject(emptyGameObject);
+                    emptyGameobjectCounter++;
+                    LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
+                }
+                ImGui::EndPopup();
+            }
+            ImGui::PopID();
+
+            if (node_open)
             {
                 for (GameObject* go : gameObject->GetChildren()) {
                     RenderRecursively(go);
@@ -108,69 +177,4 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
         }
         
     }
-}
-
-void UIHierarchy::RenderActionsForGameObject(GameObject* gameObject)
-{
-    if (ImGui::IsItemClicked()) {
-        selectedGameObject = gameObject;
-    }
-
-    if (ImGui::BeginDragDropSource())
-    {
-        ImGui::SetDragDropPayload("GAMEOBJECT", (void*)gameObject, sizeof(gameObject));
-        char hint[55];
-        sprintf_s(hint, 55, "Dropping %s...", gameObject->GetName().c_str());
-        ImGui::Text(hint);
-        ImGui::EndDragDropSource();
-    }
-
-    if (ImGui::BeginDragDropTarget())
-    {
-        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT");
-        if (payload)
-        {
-            LOG(("Dropping " + selectedGameObject->GetName() + " in " + gameObject->GetName()).c_str());
-            selectedGameObject->Reparent(gameObject);
-        }
-
-        ImGui::EndDragDropTarget();
-    }
-
-    ImGui::PushID(gameObject);
-    if (ImGui::BeginPopupContextItem("GameObject"))
-    {
-        if (ImGui::Selectable("Create empty GameObject")) {
-            GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
-            gameObject->AddGameObject(emptyGameObject);
-            emptyGameobjectCounter++;
-            LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
-        }
-
-        if (gameObject != App->scene->GetRootNode()) {
-
-            if (!gameObject->IsFirstChildOfParent()) {
-                if (ImGui::Selectable("Move up")) {
-                    gameObject->MoveUpOnHiearchy();
-                }
-            }
-
-            if (!gameObject->IsLastChildOfParent()) {
-                if (ImGui::Selectable("Move down")) {
-                    gameObject->MoveDownOnHierarchy();
-                }
-            }
-
-            if (ImGui::Selectable("Delete GameObject")) {
-                LOG("Removing %s ...", gameObject->GetName().c_str());
-                selectedGameObject = gameObject->GetParent();
-                gameObject->RemoveChildFromParent();
-                delete gameObject;
-                gameObject = nullptr;
-            }
-        }
-
-        ImGui::EndPopup();
-    }
-    ImGui::PopID();
 }

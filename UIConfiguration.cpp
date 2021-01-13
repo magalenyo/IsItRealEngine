@@ -5,7 +5,6 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
-#include "ModuleScene.h"
 #include "Model.h"
 
 #include "MemoryLeakDetector.h"
@@ -221,8 +220,8 @@ void UIConfiguration::Draw()
         ImGui::SameLine(); HelpMarker("When loading the Texture, it will first try the default path. If not found, then will try in the default path. If not found, then will try in the textures path.");
         ImGui::Text("");
         ImGui::Text("Default: same directory as .exe");
-        ImGui::Text((std::string("Models path: ") + App->scene->PATH_MODELS).c_str());
-        ImGui::Text((std::string("Textures path: ") + App->scene->PATH_TEXTURES).c_str());
+        ImGui::Text((std::string("Models path: ") + Model::PATH_MODELS).c_str());
+        ImGui::Text((std::string("Textures path: ") + Model::PATH_TEXTURES).c_str());
     }
 
     if (ImGui::CollapsingHeader("Input"))

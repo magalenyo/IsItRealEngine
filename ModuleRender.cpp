@@ -174,6 +174,9 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
+	if (loadedModel != nullptr) {
+		delete loadedModel;
+	}
 	//Destroy window
 	SDL_GL_DeleteContext(context);
 
@@ -190,6 +193,24 @@ unsigned int ModuleRender::GetDefaultProgram()
 	return defaultProgram;
 }
 
+void ModuleRender::LoadModel(std::string path)
+{
+	LOG("File %s dropped", path.c_str());
+	if (ModuleTexture::IsTexture(path)) {
+		LOG("File %s is a TEXTURE", path.c_str());
+		loadedModel->LoadSingleTexture(path);
+	}
+	else if (Model::CanLoadFBX(path)){
+		LOG("File %s is a MODEL", path.c_str());
+		delete loadedModel;
+		loadedModel = nullptr;
+		loadedModel = new Model(path.c_str());
+	}
+	else {
+		LOG("%s cannot be loaded", path.c_str());
+	}
+}
+
 void ModuleRender::SetGridColor(float3 newColor)
 {
 	gridColor = newColor;
@@ -198,6 +219,11 @@ void ModuleRender::SetGridColor(float3 newColor)
 float3 ModuleRender::GetGridColor() const
 {
 	return gridColor;
+}
+
+Model* ModuleRender::GetModel() const
+{
+	return loadedModel;
 }
 
 bool& ModuleRender::GetAxisState()
@@ -271,6 +297,13 @@ void ModuleRender::RenderGrid()
 {
 	if (activeGrid) {
 		dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, gridColor);
+	}
+}
+
+void ModuleRender::RenderModel()
+{
+	if (activeModel) {
+		loadedModel->Draw();
 	}
 }
 

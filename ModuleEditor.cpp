@@ -75,8 +75,6 @@ bool ModuleEditor::CleanUp()
     console = nullptr;
     configuration = nullptr;
     properties = nullptr;
-    scene = nullptr;
-    hierarchy = nullptr;
 
     return true;
 }
