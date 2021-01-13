@@ -31,6 +31,8 @@ private:
     Quadtree* quadtree = nullptr;
 
 
+
+
     // TODO EXTERNALIZE INTO A MODEL LOADER
     //std::vector<ComponentMaterial*> LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials);
     ComponentMaterial* LoadMaterials(const char* file_name, aiMaterial* const mMaterial);
