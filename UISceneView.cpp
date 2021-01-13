@@ -6,6 +6,9 @@
 #include "Model.h"
 #include "imgui.h"
 
+#include "MemoryLeakDetector.h"
+
+
 void UISceneView::Draw()
 {
 
