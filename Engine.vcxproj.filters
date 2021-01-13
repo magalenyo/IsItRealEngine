@@ -198,6 +198,7 @@
     </ClCompile>
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ModuleRenderScene.cpp" />
+    <ClCompile Include="SceneImporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -518,6 +519,7 @@
     </ClInclude>
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ModuleRenderScene.h" />
+    <ClInclude Include="SceneImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

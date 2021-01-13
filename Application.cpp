@@ -11,6 +11,8 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
 #include "ModuleRenderScene.h"
+#include "SceneImporter.h"
+
 #include "MemoryLeakDetector.h"
 
 using namespace std;
@@ -19,6 +21,7 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(time = new ModuleTime());
+	modules.push_back(sceneImporter = new SceneImporter());
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(textures = new ModuleTexture());
 	modules.push_back(program = new ModuleProgram());

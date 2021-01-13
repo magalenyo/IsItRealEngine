@@ -17,6 +17,7 @@ class ModuleEditor;
 class ModuleDebugDraw;
 class ModuleScene;
 class ModuleRenderScene;
+class SceneImporter;
 
 class Application
 {
@@ -42,6 +43,7 @@ public:
 	ModuleDebugDraw* debugDraw = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleRenderScene* sceneRender = nullptr;
+	SceneImporter* sceneImporter = nullptr;
 
 private:
 
