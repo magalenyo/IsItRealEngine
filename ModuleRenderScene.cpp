@@ -5,6 +5,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 ModuleRenderScene::ModuleRenderScene()
 {
@@ -22,9 +23,9 @@ update_status ModuleRenderScene::Update()
 {
     if (App->scene->GetRootNode() != nullptr) 
     {
-        if (App->renderer->cullingCamera.IsActive())
+        if (App->scene->GetCullingCamera())
         {
-            std::vector<GameObject*> candidatesToCull = App->scene->GetQuadtree()->GetObjectsCollided(App->renderer->cullingCamera.GetFrustum());
+            std::vector<GameObject*> candidatesToCull = App->scene->GetQuadtree()->GetObjectsCollided(App->scene->GetCullingCamera()->GetFrustum());
             std::vector<GameObject*> objectsToCull = TestCulling(candidatesToCull);
 
             for (unsigned int i = 0; i < objectsToCull.size(); ++i)
@@ -66,7 +67,7 @@ std::vector<GameObject*> ModuleRenderScene::TestCulling(const std::vector<GameOb
 
     for (unsigned int i = 0; i < candidatesToCull.size(); ++i)
     {
-        if (App->renderer->cullingCamera->GetFrustum().Intersects(candidatesToCull[i]->GetAABB()))
+        if (App->scene->GetCullingCamera()->GetFrustum().Intersects(candidatesToCull[i]->GetAABB()))
         {
             intersectingObjects.push_back(candidatesToCull[i]);
         }

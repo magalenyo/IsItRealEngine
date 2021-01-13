@@ -120,3 +120,8 @@ void GameObject::RenderToEditor()
 	}
 
 }
+
+GameObject* GameObject::GetParent()
+{
+	return parent;
+}

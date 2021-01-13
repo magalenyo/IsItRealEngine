@@ -11,6 +11,9 @@ public:
 	ComponentCamera(GameObject* owner);
 	~ComponentCamera();
 
+	vec GetFront() const;
+	vec GetUp() const;
+	vec GetPosition() const;
 	float GetNearPlane() const;
 	float GetFarPlane() const;
 	float GetFOV() const;
@@ -21,7 +24,9 @@ public:
 	void SetAspectRatio(float aspectRatio);
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
+	Frustum GetFrustum() const;
 
+private:
 	Frustum frustum;
 };
 

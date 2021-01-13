@@ -5,7 +5,9 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
+#include "ModuleScene.h"
 #include "Model.h"
+#include "ComponentCamera.h"
 
 #include "MemoryLeakDetector.h"
 #include "IL/il.h"
@@ -52,7 +54,7 @@ void UIConfiguration::Draw()
     if (ImGui::CollapsingHeader("Application"))
     {
         ImGui::Text("Performance");
-		char title[55];
+        char title[55];
         sprintf_s(title, 55, "Framerate %.1f FPS", fps);
         ImGui::PlotHistogram("##Framerate", &frames[0], frames.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100), sizeof(float));
         sprintf_s(title, 55, "Milliseconds %0.3f ms/frame", frameMillis);
@@ -119,10 +121,10 @@ void UIConfiguration::Draw()
         SDL_VERSION(&version);
         ImGui::TextColored(purple, "%i.%i.%i", version.major, version.minor, version.patch);
     }
-    
+
     if (ImGui::CollapsingHeader("Renderer"))
     {
-        bool &gridActivated = App->renderer->GetGridState();
+        bool& gridActivated = App->renderer->GetGridState();
         ImGui::Checkbox("Activate Grid", &gridActivated);
 
         if (gridActivated) {
@@ -131,7 +133,7 @@ void UIConfiguration::Draw()
             ImGui::ColorEdit3("Color", color);
             App->renderer->SetGridColor(float3(color[0], color[1], color[2]));
         }
-        
+
         bool& axisActivated = App->renderer->GetAxisState();
         ImGui::Checkbox("Activate Axis", &axisActivated);
 
@@ -174,12 +176,12 @@ void UIConfiguration::Draw()
             int height = currentHeight;
             ImGui::SliderInt("Width", &width, 300, maxWidth);
             ImGui::SliderInt("Height", &height, 450, maxHeight);
-            
+
             if (width != currentWidth || height != currentHeight) {
                 App->window->SetWindowSize(width, height);
                 App->camera->OnWindowResized(width, height);
             }
-            
+
         }
         else {
             ImGui::Text((std::string("Width: ") + std::to_string(currentWidth)).c_str());
@@ -216,12 +218,12 @@ void UIConfiguration::Draw()
 
         ImGui::Separator();
 
-        ImGui::Text("Textures location paths"); 
+        ImGui::Text("Textures location paths");
         ImGui::SameLine(); HelpMarker("When loading the Texture, it will first try the default path. If not found, then will try in the default path. If not found, then will try in the textures path.");
         ImGui::Text("");
         ImGui::Text("Default: same directory as .exe");
-        ImGui::Text((std::string("Models path: ") + Model::PATH_MODELS).c_str());
-        ImGui::Text((std::string("Textures path: ") + Model::PATH_TEXTURES).c_str());
+        ImGui::Text((std::string("Models path: ") + App->scene->PATH_MODELS).c_str());
+        ImGui::Text((std::string("Textures path: ") + App->scene->PATH_TEXTURES).c_str());
     }
 
     if (ImGui::CollapsingHeader("Input"))
@@ -237,33 +239,33 @@ void UIConfiguration::Draw()
         ImGui::Text("Mouse down:");
         for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
             if (io.MouseDownDuration[i] >= 0.0f) {
-                ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); 
+                ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]);
             }
         }
 
         ImGui::Text("Mouse clicked:");
         for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
-            if (ImGui::IsMouseClicked(i)) { 
-                ImGui::SameLine(); ImGui::Text("b%d", i); 
+            if (ImGui::IsMouseClicked(i)) {
+                ImGui::SameLine(); ImGui::Text("b%d", i);
             }
         }
 
-        ImGui::Text("Mouse released:"); 
+        ImGui::Text("Mouse released:");
         for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
-            if (ImGui::IsMouseReleased(i)) { 
+            if (ImGui::IsMouseReleased(i)) {
                 ImGui::SameLine(); ImGui::Text("b%d", i);
             }
         }
     }
 
     if (ImGui::CollapsingHeader("Camera")) {
-        vec front = App->camera->GetFront();
-        vec up = App->camera->GetUp();
-        vec position = App->camera->GetPosition();
-        float nearPlane = App->camera->GetNearPlane();
-        float farPlane = App->camera->GetFarPlane();
-        float FOV = App->camera->GetFOV();
-        float aspectRatio = App->camera->GetAspectRatio();
+        vec front = App->camera->GetCamera()->GetFront();
+        vec up = App->camera->GetCamera()->GetUp();
+        vec position = App->camera->GetCamera()->GetPosition();
+        float nearPlane = App->camera->GetCamera()->GetNearPlane();
+        float farPlane = App->camera->GetCamera()->GetFarPlane();
+        float FOV = App->camera->GetCamera()->GetFOV();
+        float aspectRatio = App->camera->GetCamera()->GetAspectRatio();
         float movementSpeed = App->camera->GetMovementSpeed();
         float rotationSpeed = App->camera->GetRotationSpeed();
         float zoomSpeed = App->camera->GetZoomSpeed();
@@ -283,7 +285,7 @@ void UIConfiguration::Draw()
 }
 
 void UIConfiguration::AddFrame(float fps)
-{    
+{
     if (frames.size() == MAX_FRAMES_STORAGE) {
         frames.erase(frames.begin());
     }
@@ -297,4 +299,3 @@ void UIConfiguration::AddMillis(float frameMillis)
     }
     millis.push_back(frameMillis);
 }
-

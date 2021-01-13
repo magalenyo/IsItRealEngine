@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "ComponentCamera.h"
 #include "Math/float3.h"
+#include "Geometry/AABB.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -24,18 +25,16 @@ public:
 
 	void* GetContext();
 	unsigned int GetDefaultProgram();
-	void LoadModel(std::string path);
-
+	
 	void SetGridColor(float3 newColor);
 	float3 GetGridColor() const;
-
-	Model* GetModel() const;
 
 	bool& GetAxisState();
 	bool& GetGridState();
 	bool& GetModelState();
 	bool& GetGLDepthTestState();
 	bool& GetGLCullFaceState();
+	bool& GetDrawBoxesState();
 
 	unsigned int GetSceneFBO() { return sceneFBO; }
 	unsigned int GetSceneTexture() { return sceneTexture; }
@@ -45,24 +44,24 @@ public:
 	void TurnGrid(bool state);
 
 	void OnSceneResize(int width, int height);
+	
+	void AddAABB(AABB aabb);
 
 public:
 	unsigned int viewportWidth = 0;
 	unsigned int viewportHeight = 0;
 	ComponentCamera* mainCamera = nullptr;
-	ComponentCamera* cullingCamera = nullptr;
 
 private:
 	
 	void* context;
 	unsigned int defaultProgram;
-	Model* loadedModel = nullptr;
 	unsigned int sceneFBO = 0;
 	unsigned int sceneRBO = 0;
 	unsigned int sceneTexture = 0;
 	unsigned int missingTextureID;			// This texture is used when there is no texture for a Mesh
 
-	
+	std::vector<AABB> aabbsToDraw;
 
 	/* CONFIGURATION VARIABLES */
 	float3 gridColor = { 1.000000f, 1.000000f, 1.000000f };
@@ -71,9 +70,9 @@ private:
 	bool activeModel = true;
 	bool activeGLDepthTest = true;
 	bool activeGLCullFace = true;
+	bool activeDrawBoxes = false;
 
 	void LoadRenderConfiguration();
 	void RenderAxis();
 	void RenderGrid();
-	void RenderModel();
 };

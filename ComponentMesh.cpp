@@ -113,8 +113,8 @@ void ComponentMesh::SetMaterialIndex(unsigned int newMaterialIndex)
 void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const float4x4 &modelMatrix)
 {
 	unsigned program = App->renderer->GetDefaultProgram();
-	const float4x4& view = App->camera->GetViewMatrix();
-	const float4x4& proj = App->camera->GetProjectionMatrix();
+	const float4x4& view = App->camera->GetCamera()->GetViewMatrix();
+	const float4x4& proj = App->camera->GetCamera()->GetProjectionMatrix();
 	//float4x4 model = float4x4::identity;
 	//float4x4 model = float4x4(1, 0, 0, 1,
 	//						  0, 1, 0, 1,

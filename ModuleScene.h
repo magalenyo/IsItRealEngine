@@ -8,25 +8,31 @@
 class GameObject;
 class ComponentMaterial;
 class ComponentMesh;
+class ComponentCamera;
 
 class ModuleScene : public Module
 {
 public:
+    const std::string PATH_TEXTURES = "./resources/textures/";
+    const std::string PATH_MODELS = "./resources/models/";
+
     bool Init() override;
     bool CleanUp() override;
 
     void Load(const char* file_name);
     void LoadSingleTexture(const std::string& file_name);
+    void LoadModel(std::string path);
     Quadtree* GetQuadtree() { return quadtree; }
+    ComponentCamera* GetCullingCamera() { return cullingCamera; }
 
     GameObject* GetRootNode() const;
 
 private:
-    const std::string PATH_TEXTURES = "./resources/textures/";
-    const std::string PATH_MODELS = "./resources/models/";
     const std::string MODEL_EXTENSION_FBX = ".fbx";
 
     GameObject* root = nullptr;
+    GameObject* camera = nullptr;
+    ComponentCamera* cullingCamera = nullptr;
 
     Quadtree* quadtree = nullptr;
 

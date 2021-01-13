@@ -34,6 +34,7 @@ public:
 	std::string GetName() const;							// Returns the name of this GameObject
 	std::vector<GameObject*> GetChildren() const;			// Returns the list of Children
 	void RenderToEditor();
+	GameObject* GetParent();
 
     template <class T> 
 	T* GetComponent() const;
@@ -41,7 +42,7 @@ public:
     template <class T> 
 	std::vector<T*> GetComponents() const;
 
-	AABB GetAABB() { return aabb; }
+	AABB GetAABB() const { return aabb; }
 	OBB GetOBB() { return obb; }
 
 private:

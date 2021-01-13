@@ -22,6 +22,7 @@ public:
 	virtual void Enable() { enabled = true; }
 	virtual void Disable() { enabled = false; }
 	virtual void Update() {}
+	virtual void RenderToEditor() {}
 
 	void SetParent(GameObject* parent);
 	
@@ -30,6 +31,8 @@ public:
 private:
 	ComponentType type = ComponentType::UNDEFINED;
 	std::string uid;
+
+protected:
 	bool enabled = true;
 	GameObject* owner = nullptr;
 };

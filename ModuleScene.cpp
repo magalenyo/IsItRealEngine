@@ -7,6 +7,8 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "Texture.h"
+#include "Model.h"
+
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset

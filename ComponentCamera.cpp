@@ -17,6 +17,21 @@ ComponentCamera::~ComponentCamera()
 {
 }
 
+vec ComponentCamera::GetFront() const
+{
+	return frustum.Front();
+}
+
+vec ComponentCamera::GetUp() const
+{
+	return frustum.Up();
+}
+
+vec ComponentCamera::GetPosition() const
+{
+	return frustum.Pos();
+}
+
 float ComponentCamera::GetNearPlane() const
 {
 	return frustum.NearPlaneDistance();
@@ -65,4 +80,9 @@ float4x4 ComponentCamera::GetViewMatrix() const
 float4x4 ComponentCamera::GetProjectionMatrix() const
 {
 	return frustum.ProjectionMatrix();
+}
+
+Frustum ComponentCamera::GetFrustum() const
+{
+	return frustum;
 }

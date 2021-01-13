@@ -13,13 +13,13 @@ ModuleCamera::ModuleCamera()
 {
 	camera = new ComponentCamera(nullptr);
 
-	camera->frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	camera->frustum.SetViewPlaneDistances(0.1f, 200.0f);
-	camera->frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
+	camera->GetFrustum().SetKind(FrustumSpaceGL, FrustumRightHanded);
+	camera->GetFrustum().SetViewPlaneDistances(0.1f, 200.0f);
+	camera->GetFrustum().SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
 
-	camera->frustum.SetPos(float3(0, 3, -8));
-	camera->frustum.SetFront(float3::unitZ);
-	camera->frustum.SetUp(float3::unitY);
+	camera->GetFrustum().SetPos(float3(0, 3, -8));
+	camera->GetFrustum().SetFront(float3::unitZ);
+	camera->GetFrustum().SetUp(float3::unitY);
 }
 
 ModuleCamera::~ModuleCamera()
@@ -33,8 +33,8 @@ bool ModuleCamera::Init()
 }
 
 void ModuleCamera::Rotate(float3x3 rotationMatrix) {
-	camera->frustum.SetFront(rotationMatrix * camera->frustum.Front().Normalized());
-	camera->frustum.SetUp(rotationMatrix * camera->frustum.Up().Normalized());
+	camera->GetFrustum().SetFront(rotationMatrix * camera->GetFrustum().Front().Normalized());
+	camera->GetFrustum().SetUp(rotationMatrix * camera->GetFrustum().Up().Normalized());
 }
 
 update_status ModuleCamera::Update()
@@ -53,48 +53,48 @@ update_status ModuleCamera::Update()
 	/* END SPEED CONTROL */
 
 	if (mouseWheelMotion < -FLT_EPSILON || mouseWheelMotion > FLT_EPSILON) {
-		camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.Front().Normalized() * mouseWheelMotion * 10 * zoomSpeed * App->time->DeltaTime()));
+		camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().Front().Normalized() * mouseWheelMotion * 10 * zoomSpeed * App->time->DeltaTime()));
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_REPEAT) {
-		Rotate(float3x3::RotateAxisAngle(camera->frustum.WorldRight().Normalized(), -mouseMotion.y * rotationSpeed * DEGTORAD * deltaTime));
+		Rotate(float3x3::RotateAxisAngle(camera->GetFrustum().WorldRight().Normalized(), -mouseMotion.y * rotationSpeed * DEGTORAD * deltaTime));
 		Rotate(float3x3::RotateY(-mouseMotion.x * rotationSpeed * DEGTORAD * deltaTime));
 
 		if (App->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 		{
-			camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.Up().Normalized() * -movementSpeed * deltaTime));
+			camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().Up().Normalized() * -movementSpeed * deltaTime));
 		}
 		if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
 		{
-			camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.Up().Normalized() * movementSpeed * deltaTime));
+			camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().Up().Normalized() * movementSpeed * deltaTime));
 		}
 		if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 		{
-			camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.Front().Normalized() * movementSpeed * deltaTime));
+			camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().Front().Normalized() * movementSpeed * deltaTime));
 		}
 		if (App->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 		{
-			camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.Front().Normalized() * -movementSpeed * deltaTime));
+			camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().Front().Normalized() * -movementSpeed * deltaTime));
 		}
 		if (App->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 		{
-			camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.WorldRight().Normalized() * -movementSpeed * deltaTime));
+			camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().WorldRight().Normalized() * -movementSpeed * deltaTime));
 		}
 		if (App->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 		{
-			camera->frustum.SetPos(camera->frustum.Pos() + (camera->frustum.WorldRight().Normalized() * movementSpeed * deltaTime));
+			camera->GetFrustum().SetPos(camera->GetFrustum().Pos() + (camera->GetFrustum().WorldRight().Normalized() * movementSpeed * deltaTime));
 		}
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KeyState::KEY_REPEAT) {
-		camera->frustum.SetPos(float3(0, 3, -8));
-		camera->frustum.SetFront(float3::unitZ);
-		camera->frustum.SetUp(float3::unitY);
+		camera->GetFrustum().SetPos(float3(0, 3, -8));
+		camera->GetFrustum().SetFront(float3::unitZ);
+		camera->GetFrustum().SetUp(float3::unitY);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
-		float3 oldFocusPoint = camera->frustum.Pos() + (camera->frustum.Front() * distanceFocus);
-		Rotate(float3x3::RotateAxisAngle(camera->frustum.WorldRight().Normalized(), -mouseMotion.y * rotationSpeed * DEGTORAD * deltaTime));
+		float3 oldFocusPoint = camera->GetFrustum().Pos() + (camera->GetFrustum().Front() * distanceFocus);
+		Rotate(float3x3::RotateAxisAngle(camera->GetFrustum().WorldRight().Normalized(), -mouseMotion.y * rotationSpeed * DEGTORAD * deltaTime));
 		Rotate(float3x3::RotateY(-mouseMotion.x * rotationSpeed * DEGTORAD * deltaTime));
-		float3 newFocusPoint = camera->frustum.Pos() + (camera->frustum.Front() * distanceFocus);
-		camera->frustum.SetPos((oldFocusPoint - newFocusPoint) + camera->frustum.Pos());
+		float3 newFocusPoint = camera->GetFrustum().Pos() + (camera->GetFrustum().Front() * distanceFocus);
+		camera->GetFrustum().SetPos((oldFocusPoint - newFocusPoint) + camera->GetFrustum().Pos());
 	}
 
 	return UPDATE_CONTINUE;
@@ -120,14 +120,14 @@ void ModuleCamera::IncreaseSpeed()
 
 void ModuleCamera::OnWindowResized(int width, int height)
 {
-	camera->frustum.SetVerticalFovAndAspectRatio(camera->frustum.VerticalFov(), ((float) width) / (float) height);
+	camera->GetFrustum().SetVerticalFovAndAspectRatio(camera->GetFrustum().VerticalFov(), ((float) width) / (float) height);
 }
 
 void ModuleCamera::FocusCamera(const float3 &position)
 {
-	camera->frustum.SetPos(float3(position.x, position.y, position.z + positionFromFocusVertice));
-	camera->frustum.SetFront(float3::unitZ);
-	camera->frustum.SetUp(float3::unitY);
+	camera->GetFrustum().SetPos(float3(position.x, position.y, position.z + positionFromFocusVertice));
+	camera->GetFrustum().SetFront(float3::unitZ);
+	camera->GetFrustum().SetUp(float3::unitY);
 }
 
 float ModuleCamera::GetMovementSpeed() const
