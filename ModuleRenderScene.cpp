@@ -17,6 +17,7 @@ ModuleRenderScene::~ModuleRenderScene()
 
 bool ModuleRenderScene::Init()
 {
+    return true;
 }
 
 update_status ModuleRenderScene::Update()

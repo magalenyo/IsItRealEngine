@@ -1,10 +1,10 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
 #include <typeinfo> 
+#include "assimp/scene.h"
 
 class Component;
 

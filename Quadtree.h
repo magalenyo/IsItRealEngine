@@ -4,28 +4,7 @@
 #include "Globals.h"
 #include "Geometry/AABB.h"
 #include <vector>
-
-class Quadtree
-{
-public:
-	Quadtree();
-	~Quadtree();
-
-	void AddGameObject(const GameObject* gameObject);
-	bool CleanUp();
-	void Draw();
-
-	template<typename GEOMETRY> std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry);
-	
-
-private:
-	QTNode* root = nullptr;
-};
-
-template<typename GEOMETRY> std::vector<GameObject*> Quadtree::GetObjectsCollided(GEOMETRY geometry)
-{
-	return root->GetObjectsCollided(geometry);
-}
+#include "assimp/scene.h"
 
 class QTNode
 {
@@ -33,16 +12,16 @@ class QTNode
 
 public:
 	QTNode(AABB& surface);
-	void AddGameObject(const GameObject* gameObject);
+	void AddGameObject(GameObject* gameObject);
 
-	template<typename GEOMETRY> std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry);
+	template<class GEOMETRY> std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry);
 
 	AABB GetSurface() { return surface; }
 
 private:
 	AABB surface;
 	unsigned int maxGObjectsInNode = 2;
-	std::vector<const GameObject*> GObjectsInNode;
+	std::vector<GameObject*> GObjectsInNode;
 	std::vector<QTNode> childNodes;
 
 	void Subdivide();
@@ -50,18 +29,43 @@ private:
 	void Draw();
 };
 
-template<typename GEOMETRY> std::vector<GameObject*> QTNode::GetObjectsCollided(GEOMETRY geometry)
+class Quadtree
 {
-	if (geometry.Intersects(cube)) 
+public:
+	Quadtree();
+	~Quadtree();
+
+	void AddGameObject(GameObject* gameObject);
+	bool CleanUp();
+	void Draw();
+
+	template<class GEOMETRY> 
+	std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry);
+	
+
+private:
+	QTNode* root = nullptr;
+};
+
+template<class GEOMETRY> 
+std::vector<GameObject*> Quadtree::GetObjectsCollided(GEOMETRY geometry)
+{
+	return root->GetObjectsCollided(geometry);
+}
+
+template<class GEOMETRY> 
+std::vector<GameObject*> QTNode::GetObjectsCollided(GEOMETRY geometry)
+{
+	if (geometry.Intersects(surface)) 
 	{
-		vector<GameObject*> GObjectsCollided;
+		std::vector<GameObject*> GObjectsCollided;
 		for(unsigned int i = 0; i < GObjectsInNode.size(); ++i)
 		{
 			GObjectsCollided.push_back(GObjectsInNode[i]);
 		}
-		for (unsingeed int i = 0; i < childNodes.size(); ++i)
+		for (unsigned int i = 0; i < childNodes.size(); ++i)
 		{
-			vector<GameObject*> GObjectsCollidedFromChilds = childNodes[i].GetObjectsCollided(geometry);
+			std::vector<GameObject*> GObjectsCollidedFromChilds = childNodes[i].GetObjectsCollided(geometry);
 			GObjectsCollided.insert(GObjectsCollided.end(), GObjectsCollidedFromChilds.begin(), GObjectsCollidedFromChilds.end());
 		}
 		return GObjectsCollided;

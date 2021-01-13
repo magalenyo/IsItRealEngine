@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "ComponentCamera.h"
 #include "Math/float4x4.h"
+#include "assimp/scene.h"
 
 typedef unsigned __int8 Uint8;
 

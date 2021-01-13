@@ -17,7 +17,7 @@ Quadtree::~Quadtree()
 	}
 }
 
-void Quadtree::AddGameObject(const GameObject* gameObject)
+void Quadtree::AddGameObject(GameObject* gameObject)
 {
 	if (root != nullptr)
 	{
@@ -42,7 +42,7 @@ void Quadtree::Draw()
 
 QTNode::QTNode(AABB& surface) : surface(surface) {}
 
-void QTNode::AddGameObject(const GameObject* gameObject)
+void QTNode::AddGameObject(GameObject* gameObject)
 {
 	if (childNodes.empty() && GObjectsInNode.size() < maxGObjectsInNode) 
 	{
@@ -95,7 +95,7 @@ void QTNode::Subdivide()
 
 void QTNode::Restructure()
 {
-	for (std::vector<const GameObject*>::iterator it = GObjectsInNode.begin(); it != GObjectsInNode.end();)
+	for (std::vector<GameObject*>::iterator it = GObjectsInNode.begin(); it != GObjectsInNode.end();)
 	{
 		unsigned int intersectionsFound = 0;
 		bool intersecting[4];

@@ -1,14 +1,14 @@
 #pragma once
 #include "Module.h"
 #include "Quadtree.h"
-#include <string>
 #include <vector>
+#include "GameObject.h"
+#include "ComponentCamera.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
 #include "assimp/scene.h"
 
-class GameObject;
-class ComponentMaterial;
-class ComponentMesh;
-class ComponentCamera;
+
 
 class ModuleScene : public Module
 {
