@@ -113,22 +113,16 @@ void ComponentMesh::SetMaterialIndex(unsigned int newMaterialIndex)
 void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const float4x4 &modelMatrix)
 {
 	unsigned program = App->renderer->GetDefaultProgram();
-	const float4x4& view = App->camera->GetCamera()->GetViewMatrix();
-	const float4x4& proj = App->camera->GetCamera()->GetProjectionMatrix();
-	//float4x4 model = float4x4::identity;
-	//float4x4 model = float4x4(1, 0, 0, 1,
-	//						  0, 1, 0, 1,
-	//						  0, 0, 1, 1,
-	//					      0, 0, 0, 1);
-	float4x4 model = modelMatrix;
-
+	const float4x4& view = App->camera->GetViewMatrix();
+	const float4x4& proj = App->camera->GetProjectionMatrix();
+	
 	unsigned int textureId = App->renderer->GetMissingTexture();
 	if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr) {
 		textureId = materials[materialIndex]->GetDiffuseTexture()->GetTextureID();
 	}
 
 	glUseProgram(program);
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&modelMatrix);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 	glActiveTexture(GL_TEXTURE0);

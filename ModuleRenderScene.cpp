@@ -24,10 +24,21 @@ update_status ModuleRenderScene::Update()
 {
     if (App->scene->GetRootNode() != nullptr) 
     {
-        if (App->scene->GetCullingCamera())
+        RenderGameObjectsRecursively(App->scene->GetRootNode());
+    }
+    return UPDATE_CONTINUE;
+}
+
+void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node)
+{
+    ComponentCamera* cCamera = App->scene->GetCamera();
+
+    if (cCamera != nullptr)
+    {
+        if (cCamera->GetCullingStatus())
         {
-            std::vector<GameObject*> candidatesToCull = App->scene->GetQuadtree()->GetObjectsCollided(App->scene->GetCullingCamera()->GetFrustum());
-            std::vector<GameObject*> objectsToCull = TestCulling(candidatesToCull);
+            std::vector<GameObject*> candidatesToCull = App->scene->GetQuadtree()->GetObjectsCollided(cCamera->GetFrustum());
+            std::vector<GameObject*> objectsToCull = TestCulling(candidatesToCull, cCamera->GetFrustum());
 
             for (unsigned int i = 0; i < objectsToCull.size(); ++i)
             {
@@ -39,21 +50,10 @@ update_status ModuleRenderScene::Update()
             candidatesToCull.clear();
             objectsToCull.clear();
         }
-        else
-        {
-            RenderGameObjectsRecursively(App->scene->GetRootNode());
-        }
-    }
-    return UPDATE_CONTINUE;
-}
-
-void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) const
-{
-    if (node != App->scene->GetRootNode())
-    {
-        node->Draw();
     }
 
+    node->Draw();
+    
     std::vector<GameObject*> children = node->GetChildren();
     
     for (unsigned int i = 0; i < children.size(); ++i)
@@ -62,13 +62,13 @@ void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) con
     }
 }
 
-std::vector<GameObject*> ModuleRenderScene::TestCulling(const std::vector<GameObject*> candidatesToCull)
+std::vector<GameObject*> ModuleRenderScene::TestCulling(const std::vector<GameObject*> candidatesToCull, Frustum frustum)
 {
     std::vector<GameObject*> intersectingObjects;
 
     for (unsigned int i = 0; i < candidatesToCull.size(); ++i)
     {
-        if (App->scene->GetCullingCamera()->GetFrustum().Intersects(candidatesToCull[i]->GetAABB()))
+        if (frustum.Intersects(candidatesToCull[i]->GetAABB()))
         {
             intersectingObjects.push_back(candidatesToCull[i]);
         }

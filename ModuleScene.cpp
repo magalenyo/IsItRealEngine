@@ -17,23 +17,28 @@
 
 bool ModuleScene::Init()
 {
+	quadtree = new Quadtree();
 	root = new GameObject("ROOT", nullptr);
 	//Load("./resources/models/turret cannon multicolored.fbx");
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
 	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("./resources/scene/Zombunny/Zombunny.fbx");
+	objectsInScene.push_back(root);
 
 	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 
-	camera = new GameObject("Camera", root);
+	GameObject* camera = new GameObject("Camera", root);
 	camera->AddComponent(new ComponentCamera(camera));
-	camera->AddComponent(new ComponentTransform(float3(0, 0, 0), float3(0, 0, 0), Quat(0, 0, 0, 0), camera));
+	camera->AddComponent(new ComponentTransform(float3(0, 0, 0), float3(1, 1, 1), Quat::identity, camera));
+	camera->GetComponent<ComponentTransform>()->CalculateGlobalMatrix();
 
-	quadtree = new Quadtree();
-	
+	root->AddGameObject(camera);
+
+	objectsInScene.push_back(camera);
+
 	return true;
 }
 
@@ -43,6 +48,7 @@ bool ModuleScene::CleanUp()
 	root = nullptr;
 	delete quadtree;
 	quadtree = nullptr;
+	objectsInScene.clear();
 	return true;
 }
 
@@ -81,9 +87,31 @@ void ModuleScene::LoadModel(std::string path)
 	}
 }
 
+Quadtree* ModuleScene::GetQuadtree()
+{
+	return quadtree;
+}
+
+ComponentCamera* ModuleScene::GetCamera()
+{
+	for (GameObject* camera : objectsInScene)
+	{
+		if (ComponentCamera* cCamera = camera->GetComponent<ComponentCamera>())
+		{
+			return cCamera;
+		}
+	}
+	return nullptr;
+}
+
 GameObject* ModuleScene::GetRootNode() const
 {
 	return root;
+}
+
+std::vector<GameObject*> ModuleScene::GetObjectsInScene()
+{
+	return objectsInScene;
 }
 
 //void ModuleScene::LoadSingleTexture(const std::string& file_name)
@@ -285,6 +313,9 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	for (int i = 0; i < node->mNumChildren; i++) {
 		go->AddGameObject(LoadRecursively(file_name, scene, node->mChildren[i], go));
 	}
+
+	objectsInScene.push_back(go);
+	quadtree->AddGameObject(go);
 
 	return go;
 }

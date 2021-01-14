@@ -22,10 +22,26 @@ public:
 	float GetMovementSpeed() const;
 	float GetRotationSpeed() const;
 	float GetZoomSpeed() const;
-	ComponentCamera* GetCamera() const;
+
+	vec GetFront() const;
+	vec GetUp() const;
+	vec GetPosition() const;
+	float GetNearPlane() const;
+	float GetFarPlane() const;
+	float GetFOV() const;
+	float GetAspectRatio() const;
+	void SetNearPlane(float distance);
+	void SetFarPlane(float distance);
+	void SetFOV(float fov);
+	void SetAspectRatio(float aspectRatio);
+	float4x4 GetViewMatrix() const;
+	float4x4 GetProjectionMatrix() const;
+
+	Frustum GetCamera() const;
 
 private:
-	ComponentCamera* camera = nullptr;
+	//ComponentCamera* camera = nullptr;
+	Frustum camera = Frustum();
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 60.0f;
 	float zoomSpeed = 5.0f;

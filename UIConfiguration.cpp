@@ -259,13 +259,13 @@ void UIConfiguration::Draw()
     }
 
     if (ImGui::CollapsingHeader("Camera")) {
-        vec front = App->camera->GetCamera()->GetFront();
-        vec up = App->camera->GetCamera()->GetUp();
-        vec position = App->camera->GetCamera()->GetPosition();
-        float nearPlane = App->camera->GetCamera()->GetNearPlane();
-        float farPlane = App->camera->GetCamera()->GetFarPlane();
-        float FOV = App->camera->GetCamera()->GetFOV();
-        float aspectRatio = App->camera->GetCamera()->GetAspectRatio();
+        vec front = App->camera->GetFront();
+        vec up = App->camera->GetUp();
+        vec position = App->camera->GetPosition();
+        float nearPlane = App->camera->GetNearPlane();
+        float farPlane = App->camera->GetFarPlane();
+        float FOV = App->camera->GetFOV();
+        float aspectRatio = App->camera->GetAspectRatio();
         float movementSpeed = App->camera->GetMovementSpeed();
         float rotationSpeed = App->camera->GetRotationSpeed();
         float zoomSpeed = App->camera->GetZoomSpeed();

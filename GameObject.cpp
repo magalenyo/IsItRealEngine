@@ -1,8 +1,10 @@
 #include "GameObject.h"
 #include "GUIDGenerator.h"
 #include "imgui.h"
+#include "debugdraw.h"
 #include "MemoryLeakDetector.h"
 #include "Component.h"
+#include "ComponentCamera.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
@@ -63,15 +65,24 @@ void GameObject::Reparent(GameObject* newParent)
 
 void GameObject::Draw() const
 {
-	if (enabled && parent->IsEnabled())
+	if (parent != nullptr)
 	{
-		ComponentTransform* transform = GetComponent<ComponentTransform>();
-		std::vector<ComponentMesh*> meshes = GetComponents<ComponentMesh>();
-		std::vector<ComponentMaterial*> materials = GetComponents<ComponentMaterial>();
-
-		for (ComponentMesh* mesh : meshes)
+		if (enabled && parent->IsEnabled())
 		{
-			mesh->Draw(materials, transform->GetGlobalModelMatrix());
+			ComponentTransform* transform = GetComponent<ComponentTransform>();
+			std::vector<ComponentMesh*> meshes = GetComponents<ComponentMesh>();
+			std::vector<ComponentMaterial*> materials = GetComponents<ComponentMaterial>();
+
+			for (ComponentMesh* mesh : meshes)
+			{
+				mesh->Draw(materials, transform->GetGlobalModelMatrix());
+			}
+
+			ComponentCamera* camera = GetComponent<ComponentCamera>();
+			if (camera != nullptr)
+			{
+				dd::frustum((camera->GetFrustum().ProjectionMatrix() * camera->GetFrustum().ViewMatrix()).Inverted(), dd::colors::White);
+			}
 		}
 	}
 }

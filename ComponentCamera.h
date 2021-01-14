@@ -11,22 +11,13 @@ public:
 	ComponentCamera(GameObject* owner);
 	~ComponentCamera();
 
-	vec GetFront() const;
-	vec GetUp() const;
-	vec GetPosition() const;
-	float GetNearPlane() const;
-	float GetFarPlane() const;
-	float GetFOV() const;
-	float GetAspectRatio() const;
-	void SetNearPlane(float distance);
-	void SetFarPlane(float distance);
-	void SetFOV(float fov);
-	void SetAspectRatio(float aspectRatio);
-	float4x4 GetViewMatrix() const;
-	float4x4 GetProjectionMatrix() const;
+	void RenderToEditor() override;
+
 	Frustum GetFrustum() const;
+	bool GetCullingStatus() const;
 
 private:
-	Frustum frustum;
+	Frustum frustum = Frustum();
+	bool isCullingActive = false;
 };
 

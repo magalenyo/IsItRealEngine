@@ -16,7 +16,7 @@ public:
 	update_status Update() override;
 
 private:
-	void RenderGameObjectsRecursively(const GameObject* node) const;
-	std::vector<GameObject*> TestCulling(const std::vector<GameObject*> candidatesToCull);
+	void RenderGameObjectsRecursively(const GameObject* node);
+	std::vector<GameObject*> TestCulling(const std::vector<GameObject*> candidatesToCull, Frustum frustum);
 }; 
 

@@ -2,7 +2,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Model.h"
-#include "ComponentCamera.h"
 #include "Math/float3.h"
 #include "Geometry/AABB.h"
 
@@ -50,7 +49,6 @@ public:
 public:
 	unsigned int viewportWidth = 0;
 	unsigned int viewportHeight = 0;
-	ComponentCamera* mainCamera = nullptr;
 
 private:
 	

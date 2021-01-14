@@ -1,7 +1,8 @@
 #include "ComponentCamera.h"
 #include "GameObject.h"
+#include "Math/Quat.h"
 
-ComponentCamera::ComponentCamera(GameObject* owner)
+ComponentCamera::ComponentCamera(GameObject* owner) : Component(owner, ComponentType::CAMERA)
 {
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
 	frustum.SetPos(float3(0, 0, 0));
@@ -9,80 +10,25 @@ ComponentCamera::ComponentCamera(GameObject* owner)
 	frustum.SetUp(float3::unitY);
 
 	frustum.SetViewPlaneDistances(0.1f, 1000.0f);
-	frustum.SetPerspective(1.0f, 1.0f);
-
+	//frustum.SetPerspective(1.0f, 1.0f);
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
 }
 
 ComponentCamera::~ComponentCamera()
 {
 }
 
-vec ComponentCamera::GetFront() const
+void ComponentCamera::RenderToEditor()
 {
-	return frustum.Front();
-}
-
-vec ComponentCamera::GetUp() const
-{
-	return frustum.Up();
-}
-
-vec ComponentCamera::GetPosition() const
-{
-	return frustum.Pos();
-}
-
-float ComponentCamera::GetNearPlane() const
-{
-	return frustum.NearPlaneDistance();
-}
-
-float ComponentCamera::GetFarPlane() const
-{
-	return frustum.FarPlaneDistance();
-}
-
-float ComponentCamera::GetFOV() const
-{
-	return frustum.VerticalFov();
-}
-
-float ComponentCamera::GetAspectRatio() const
-{
-	return frustum.AspectRatio();
-}
-
-void ComponentCamera::SetNearPlane(float distance)
-{
-	frustum.SetViewPlaneDistances(distance, frustum.FarPlaneDistance());
-}
-
-void ComponentCamera::SetFarPlane(float distance)
-{
-	frustum.SetViewPlaneDistances(frustum.NearPlaneDistance(), distance);
-}
-
-void ComponentCamera::SetFOV(float fov)
-{
-	frustum.SetVerticalFovAndAspectRatio(fov, frustum.AspectRatio());
-}
-
-void ComponentCamera::SetAspectRatio(float aspectRatio)
-{
-	frustum.SetHorizontalFovAndAspectRatio(frustum.HorizontalFov(), aspectRatio);
-}
-
-float4x4 ComponentCamera::GetViewMatrix() const
-{
-	return frustum.ViewMatrix();
-}
-
-float4x4 ComponentCamera::GetProjectionMatrix() const
-{
-	return frustum.ProjectionMatrix();
 }
 
 Frustum ComponentCamera::GetFrustum() const
 {
 	return frustum;
 }
+
+bool ComponentCamera::GetCullingStatus() const
+{
+	return isCullingActive;
+}
+
