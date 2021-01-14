@@ -13,6 +13,7 @@
 #include "assimp/cimport.h"		// for aiImportFile
 #include "assimp/postprocess.h"	// for aiProcessPreset
 
+#include "FSTexture.h"
 
 #include "MemoryLeakDetector.h"
 
@@ -21,6 +22,8 @@ bool ModuleScene::Init()
 	root = new GameObject("ROOT", nullptr);
 	//Load("./resources/models/turret cannon multicolored.fbx");
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
+	//Load("./resources/scene/Clock/Clock.fbx");
+	//Load("./resources/scene/Firetruck/Firetruck.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
 	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("./resources/scene/Zombunny/Zombunny.fbx");
@@ -169,11 +172,12 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 		LOG(mMaterial->mProperties[j]->mKey.C_Str());
 	}
 
-	aiString materialName;//The name of the material found in mesh file
-	aiReturn ret;//Code which says whether loading something has been successful of not
-	ret = mMaterial->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)e)
+	aiString materialName;				//The name of the material found in mesh file
+	aiReturn ret;						//Code which says whether loading something has been successful of not
+	ret = mMaterial->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)
 
 	ComponentMaterial* material = new ComponentMaterial(nullptr);
+	material->SetName(std::string(materialName.C_Str()));
 
 	aiReturn returnTexture = mMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &file);
 	if (returnTexture == AI_SUCCESS)
@@ -181,6 +185,7 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
 			material->SetDiffuseTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::DIFFUSE));
+			FSTexture::ExportTexture();
 		}
 	}
 

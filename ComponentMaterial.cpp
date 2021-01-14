@@ -35,6 +35,9 @@ void ComponentMaterial::RenderToEditor()
     ImGui::Checkbox("Material component", &enabled);
     if (ImGui::CollapsingHeader("Material"))
     {
+		ImGui::TextColored(ImVec4(.38, .54, 1, 1), "Name: %s", name.c_str());
+		ImGui::Text("");
+
 		if (diffuse != nullptr) {
 			ImGui::Text("Diffuse texture");
 			ImGui::Text("Width: %.2f", diffuse->GetWidth()); ImGui::SameLine();
@@ -120,7 +123,24 @@ void ComponentMaterial::SetShininess(float _shininess)
 	shininess = _shininess;
 }
 
+void ComponentMaterial::SetName(std::string _name)
+{
+	name = _name;
+}
+
 Texture* ComponentMaterial::GetDiffuseTexture() const
 {
 	return diffuse;
+}
+
+void ComponentMaterial::Serialize(Value& value, Document::AllocatorType& allocator)
+{
+	Component::Serialize(value, allocator);
+	//document.AddMember("diffuseColor", diffuseColor, allocator);
+	//document.AddMember("specularColor", diffuseColor, allocator);
+	//document.AddMember("diffuseColor", diffuseColor, allocator);
+	//document.AddMember("diffuseColor", diffuseColor, allocator);
+	//document.AddMember("diffuseColor", diffuseColor, allocator);
+	//document.AddMember("diffuseColor", diffuseColor, allocator);
+
 }

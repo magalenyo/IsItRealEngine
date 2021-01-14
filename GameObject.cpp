@@ -152,3 +152,36 @@ GameObject* GameObject::GetParent()
 {
 	return parent;
 }
+
+void GameObject::Serialize(Value &value, Document::AllocatorType& allocator)
+{
+	/*std::string result = "\"uid\": " + uid + "," +
+						 "\"name\":" + name + "," +
+						 "\"enabled\":" + enabled + "," +
+						 "\"components\":";
+
+	result += "{";
+	for (Component* component : components) {
+		result += ", ";
+	}
+	result += "},";*/
+
+	value.AddMember("uid", StringRef(uid.c_str()), allocator);
+	value.AddMember("name", StringRef(name.c_str()), allocator);
+	value.AddMember("enabled", enabled, allocator);
+	Value serializedComponentList(kArrayType);
+	for (Component* component : components) {
+		Value serializedComponent(kObjectType);
+		component->Serialize(serializedComponent, allocator);
+		serializedComponentList.PushBack(serializedComponent, allocator);
+	}
+	value.AddMember("components", serializedComponentList, allocator);
+
+	Value serializedGameObjectList(kArrayType);
+	for (GameObject* gameObject : children) {
+		Value serializedGameObject(kObjectType);
+		gameObject->Serialize(serializedGameObject, allocator);
+		serializedGameObjectList.PushBack(serializedGameObject, allocator);
+	}
+	value.AddMember("children", serializedGameObjectList, allocator);
+}

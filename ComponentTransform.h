@@ -30,6 +30,8 @@ public:
 	void CalculateGlobalMatrix();
 	void RegenerateGlobalMatrix();
 
+	void Serialize(Value& value, Document::AllocatorType& allocator) override;
+
 private:
 
 	float3 position = float3(0, 0, 0);		// Local Matrix position

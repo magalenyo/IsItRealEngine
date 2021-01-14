@@ -199,6 +199,9 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ModuleRenderScene.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
+    <ClCompile Include="FSTexture.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -520,6 +523,12 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ModuleRenderScene.h" />
     <ClInclude Include="SceneImporter.h" />
+    <ClInclude Include="FSTexture.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FSJsonIncluders.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">
@@ -554,6 +563,9 @@
     </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{f5bb81ef-3901-4063-8f0f-acd010ccdf16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileSystem">
+      <UniqueIdentifier>{0fcfb3b4-4b9e-4095-8e32-f7c36d9b6d5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

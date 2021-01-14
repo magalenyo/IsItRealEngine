@@ -20,17 +20,21 @@ public:
 	void SetSpecularTexture(Texture* texture);
 	void SetNormalTexture(Texture* texture);
 	void SetShininess(float _shininess);
+	void SetName(std::string _name);
 
 	Texture* GetDiffuseTexture() const;
 
+	void Serialize(Value& value, Document::AllocatorType& allocator) override;
+
 private:
-	float3 diffuseColor		= float3(0, 0, 0);
-	float3 specularColor	= float3(0, 0, 0);
-	Texture* diffuse		= nullptr;
-	Texture* specular		= nullptr;
-	Texture* emissive		= nullptr;
-	Texture* normal			= nullptr;
-	float shininess			= 0;
+	float3 diffuseColor			= float3(0, 0, 0);
+	float3 specularColor		= float3(0, 0, 0);
+	Texture* diffuse			= nullptr;
+	Texture* specular			= nullptr;
+	Texture* emissive			= nullptr;
+	Texture* normal				= nullptr;
+	float shininess				= 0;
+	std::string name			= "";
 
 };
 

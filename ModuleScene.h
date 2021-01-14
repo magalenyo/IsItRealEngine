@@ -37,7 +37,11 @@ private:
     GameObject* LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent);
 
 
+
     std::string GetProcessedPath(const char* modelPath, const std::string& textureName);
     bool ExistsTexture(const std::string& path);
+
+
+    
 };
 

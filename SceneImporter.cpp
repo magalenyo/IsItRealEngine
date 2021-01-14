@@ -1,4 +1,10 @@
 #include "SceneImporter.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+
+#include "FSJsonIncluders.h"
+
 
 bool SceneImporter::Init()
 {
@@ -13,6 +19,14 @@ bool SceneImporter::Init()
 	}
 	LOG("%s directory properly set up", PATH_LIBRARY.c_str());
 
+	ExportScene(nullptr);
+
+	return true;
+}
+
+bool SceneImporter::CleanUp()
+{
+	ExportScene(App->scene->GetRootNode());
 	return true;
 }
 
@@ -22,6 +36,37 @@ bool SceneImporter::ExistsInSystem(const std::string& path)
 {
 		struct stat buffer;
 		return (stat(path.c_str(), &buffer) == 0);
+}
+
+void SceneImporter::ExportScene(GameObject* scene)
+{
+	if (scene != nullptr) {
+		const char json[]  = "{\"root\":}";
+
+		Document document;
+		document.SetObject();
+		document.Parse(json);
+		Document::AllocatorType& allocator = document.GetAllocator();
+
+		Value rootNodeValue(kObjectType);
+		scene->Serialize(rootNodeValue, allocator);
+		document.AddMember("root", rootNodeValue, allocator);
+
+
+		StringBuffer buffer;
+		//PrettyWriter<StringBuffer> writer(buffer);
+		Writer<StringBuffer> writer(buffer);
+
+		document.Accept(writer);
+
+		std::string aux = buffer.GetString();
+		LOG(aux.c_str());
+	}
+}
+
+GameObject* SceneImporter::ImportScene(const char* json)
+{
+	return nullptr;
 }
 
 bool SceneImporter::CreateAssetsDirectory()

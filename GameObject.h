@@ -2,7 +2,9 @@
 
 #include <string>
 #include <vector>
-#include <typeinfo> 
+#include <typeinfo>
+
+#include "FSJsonIncluders.h"
 
 class Component;
 
@@ -38,6 +40,8 @@ public:
 
     template <class T> 
 	std::vector<T*> GetComponents() const;
+
+	void Serialize(Value &value, Document::AllocatorType& allocator);
 
 private:
 	std::string uid;

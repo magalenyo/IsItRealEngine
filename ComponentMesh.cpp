@@ -188,6 +188,11 @@ float3 ComponentMesh::GetFurthestPosition()
 	return furthestPosition;
 }
 
+void ComponentMesh::Serialize(Value& value, Document::AllocatorType& allocator)
+{
+	Component::Serialize(value, allocator);
+}
+
 void ComponentMesh::DestroyBuffer(unsigned int buffer)
 {
 	glDeleteBuffers(1, &buffer);

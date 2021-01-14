@@ -31,6 +31,8 @@ public:
 	unsigned int GetFaces() const;
 	float3 GetFurthestPosition();
 
+	void Serialize(Value& value, Document::AllocatorType& allocator) override;
+
 private:
 	static const int BIND_VERTEX_ARRAY_END = 0;
 

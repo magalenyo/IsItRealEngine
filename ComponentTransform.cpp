@@ -93,3 +93,8 @@ void ComponentTransform::RegenerateGlobalMatrix()
         }
     }
 }
+
+void ComponentTransform::Serialize(Value& value, Document::AllocatorType& allocator)
+{
+    Component::Serialize(value, allocator);
+}

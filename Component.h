@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "FSJsonIncluders.h"
 
 class GameObject;
 
@@ -22,6 +23,7 @@ public:
 	virtual void Update() {}
 	virtual void Disable() {}
 	virtual void RenderToEditor() {}
+	virtual void Serialize(Value& value, Document::AllocatorType& allocator);
 
 	void SetParent(GameObject* parent);
 	
