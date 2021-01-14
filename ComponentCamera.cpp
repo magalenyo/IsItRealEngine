@@ -9,7 +9,7 @@ ComponentCamera::ComponentCamera(GameObject* owner) : Component(owner, Component
 	frustum.SetFront(float3::unitZ);
 	frustum.SetUp(float3::unitY);
 
-	frustum.SetViewPlaneDistances(0.1f, 1000.0f);
+	frustum.SetViewPlaneDistances(0.1f, 10.0f);
 	//frustum.SetPerspective(1.0f, 1.0f);
 	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
 }
@@ -30,5 +30,10 @@ Frustum ComponentCamera::GetFrustum() const
 bool ComponentCamera::GetCullingStatus() const
 {
 	return isCullingActive;
+}
+
+void ComponentCamera::SetNewPosition(float3 newPosition)
+{
+	frustum.SetPos(newPosition);
 }
 

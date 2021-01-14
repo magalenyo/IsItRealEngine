@@ -9,10 +9,8 @@
 #include "Math/float3x3.h"
 #include "MemoryLeakDetector.h"
 
-ModuleCamera::ModuleCamera()
+bool ModuleCamera::Init()
 {
-	//camera = new ComponentCamera(nullptr);
-
 	camera.SetKind(FrustumSpaceGL, FrustumRightHanded);
 	camera.SetViewPlaneDistances(0.1f, 200.0f);
 	camera.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
@@ -20,15 +18,7 @@ ModuleCamera::ModuleCamera()
 	camera.SetPos(float3(0, 3, -8));
 	camera.SetFront(float3::unitZ);
 	camera.SetUp(float3::unitY);
-}
 
-ModuleCamera::~ModuleCamera()
-{
-}
-
-bool ModuleCamera::Init()
-{
-	//App->renderer->mainCamera = camera;
 	return true;
 }
 
@@ -105,7 +95,6 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-
 void ModuleCamera::ResetSpeed()
 {
 	movementSpeed = 5.0f;
@@ -123,6 +112,26 @@ void ModuleCamera::OnWindowResized(int width, int height)
 	camera.SetVerticalFovAndAspectRatio(camera.VerticalFov(), ((float) width) / (float) height);
 }
 
+void ModuleCamera::SetHorizontalFov(int fov)
+{
+	camera.SetHorizontalFovAndAspectRatio(fov, camera.AspectRatio());
+}
+
+void ModuleCamera::SetVerticalFov(int fov)
+{
+	camera.SetVerticalFovAndAspectRatio(fov, camera.AspectRatio());
+}
+
+void ModuleCamera::SetNearPlane(float distance)
+{
+	camera.SetViewPlaneDistances(distance, camera.FarPlaneDistance());
+}
+
+void ModuleCamera::SetFarPlane(float distance)
+{
+	camera.SetViewPlaneDistances(camera.NearPlaneDistance(), distance);
+}
+
 void ModuleCamera::FocusCamera(const float3 &position)
 {
 	camera.SetPos(float3(position.x, position.y, position.z + positionFromFocusVertice));
@@ -130,19 +139,14 @@ void ModuleCamera::FocusCamera(const float3 &position)
 	camera.SetUp(float3::unitY);
 }
 
-float ModuleCamera::GetMovementSpeed() const
+float4x4 ModuleCamera::GetViewMatrix() const
 {
-	return movementSpeed;
+	return camera.ViewMatrix();
 }
 
-float ModuleCamera::GetRotationSpeed() const
+float4x4 ModuleCamera::GetProjectionMatrix() const
 {
-	return rotationSpeed;
-}
-
-float ModuleCamera::GetZoomSpeed() const
-{
-	return zoomSpeed;
+	return camera.ProjectionMatrix();
 }
 
 vec ModuleCamera::GetFront() const
@@ -180,34 +184,19 @@ float ModuleCamera::GetAspectRatio() const
 	return camera.AspectRatio();
 }
 
-void ModuleCamera::SetNearPlane(float distance)
+float ModuleCamera::GetMovementSpeed() const
 {
-	camera.SetViewPlaneDistances(distance, camera.FarPlaneDistance());
+	return movementSpeed;
 }
 
-void ModuleCamera::SetFarPlane(float distance)
+float ModuleCamera::GetRotationSpeed() const
 {
-	camera.SetViewPlaneDistances(camera.NearPlaneDistance(), distance);
+	return rotationSpeed;
 }
 
-void ModuleCamera::SetFOV(float fov)
+float ModuleCamera::GetZoomSpeed() const
 {
-	camera.SetVerticalFovAndAspectRatio(fov, camera.AspectRatio());
-}
-
-void ModuleCamera::SetAspectRatio(float aspectRatio)
-{
-	camera.SetHorizontalFovAndAspectRatio(camera.HorizontalFov(), aspectRatio);
-}
-
-float4x4 ModuleCamera::GetViewMatrix() const
-{
-	return camera.ViewMatrix();
-}
-
-float4x4 ModuleCamera::GetProjectionMatrix() const
-{
-	return camera.ProjectionMatrix();
+	return zoomSpeed;
 }
 
 Frustum ModuleCamera::GetCamera() const

@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
+#include "ModuleScene.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry/Frustum.h"
@@ -145,7 +146,11 @@ update_status ModuleRender::Update()
 	RenderGrid();
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
 	//RenderModel();
-
+	App->scene->GetQuadtree()->Draw();
+	for (AABB aabb : aabbsToDraw)
+	{
+		dd::aabb(aabb.minPoint, aabb.maxPoint, dd::colors::White);
+	}
 	// unbind FBO
 	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 

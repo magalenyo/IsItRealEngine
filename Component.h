@@ -29,9 +29,9 @@ public:
 	std::string GetUID() const { return uid; };
 
 private:
-	ComponentType type = ComponentType::UNDEFINED;
 	std::string uid;
-
+	ComponentType type = ComponentType::UNDEFINED;
+	
 protected:
 	bool enabled = true;
 	GameObject* owner = nullptr;

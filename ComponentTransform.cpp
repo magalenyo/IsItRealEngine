@@ -8,7 +8,7 @@
 
 #include "MemoryLeakDetector.h"
 
-ComponentTransform::ComponentTransform(float3 position, float3 scale, Quat rotation, GameObject* owner) : position(position), scale(scale), rotation(rotation), localMatrix(float4x4::FromTRS(position, rotation, scale)), Component(owner, ComponentType::TRANSFORM) {}
+ComponentTransform::ComponentTransform(float3 position, float3 scale, Quat rotation, GameObject* owner) : position(position), scale(scale), rotation(rotation), localMatrix(float4x4::FromTRS(position, rotation, scale)), globalMatrix(localMatrix), Component(owner, ComponentType::TRANSFORM) {}
 
 void ComponentTransform::RenderToEditor()
 {
@@ -29,7 +29,7 @@ void ComponentTransform::RenderToEditor()
             changed = true;
         }
         ImGui::Text("");
-
+        
         ImGui::Text("Scale");
         ImGui::PushID("Sx"); changed |= ImGui::DragFloat("x", &scale.x, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Sy"); changed |= ImGui::DragFloat("y", &scale.y, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
@@ -73,7 +73,7 @@ void ComponentTransform::CalculateGlobalMatrix()
     if (owner != nullptr) {
         ComponentTransform* parentTransform = owner->GetParent()->GetComponent<ComponentTransform>();
         if (parentTransform != nullptr) {
-            globalMatrix = localMatrix * parentTransform->globalMatrix;
+            globalMatrix = parentTransform->globalMatrix * localMatrix;
         }
         else {
             globalMatrix = localMatrix;

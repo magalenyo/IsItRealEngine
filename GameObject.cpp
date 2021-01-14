@@ -63,6 +63,38 @@ void GameObject::Reparent(GameObject* newParent)
 	}
 }
 
+void GameObject::RemoveChildFromParent()
+{
+	if (parent != nullptr) {
+		parent->RemoveChild(this);
+		SetParent(nullptr);
+	}
+}
+
+void GameObject::MoveUpOnHiearchy()
+{
+	for (int i = 0; i < parent->children.size(); ++i) {
+		if (parent->children[i] == this) {
+			GameObject* aux = parent->children[i];
+			parent->children[i] = parent->children[i - 1];
+			parent->children[i - 1] = aux;
+			break;
+		}
+	}
+}
+
+void GameObject::MoveDownOnHierarchy()
+{
+	for (int i = 0; i < parent->children.size(); ++i) {
+		if (parent->children[i] == this) {
+			GameObject* aux = parent->children[i];
+			parent->children[i] = parent->children[i + 1];
+			parent->children[i + 1] = aux;
+			break;
+		}
+	}
+}
+
 void GameObject::Draw() const
 {
 	if (parent != nullptr)
@@ -81,7 +113,9 @@ void GameObject::Draw() const
 			ComponentCamera* camera = GetComponent<ComponentCamera>();
 			if (camera != nullptr)
 			{
+				camera->SetNewPosition(transform->GetPosition());
 				dd::frustum((camera->GetFrustum().ProjectionMatrix() * camera->GetFrustum().ViewMatrix()).Inverted(), dd::colors::White);
+
 			}
 		}
 	}
@@ -95,6 +129,22 @@ bool GameObject::HasComponents() const
 bool GameObject::IsLeaf() const
 {
 	return children.empty();
+}
+
+bool GameObject::IsFirstChildOfParent() const
+{
+	if (parent->children[0] == this) {
+		return true;
+	}
+	return false;
+}
+
+bool GameObject::IsLastChildOfParent() const
+{
+	if (parent->children[parent->children.size() - 1] == this) {
+		return true;
+	}
+	return false;
 }
 
 std::string GameObject::GetName() const

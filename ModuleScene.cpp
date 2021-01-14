@@ -3,6 +3,7 @@
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"

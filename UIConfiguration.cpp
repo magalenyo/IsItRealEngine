@@ -7,7 +7,6 @@
 #include "ModuleTexture.h"
 #include "ModuleScene.h"
 #include "Model.h"
-#include "ComponentCamera.h"
 
 #include "MemoryLeakDetector.h"
 #include "IL/il.h"

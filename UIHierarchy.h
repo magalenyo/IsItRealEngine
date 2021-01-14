@@ -11,6 +11,7 @@ public:
 
 private:
 	void RenderRecursively(GameObject* gameObject);
+	void RenderActionsForGameObject(GameObject* gameObject);
 
 	GameObject* selectedGameObject = nullptr;
 	unsigned int emptyGameobjectCounter = 0;

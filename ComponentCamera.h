@@ -16,6 +16,8 @@ public:
 	Frustum GetFrustum() const;
 	bool GetCullingStatus() const;
 
+	void SetNewPosition(float3 newPosition);
+
 private:
 	Frustum frustum = Frustum();
 	bool isCullingActive = false;

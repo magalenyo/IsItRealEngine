@@ -6,19 +6,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
-
-ModuleRenderScene::ModuleRenderScene()
-{
-}
-
-ModuleRenderScene::~ModuleRenderScene()
-{
-}
-
-bool ModuleRenderScene::Init()
-{
-    return true;
-}
+#include "Quadtree.h"
 
 update_status ModuleRenderScene::Update()
 {
@@ -29,7 +17,7 @@ update_status ModuleRenderScene::Update()
     return UPDATE_CONTINUE;
 }
 
-void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node)
+void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) const
 {
     ComponentCamera* cCamera = App->scene->GetCamera();
 
@@ -54,21 +42,19 @@ void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node)
 
     node->Draw();
     
-    std::vector<GameObject*> children = node->GetChildren();
-    
-    for (unsigned int i = 0; i < children.size(); ++i)
+    for (GameObject* child : node->GetChildren()) 
     {
-        RenderGameObjectsRecursively(children[i]);
+        RenderGameObjectsRecursively(child);
     }
 }
 
-std::vector<GameObject*> ModuleRenderScene::TestCulling(const std::vector<GameObject*> candidatesToCull, Frustum frustum)
+std::vector<GameObject*> ModuleRenderScene::TestCulling(const std::vector<GameObject*> candidatesToCull, Frustum frustum) const
 {
     std::vector<GameObject*> intersectingObjects;
 
     for (unsigned int i = 0; i < candidatesToCull.size(); ++i)
     {
-        if (frustum.Intersects(candidatesToCull[i]->GetAABB()))
+        if (frustum.Intersects(candidatesToCull[i]->GetOBB()))
         {
             intersectingObjects.push_back(candidatesToCull[i]);
         }
