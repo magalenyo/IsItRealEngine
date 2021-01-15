@@ -4,8 +4,8 @@
 #include "GameObject.h"
 #include <iostream>
 #include <fstream>
-
 #include "FSJsonIncluders.h"
+#include "FSConstants.h"
 
 
 bool SceneImporter::Init()
@@ -21,14 +21,14 @@ bool SceneImporter::Init()
 	}
 	LOG("%s directory properly set up", PATH_LIBRARY.c_str());
 
-	ExportScene(nullptr);
+	// Import scene
 
 	return true;
 }
 
 bool SceneImporter::CleanUp()
 {
-	ExportScene(App->scene->GetRootNode());
+	//ExportScene(App->scene->GetRootNode());
 	return true;
 }
 

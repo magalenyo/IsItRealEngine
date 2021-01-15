@@ -21,6 +21,7 @@ public:
 	void SetNormalTexture(Texture* texture);
 	void SetShininess(float _shininess);
 	void SetName(std::string _name);
+	void SetSerializedName(std::string _serializedName);
 
 	Texture* GetDiffuseTexture() const;
 
@@ -35,6 +36,5 @@ private:
 	Texture* normal				= nullptr;
 	float shininess				= 0;
 	std::string name			= "";
-
+	std::string serializedName	= "";
 };
-

@@ -128,6 +128,11 @@ void ComponentMaterial::SetName(std::string _name)
 	name = _name;
 }
 
+void ComponentMaterial::SetSerializedName(std::string _serializedName)
+{
+	serializedName = _serializedName;
+}
+
 Texture* ComponentMaterial::GetDiffuseTexture() const
 {
 	return diffuse;

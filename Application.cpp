@@ -21,6 +21,7 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(time = new ModuleTime());
+	modules.push_back(sceneImporter = new SceneImporter());
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(textures = new ModuleTexture());
 	modules.push_back(program = new ModuleProgram());
@@ -31,8 +32,6 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugDraw = new ModuleDebugDraw());
-	modules.push_back(sceneImporter = new SceneImporter());
-
 }
 
 Application::~Application()

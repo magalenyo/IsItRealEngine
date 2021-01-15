@@ -147,6 +147,7 @@
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="DebugLogger.h" />
     <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="FSConstants.h" />
     <ClInclude Include="FSJsonIncluders.h" />
     <ClInclude Include="FSTexture.h" />
     <ClInclude Include="GameObject.h" />

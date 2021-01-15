@@ -1,8 +1,11 @@
 #pragma once
+
+#include <string>
+
 class FSTexture
 {
 public:
-	static void ExportTexture();
+	static void ExportTexture(std::string name);
 
 private:
 };

@@ -1,6 +1,8 @@
 #include "UIMainMenu.h"
 #include "Application.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
+#include "SceneImporter.h"
 #include "imgui.h"
 
 #include <windows.h>
@@ -87,6 +89,10 @@ void UIMainMenu::Draw()
     {
 
         if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Save SCENE")) {
+                App->sceneImporter->ExportScene(App->scene->GetRootNode());
+            }
+
             if (ImGui::MenuItem("Quit")) {
                 App->editor->ExitApplication();
             }

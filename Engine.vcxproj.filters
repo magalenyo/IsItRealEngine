@@ -529,6 +529,9 @@
     <ClInclude Include="FSJsonIncluders.h">
       <Filter>FileSystem</Filter>
     </ClInclude>
+    <ClInclude Include="FSConstants.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">

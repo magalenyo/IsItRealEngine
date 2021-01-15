@@ -8,6 +8,7 @@
 #include "ComponentTransform.h"
 #include "Texture.h"
 #include "Model.h"
+#include "FSConstants.h"
 
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
@@ -48,7 +49,6 @@ void ModuleScene::Load(const char* file_name)
 	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
 	{
-		//std::vector<ComponentMaterial*> materials = LoadMaterials(file_name, scene->mMaterials, scene->mNumMaterials);.
 		GameObject* gameObject = LoadRecursively(file_name, scene, scene->mRootNode, root);
 		root->AddGameObject(gameObject);
 		aiReleaseImport(scene);
@@ -162,19 +162,20 @@ GameObject* ModuleScene::GetRootNode() const
 //}
 
  //TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
-ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial* const mMaterial)
+ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* const mMaterial)
 {
 	std::vector<ComponentMaterial*> result;
 	aiString file;
 	
-	for (unsigned j = 0; j < mMaterial->mNumProperties; ++j)
-	{
-		LOG(mMaterial->mProperties[j]->mKey.C_Str());
-	}
+	//for (unsigned j = 0; j < mMaterial->mNumProperties; ++j)
+	//{
+	//	LOG(mMaterial->mProperties[j]->mKey.C_Str());
+	//}
 
-	aiString materialName;				//The name of the material found in mesh file
-	aiReturn ret;						//Code which says whether loading something has been successful of not
-	ret = mMaterial->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)
+	aiString materialName;										//The name of the material found in mesh file
+	aiReturn ret;												//Code which says whether loading something has been successful of not
+	ret = mMaterial->Get(AI_MATKEY_NAME, materialName);			//Get the material name (pass by reference)
+	
 
 	ComponentMaterial* material = new ComponentMaterial(nullptr);
 	material->SetName(std::string(materialName.C_Str()));
@@ -185,7 +186,7 @@ ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial*
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
 			material->SetDiffuseTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::DIFFUSE));
-			FSTexture::ExportTexture();
+			FSTexture::ExportTexture(PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false));
 		}
 	}
 
@@ -245,7 +246,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
 		go->AddComponent(mesh);
-		ComponentMaterial* material = LoadMaterials(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
+		ComponentMaterial* material = LoadMaterial(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
 		material->SetParent(go);
 		mesh->SetMaterialIndex(i);
 		go->AddComponent(material);
@@ -347,12 +348,13 @@ std::string ModuleScene::GetProcessedPath(const char* modelPath, const std::stri
 	return "";
 }
 
-std::string ModuleScene::SanitizeTextureName(const std::string& textureName)
+std::string ModuleScene::SanitizeTextureName(const std::string& textureName, bool withExtension)
 {
 	char textureFilename[_MAX_FNAME];
 	char textureExtension[_MAX_EXT];
 	_splitpath_s(textureName.c_str(), NULL, 0, NULL, 0, textureFilename, _MAX_FNAME, textureExtension, _MAX_EXT);
-	return std::string(textureFilename) + std::string(textureExtension);
+	
+	return withExtension ? std::string(textureFilename) + std::string(textureExtension) : std::string(textureFilename);
 }
 
 // fastest way to check if a file exists:
