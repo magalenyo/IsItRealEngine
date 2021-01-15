@@ -26,6 +26,7 @@ public:
     Quadtree* GetQuadtree();
     ComponentCamera* GetCamera();
     GameObject* GetRootNode() const;
+    void RemoveObjectFromScene(GameObject* gameObject);
 
     std::vector<GameObject*> GetObjectsInScene();
 
@@ -33,6 +34,7 @@ private:
     const std::string MODEL_EXTENSION_FBX = ".fbx";
 
     GameObject* root = nullptr;
+    GameObject* camera = nullptr;
     std::vector<GameObject*> objectsInScene;
 
     Quadtree* quadtree = nullptr;

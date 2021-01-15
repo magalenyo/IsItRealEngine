@@ -163,6 +163,7 @@ void UIHierarchy::RenderActionsForGameObject(GameObject* gameObject)
 
             if (ImGui::Selectable("Delete GameObject")) {
                 LOG("Removing %s ...", gameObject->GetName().c_str());
+                App->scene->RemoveObjectFromScene(gameObject);
                 selectedGameObject = gameObject->GetParent();
                 gameObject->RemoveChildFromParent();
                 delete gameObject;

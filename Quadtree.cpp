@@ -121,7 +121,10 @@ void QTNode::Restructure()
 			{
 				if (intersecting[i])
 				{
-					childNodes[i].AddGameObject(*it);
+					/*if (childNodes[i].GObjectsInNode.size() < maxGObjectsInNode)
+					{*/
+						childNodes[i].AddGameObject(*it);
+					//}
 				}
 			}
 			
@@ -138,16 +141,20 @@ void QTNode::Restructure()
 void QTNode::Draw()
 {
 	AABB surfaceToDraw = surface;
-	surfaceToDraw.minPoint.x += 1;
+	/*surfaceToDraw.minPoint.x += 1;
 	surfaceToDraw.minPoint.z += 1;
 	surfaceToDraw.maxPoint.x -= 1;
-	surfaceToDraw.maxPoint.z -= 1;
+	surfaceToDraw.maxPoint.z -= 1;*/
 
 	App->renderer->AddAABB(surfaceToDraw);
 
 	for (unsigned int i = 0; i < childNodes.size(); ++i)
 	{
-		childNodes[i].Draw();
+		if (!childNodes[i].GObjectsInNode.empty() || !childNodes[i].childNodes.empty())
+		{
+			childNodes[i].Draw();
+		}
+		
 	}
 }
 
@@ -158,6 +165,7 @@ void QTNode::Clear()
 	{
 		child.Clear();
 	}
+	childNodes.clear();
 }
 
 

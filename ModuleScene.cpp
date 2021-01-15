@@ -31,14 +31,14 @@ bool ModuleScene::Init()
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 
-	GameObject* camera = new GameObject("Camera", root);
+	camera = new GameObject("Camera", root);
 	camera->AddComponent(new ComponentCamera(camera));
 	camera->AddComponent(new ComponentTransform(float3(0, 0, 0), float3(1, 1, 1), Quat::identity, camera));
 	camera->GetComponent<ComponentTransform>()->CalculateGlobalMatrix();
 
 	root->AddGameObject(camera);
 
-	objectsInScene.push_back(camera);
+	//objectsInScene.push_back(camera);
 
 	return true;
 }
@@ -63,10 +63,10 @@ update_status ModuleScene::Update()
 
 bool ModuleScene::CleanUp()
 {
-	delete root;
-	root = nullptr;
 	delete quadtree;
 	quadtree = nullptr;
+	delete root;
+	root = nullptr;
 	objectsInScene.clear();
 	return true;
 }
@@ -112,20 +112,34 @@ Quadtree* ModuleScene::GetQuadtree()
 }
 
 ComponentCamera* ModuleScene::GetCamera()
-{
-	for (GameObject* camera : objectsInScene)
+{	
+	if (camera != nullptr) 
 	{
 		if (ComponentCamera* cCamera = camera->GetComponent<ComponentCamera>())
 		{
 			return cCamera;
 		}
 	}
+	
 	return nullptr;
 }
 
 GameObject* ModuleScene::GetRootNode() const
 {
 	return root;
+}
+
+void ModuleScene::RemoveObjectFromScene(GameObject* gameObject)
+{
+	if (gameObject != camera)
+	{
+		std::vector<GameObject*>::iterator it = std::find(objectsInScene.begin(), objectsInScene.end(), gameObject);
+		for (GameObject* go : (*it)->GetChildren())
+		{
+			RemoveObjectFromScene(go);
+		}
+		objectsInScene.erase(remove(objectsInScene.begin(), objectsInScene.end(), gameObject));
+	}	
 }
 
 std::vector<GameObject*> ModuleScene::GetObjectsInScene()
@@ -369,7 +383,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	}
 
 	objectsInScene.push_back(go);
-	quadtree->AddGameObject(go);
+	//quadtree->AddGameObject(go);
 
 	return go;
 }

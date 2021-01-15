@@ -32,7 +32,7 @@ GameObject::~GameObject()
 void GameObject::Update()
 {
 	ComponentTransform* transform = GetComponent<ComponentTransform>();
-	obb = aabb.Transform(transform->GetGlobalModelMatrix());
+	obb = localaabb.Transform(transform->GetGlobalModelMatrix());
 	aabb = obb.MinimalEnclosingAABB();
 	
 }
@@ -193,5 +193,5 @@ GameObject* GameObject::GetParent()
 
 void GameObject::SetAABB(AABB localAABB)
 {
-	aabb = localAABB;
+	localaabb = localAABB;
 }

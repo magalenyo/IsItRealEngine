@@ -61,6 +61,7 @@ private:
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
 
+	AABB localaabb = { {0,0,0},{0,0,0} };
 	AABB aabb = { {0,0,0},{0,0,0} };
 	OBB obb = { aabb };
 };
