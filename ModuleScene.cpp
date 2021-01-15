@@ -27,7 +27,7 @@ bool ModuleScene::Init()
 
 	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
-	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
+	Load("./resources/Street_Environment/Street_environment_V01.FBX");
 	return true;
 }
 
@@ -242,6 +242,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		go->AddComponent(mesh);
 		ComponentMaterial* material = LoadMaterials(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
 		material->SetParent(go);
+		mesh->SetMaterialIndex(i);
 		go->AddComponent(material);
 	}
 
@@ -312,9 +313,41 @@ std::string ModuleScene::GetProcessedPath(const char* modelPath, const std::stri
 	}
 	LOG("Trying to clear the path and retry search");
 
+	std::string processedTextureName = SanitizeTextureName(textureName);
+	if (ExistsTexture(currentPath = std::string(sourceDirectory) + processedTextureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in fbx path", processedTextureName.c_str());
 
-	LOG("Texture %s not found", textureName.c_str());
+	if (ExistsTexture(currentPath = processedTextureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in default (GAME) path", processedTextureName.c_str());
+
+	if (ExistsTexture(currentPath = PATH_MODELS + processedTextureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Texture %s NOT found in models path", processedTextureName.c_str());
+
+	if (ExistsTexture(currentPath = PATH_TEXTURES + processedTextureName)) {
+		LOG("Found texture in %s", currentPath.c_str());
+		return currentPath;
+	}
+	LOG("Trying to clear the path and retry search");
+
+	LOG("Texture %s not found", processedTextureName.c_str());
 	return "";
+}
+
+std::string ModuleScene::SanitizeTextureName(const std::string& textureName)
+{
+	char textureFilename[_MAX_FNAME];
+	char textureExtension[_MAX_EXT];
+	_splitpath_s(textureName.c_str(), NULL, 0, NULL, 0, textureFilename, _MAX_FNAME, textureExtension, _MAX_EXT);
+	return std::string(textureFilename) + std::string(textureExtension);
 }
 
 // fastest way to check if a file exists:
