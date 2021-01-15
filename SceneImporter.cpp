@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include <iostream>
+#include <fstream>
 
 #include "FSJsonIncluders.h"
 
@@ -55,12 +57,17 @@ void SceneImporter::ExportScene(GameObject* scene)
 
 		StringBuffer buffer;
 		//PrettyWriter<StringBuffer> writer(buffer);
-		Writer<StringBuffer> writer(buffer);
-
+		Writer<StringBuffer> writer(buffer);			// -> minified version
 		document.Accept(writer);
 
-		std::string aux = buffer.GetString();
-		LOG(aux.c_str());
+		//std::string aux = buffer.GetString();
+
+		std::ofstream myfile;
+		myfile.open("root.scene");
+		myfile << buffer.GetString();
+		myfile.close();
+
+		//LOG(aux.c_str());
 	}
 }
 

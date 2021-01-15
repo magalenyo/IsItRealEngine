@@ -97,4 +97,44 @@ void ComponentTransform::RegenerateGlobalMatrix()
 void ComponentTransform::Serialize(Value& value, Document::AllocatorType& allocator)
 {
     Component::Serialize(value, allocator);
+    Value positionSerialized(kArrayType);
+    positionSerialized.PushBack(position.x, allocator);
+    positionSerialized.PushBack(position.y, allocator);
+    positionSerialized.PushBack(position.z, allocator);
+    value.AddMember("position", positionSerialized, allocator);
+
+    Value scaleSerialized(kArrayType);
+    scaleSerialized.PushBack(scale.x, allocator);
+    scaleSerialized.PushBack(scale.y, allocator);
+    scaleSerialized.PushBack(scale.z, allocator);
+    value.AddMember("scale", scaleSerialized, allocator);
+
+    Value rotationSerialized(kArrayType);
+    rotationSerialized.PushBack(rotation.x, allocator);
+    rotationSerialized.PushBack(rotation.y, allocator);
+    rotationSerialized.PushBack(rotation.z, allocator);
+    rotationSerialized.PushBack(rotation.w, allocator);
+    value.AddMember("rotation", rotationSerialized, allocator);
+
+    Value globalMatrixSerialized(kArrayType);
+
+    float3 globalPosition;
+    Quat globalRotation;
+    float3 globalScale;
+    globalMatrix.Decompose(globalPosition, globalRotation, globalScale);
+    globalMatrixSerialized.PushBack(globalPosition.x, allocator);
+    globalMatrixSerialized.PushBack(globalPosition.y, allocator);
+    globalMatrixSerialized.PushBack(globalPosition.z, allocator);
+
+    globalMatrixSerialized.PushBack(globalScale.x, allocator);
+    globalMatrixSerialized.PushBack(globalScale.y, allocator);
+    globalMatrixSerialized.PushBack(globalScale.z, allocator);
+
+    globalMatrixSerialized.PushBack(globalRotation.x, allocator);
+    globalMatrixSerialized.PushBack(globalRotation.y, allocator);
+    globalMatrixSerialized.PushBack(globalRotation.z, allocator);
+    globalMatrixSerialized.PushBack(globalRotation.w, allocator);
+
+    value.AddMember("globalMatrix", globalMatrixSerialized, allocator);
+
 }
