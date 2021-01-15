@@ -146,6 +146,7 @@ update_status ModuleRender::Update()
 	RenderGrid();
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
 	//RenderModel();
+	aabbsToDraw.clear();
 	App->scene->GetQuadtree()->Draw();
 	for (AABB aabb : aabbsToDraw)
 	{

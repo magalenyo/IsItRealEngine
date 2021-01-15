@@ -114,7 +114,7 @@ void GameObject::Draw() const
 			if (camera != nullptr)
 			{
 				camera->SetNewPosition(transform->GetPosition());
-				dd::frustum((camera->GetFrustum().ProjectionMatrix() * camera->GetFrustum().ViewMatrix()).Inverted(), dd::colors::White);
+				dd::frustum((camera->GetFrustum().ProjectionMatrix() * camera->GetFrustum().ViewMatrix()).Inverted(), dd::colors::Red);
 
 			}
 		}
