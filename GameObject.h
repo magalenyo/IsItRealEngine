@@ -47,6 +47,8 @@ public:
     template <class T> 
 	std::vector<T*> GetComponents() const;
 
+	void SetAABB(AABB localAABB);
+
 	AABB GetAABB() const { return aabb; }
 	OBB GetOBB() { return obb; }
 
@@ -59,8 +61,8 @@ private:
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
 
-	AABB aabb;
-	OBB obb;
+	AABB aabb = { {0,0,0},{0,0,0} };
+	OBB obb = { aabb };
 };
 
 template<class T>

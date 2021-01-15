@@ -8,6 +8,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "Math/float3x3.h"
 
 GameObject::GameObject() : uid(GenerateUID()) {}
 
@@ -30,7 +31,10 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
-
+	ComponentTransform* transform = GetComponent<ComponentTransform>();
+	obb = aabb.Transform(transform->GetGlobalModelMatrix());
+	aabb = obb.MinimalEnclosingAABB();
+	
 }
 
 void GameObject::AddComponent(Component* component)
@@ -185,4 +189,9 @@ void GameObject::RenderToEditor()
 GameObject* GameObject::GetParent()
 {
 	return parent;
+}
+
+void GameObject::SetAABB(AABB localAABB)
+{
+	aabb = localAABB;
 }

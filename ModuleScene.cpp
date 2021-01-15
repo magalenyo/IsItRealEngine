@@ -25,7 +25,7 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
 	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("./resources/scene/Zombunny/Zombunny.fbx");
-	objectsInScene.push_back(root);
+	//objectsInScene.push_back(root);
 
 	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
@@ -41,6 +41,24 @@ bool ModuleScene::Init()
 	objectsInScene.push_back(camera);
 
 	return true;
+}
+
+update_status ModuleScene::Update()
+{
+	quadtree->Clear();
+	for (GameObject* go : objectsInScene)
+	{
+		if (go->GetParent() != nullptr)
+		{
+			quadtree->AddGameObject(go);
+		}
+	}
+	for (GameObject* go : objectsInScene)
+	{
+		go->Update();
+	}
+
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModuleScene::CleanUp()
@@ -273,6 +291,10 @@ std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
 GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent)
 {
 	GameObject* go = new GameObject(std::string(node->mName.C_Str()), parent);
+
+	vec minPoint = vec(FLOAT_INF, FLOAT_INF, FLOAT_INF);
+	vec maxPoint = vec(-FLOAT_INF, -FLOAT_INF, -FLOAT_INF);
+
 	// Add ComponentMesh and ComponentMaterial components
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
@@ -280,6 +302,35 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		ComponentMaterial* material = LoadMaterials(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
 		material->SetParent(go);
 		go->AddComponent(material);
+
+		for (unsigned int j = 0; j < scene->mMeshes[node->mMeshes[i]]->mNumVertices; ++j)
+		{
+			aiVector3D vertex = scene->mMeshes[node->mMeshes[i]]->mVertices[j];
+			if (vertex.x < minPoint.x)
+			{
+				minPoint.x = vertex.x;
+			}
+			if (vertex.y < minPoint.y)
+			{
+				minPoint.y = vertex.y;
+			}
+			if (vertex.z < minPoint.z)
+			{
+				minPoint.z = vertex.z;
+			}
+			if (vertex.x > maxPoint.x)
+			{
+				maxPoint.x = vertex.x;
+			}
+			if (vertex.y > maxPoint.y)
+			{
+				maxPoint.y = vertex.y;
+			}
+			if (vertex.z > maxPoint.z)
+			{
+				maxPoint.z = vertex.z;
+			}
+		}
 	}
 
 	// Add transformation component
@@ -309,6 +360,8 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	transform->CalculateGlobalMatrix();
 	go->AddComponent(transform);
 	
+	//Set AABB
+	go->SetAABB(AABB(minPoint, maxPoint));
 	
 	// Add Children
 	for (int i = 0; i < node->mNumChildren; i++) {

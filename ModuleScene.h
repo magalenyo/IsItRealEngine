@@ -17,6 +17,7 @@ public:
     const std::string PATH_MODELS = "./resources/models/";
 
     bool Init() override;
+    update_status Update() override;
     bool CleanUp() override;
 
     void Load(const char* file_name);

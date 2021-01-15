@@ -40,6 +40,11 @@ void Quadtree::Draw()
 	root->Draw();
 }
 
+void Quadtree::Clear()
+{
+	root->Clear();
+}
+
 QTNode::QTNode(AABB& surface) : surface(surface) {}
 
 void QTNode::AddGameObject(GameObject* gameObject)
@@ -95,7 +100,8 @@ void QTNode::Subdivide()
 
 void QTNode::Restructure()
 {
-	for (std::vector<GameObject*>::iterator it = GObjectsInNode.begin(); it != GObjectsInNode.end();)
+	std::vector<GameObject*>::const_iterator it = GObjectsInNode.begin();
+	while ( it != GObjectsInNode.end())
 	{
 		unsigned int intersectionsFound = 0;
 		bool intersecting[4];
@@ -110,8 +116,7 @@ void QTNode::Restructure()
 
 		if (intersectionsFound != 4)
 		{
-			it = GObjectsInNode.erase(it);
-
+			
 			for (unsigned int i = 0; i < 4; ++i)
 			{
 				if (intersecting[i])
@@ -119,6 +124,9 @@ void QTNode::Restructure()
 					childNodes[i].AddGameObject(*it);
 				}
 			}
+			
+			it = GObjectsInNode.erase(it);
+
 		}
 		else
 		{
@@ -140,6 +148,15 @@ void QTNode::Draw()
 	for (unsigned int i = 0; i < childNodes.size(); ++i)
 	{
 		childNodes[i].Draw();
+	}
+}
+
+void QTNode::Clear()
+{
+	GObjectsInNode.clear();
+	for (QTNode child : childNodes)
+	{
+		child.Clear();
 	}
 }
 

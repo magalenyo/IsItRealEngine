@@ -27,6 +27,7 @@ private:
 	void Subdivide();
 	void Restructure();
 	void Draw();
+	void Clear();
 };
 
 class Quadtree
@@ -38,6 +39,7 @@ public:
 	void AddGameObject(GameObject* gameObject);
 	bool CleanUp();
 	void Draw();
+	void Clear();
 
 	template<class GEOMETRY> 
 	std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry);
