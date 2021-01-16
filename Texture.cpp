@@ -1,6 +1,9 @@
 #include "Texture.h"
 #include "GL/glew.h"
 
+#include "MemoryLeakDetector.h"
+
+
 Texture::Texture(unsigned int textureID, float width, float height, TextureType type) : textureID(textureID), width(width), height(height), type(type) { }
 
 Texture::~Texture()

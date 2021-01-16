@@ -93,7 +93,8 @@ int main(int argc, char ** argv)
 	delete App;
 	LOG("Bye :)\n");
 
-	atexit(DumpLeaks);
+	//atexit(DumpLeaks);
+	DumpLeaks();
 	//(); // show leaks with file and line where allocation was made
 
 	return main_return;

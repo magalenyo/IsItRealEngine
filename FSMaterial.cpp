@@ -1,10 +1,14 @@
 #include "FSMaterial.h"
+#include "Application.h"
+#include "SceneImporter.h"
 #include "FSJsonIncluders.h"
 #include "FSConstants.h"
 #include "ComponentMaterial.h"
 #include <iostream>
 #include <fstream>
 #include "Globals.h"
+
+#include "MemoryLeakDetector.h"
 
 void FSMaterial::ExportMaterial(ComponentMaterial* material)
 {
@@ -25,7 +29,7 @@ void FSMaterial::ExportMaterial(ComponentMaterial* material)
 	document.Accept(writer);
 
 	std::ofstream myfile;
-	myfile.open(PATH_LIBRARY_MATERIALS + material->GetName() + FORMAT_MATERIAL);
+	myfile.open(App->sceneImporter->PATH_LIBRARY_MATERIALS + material->GetName() + App->sceneImporter->FORMAT_MATERIAL);
 	LOG("MAT EXPORTED %s", material->GetName().c_str());
 	myfile << buffer.GetString();
 	myfile.close();	

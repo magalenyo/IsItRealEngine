@@ -8,7 +8,7 @@
 #include "ComponentTransform.h"
 #include "Texture.h"
 #include "Model.h"
-#include "FSConstants.h"
+#include "SceneImporter.h"
 
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
@@ -179,7 +179,7 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());																// Generate texture to OpenGL
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {																										// If loaded correctly
-			std::string texturePath = PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;															// Generate name from sanitized name and add the library path
 			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE);		// Create Texture Object
 			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
 			material->SetDiffuseTexture(texture);																												// Set texture to material
@@ -192,7 +192,7 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			std::string texturePath = PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;															// Generate name from sanitized name and add the library path
 			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR);		// Create Texture Object
 			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
 			material->SetSpecularTexture(texture);																												// Set texture to material
@@ -205,7 +205,7 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			std::string texturePath = PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;															// Generate name from sanitized name and add the library path
 			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL);		// Create Texture Object
 			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
 			material->SetNormalTexture(texture);																												// Set texture to material
@@ -247,15 +247,6 @@ std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
 GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent)
 {
 	GameObject* go = new GameObject(std::string(node->mName.C_Str()), parent);
-	// Add ComponentMesh and ComponentMaterial components
-	for (int i = 0; i < node->mNumMeshes; i++) {
-		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
-		go->AddComponent(mesh);
-		ComponentMaterial* material = LoadMaterial(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
-		material->SetParent(go);
-		mesh->SetMaterialIndex(i);
-		go->AddComponent(material);
-	}
 
 	// Add transformation component
 	aiVector3D translation;
@@ -268,7 +259,7 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	double factor(0.0);
 	scene->mMetaData->Get("UnitScaleFactor", factor);
 	scene->mMetaData->Get("OriginalUnitScaleFactor", factor);
-	
+
 
 	float scaleFactor = 1;
 	if (scale.x == 100) {
@@ -280,11 +271,20 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		float3(scale.x * scaleFactor, scale.y * scaleFactor, scale.z * scaleFactor),
 		Quat(rotation.x, rotation.y, rotation.z, rotation.w)
 		, go);
-	
+
 	transform->CalculateGlobalMatrix();
 	go->AddComponent(transform);
-	
-	
+
+	// Add ComponentMesh and ComponentMaterial components
+	for (int i = 0; i < node->mNumMeshes; i++) {
+		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
+		go->AddComponent(mesh);
+		ComponentMaterial* material = LoadMaterial(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
+		material->SetParent(go);
+		mesh->SetMaterialIndex(i);
+		go->AddComponent(material);
+	}
+
 	// Add Children
 	for (int i = 0; i < node->mNumChildren; i++) {
 		go->AddGameObject(LoadRecursively(file_name, scene, node->mChildren[i], go));

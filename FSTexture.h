@@ -5,8 +5,6 @@
 class FSTexture
 {
 public:
-	static void ExportTexture(std::string name);
-
-private:
+	static void ExportTexture(const std::string& name);
 };
 

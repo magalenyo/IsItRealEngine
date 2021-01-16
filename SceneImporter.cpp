@@ -5,8 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include "FSJsonIncluders.h"
-#include "FSConstants.h"
 
+#include "MemoryLeakDetector.h"
 
 bool SceneImporter::Init()
 {
@@ -75,7 +75,6 @@ bool SceneImporter::CreateAssetsDirectory()
 {
 	if (!ExistsInSystem(PATH_ASSETS)) {
 		if (CreateDirectory(PATH_ASSETS.c_str(), NULL)) {
-			//SetFileAttributes(PATH_ASSETS.c_str(), FILE_ATTRIBUTE_HIDDEN);
 			LOG("Assets directory created successfully");
 		}
 		else {
