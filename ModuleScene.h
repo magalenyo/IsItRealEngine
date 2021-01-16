@@ -24,7 +24,7 @@ public:
     void LoadSingleTexture(const std::string& file_name);
     void LoadModel(std::string path);
     Quadtree* GetQuadtree();
-    ComponentCamera* GetCamera();
+    GameObject* GetCamera();
     GameObject* GetRootNode() const;
     void RemoveObjectFromScene(GameObject* gameObject);
 

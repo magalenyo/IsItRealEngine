@@ -58,9 +58,9 @@ std::vector<GameObject*> Quadtree::GetObjectsCollided(GEOMETRY geometry)
 template<class GEOMETRY> 
 std::vector<GameObject*> QTNode::GetObjectsCollided(GEOMETRY geometry)
 {
-	if (geometry.Intersects(surface)) 
+	std::vector<GameObject*> GObjectsCollided;
+	if (geometry.Intersects(surface))
 	{
-		std::vector<GameObject*> GObjectsCollided;
 		for(unsigned int i = 0; i < GObjectsInNode.size(); ++i)
 		{
 			GObjectsCollided.push_back(GObjectsInNode[i]);
@@ -68,8 +68,11 @@ std::vector<GameObject*> QTNode::GetObjectsCollided(GEOMETRY geometry)
 		for (unsigned int i = 0; i < childNodes.size(); ++i)
 		{
 			std::vector<GameObject*> GObjectsCollidedFromChilds = childNodes[i].GetObjectsCollided(geometry);
-			GObjectsCollided.insert(GObjectsCollided.end(), GObjectsCollidedFromChilds.begin(), GObjectsCollidedFromChilds.end());
-		}
-		return GObjectsCollided;
+			if (!GObjectsCollidedFromChilds.empty())
+			{
+				GObjectsCollided.insert(GObjectsCollided.end(), GObjectsCollidedFromChilds.begin(), GObjectsCollidedFromChilds.end());
+			}			
+		}		
 	}
+	return GObjectsCollided;
 }

@@ -108,14 +108,11 @@ Quadtree* ModuleScene::GetQuadtree()
 	return quadtree;
 }
 
-ComponentCamera* ModuleScene::GetCamera()
+GameObject* ModuleScene::GetCamera()
 {	
 	if (camera != nullptr) 
 	{
-		if (ComponentCamera* cCamera = camera->GetComponent<ComponentCamera>())
-		{
-			return cCamera;
-		}
+		return camera;
 	}
 	
 	return nullptr;

@@ -19,12 +19,14 @@ update_status ModuleRenderScene::Update()
 
 void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) const
 {
-    ComponentCamera* cCamera = App->scene->GetCamera();
+    GameObject* camera = App->scene->GetCamera();
+    ComponentCamera* cCamera = camera->GetComponent<ComponentCamera>();
 
     if (cCamera != nullptr)
     {
         if (cCamera->GetCullingStatus())
         {
+
             std::vector<GameObject*> candidatesToCull = App->scene->GetQuadtree()->GetObjectsCollided(cCamera->GetFrustum());
             std::vector<GameObject*> objectsToCull = TestCulling(candidatesToCull, cCamera->GetFrustum());
 
@@ -38,10 +40,14 @@ void ModuleRenderScene::RenderGameObjectsRecursively(const GameObject* node) con
             candidatesToCull.clear();
             objectsToCull.clear();
         }
+        else
+        {
+            node->Draw();
+        }
     }
 
-    node->Draw();
-    
+    camera->Draw();
+
     for (GameObject* child : node->GetChildren()) 
     {
         RenderGameObjectsRecursively(child);
