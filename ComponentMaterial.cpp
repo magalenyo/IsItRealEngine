@@ -203,3 +203,65 @@ void ComponentMaterial::SerializeExport(Value& value, Document::AllocatorType& a
 	}
 	value.AddMember("emissive", emissiveTextureSerialized, allocator);
 }
+
+ComponentMaterial* ComponentMaterial::Deserialize(const Value& value)
+{
+	ComponentMaterial* newMaterial = new ComponentMaterial(nullptr);
+	newMaterial->uid = value["uid"].GetString();
+	newMaterial->enabled = value["enabled"].GetBool();
+	newMaterial->type = static_cast<ComponentType>(value["type"].GetInt());
+
+	newMaterial->name = value["name"].GetString();
+	newMaterial->serializedName = value["serializedName"].GetString();
+	newMaterial->shininess = value["shininess"].GetFloat();
+
+	const Value& diffuseColorSerialized = value["diffuseColor"];
+	auto size = diffuseColorSerialized.Size();
+	newMaterial->diffuseColor = float3(diffuseColorSerialized[0].GetFloat(), diffuseColorSerialized[1].GetFloat(), diffuseColorSerialized[2].GetFloat());
+	 
+	const Value& specularColorSerialized = value["specularColor"];
+	newMaterial->specularColor = float3(specularColorSerialized[0].GetFloat(), specularColorSerialized[1].GetFloat(), specularColorSerialized[2].GetFloat());
+
+	const Value& diffuseSerialized = value["diffuse"];
+	if (!diffuseSerialized.ObjectEmpty()) {
+		float widthSerialized = diffuseSerialized["width"].GetFloat();
+		float heightSerialized = diffuseSerialized["height"].GetFloat();
+		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(diffuseSerialized["textureType"].GetInt());
+		std::string texturePathSerialized = diffuseSerialized["texturePath"].GetString();
+		newMaterial->diffuse = new Texture(0, widthSerialized, heightSerialized, textureTypeSerialized);
+		newMaterial->diffuse->SetTexturePath(texturePathSerialized);
+	}
+
+	const Value& specularSerialized = value["specular"];
+	if (!specularSerialized.ObjectEmpty()) {
+		float widthSerialized = specularSerialized["width"].GetFloat();
+		float heightSerialized = specularSerialized["height"].GetFloat();
+		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(specularSerialized["textureType"].GetInt());
+		std::string texturePathSerialized = specularSerialized["texturePath"].GetString();
+		newMaterial->specular = new Texture(0, widthSerialized, heightSerialized, textureTypeSerialized);
+		newMaterial->specular->SetTexturePath(texturePathSerialized);
+	}
+
+	const Value& normalSerialized = value["normal"];
+	if (!normalSerialized.ObjectEmpty()) {
+		float widthSerialized = normalSerialized["width"].GetFloat();
+		float heightSerialized = normalSerialized["height"].GetFloat();
+		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(normalSerialized["textureType"].GetInt());
+		std::string texturePathSerialized = normalSerialized["texturePath"].GetString();
+		newMaterial->normal = new Texture(0, widthSerialized, heightSerialized, textureTypeSerialized);
+		newMaterial->normal->SetTexturePath(texturePathSerialized);
+	}
+
+	const Value& emissiveSerialized = value["emissive"];
+	if (!emissiveSerialized.ObjectEmpty()) {
+		float widthSerialized = emissiveSerialized["width"].GetFloat();
+		float heightSerialized = emissiveSerialized["height"].GetFloat();
+		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(emissiveSerialized["textureType"].GetInt());
+		std::string texturePathSerialized = emissiveSerialized["texturePath"].GetString();
+		newMaterial->emissive = new Texture(0, widthSerialized, heightSerialized, textureTypeSerialized);
+		newMaterial->emissive->SetTexturePath(texturePathSerialized);
+	}
+	
+
+	return newMaterial;
+}

@@ -29,6 +29,7 @@ public:
 
 	void Serialize(Value& value, Document::AllocatorType& allocator) override;				// This method serializes 
 	void SerializeExport(Value& value, Document::AllocatorType& allocator);					// This method serializes material's data to be exported as a material file
+	static ComponentMaterial* Deserialize(const Value& value);
 
 private:
 	float3 diffuseColor			= float3(0, 0, 0);

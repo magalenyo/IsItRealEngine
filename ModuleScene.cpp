@@ -26,12 +26,12 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Clock/Clock.fbx");
 	//Load("./resources/scene/Firetruck/Firetruck.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
-	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
+	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("./resources/scene/Zombunny/Zombunny.fbx");
 
-	//Load("./resources/models/BakerHouse.fbx");
+	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
-	Load("./resources/Street_Environment/Street_environment_V01.FBX");
+	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 	return true;
 }
 

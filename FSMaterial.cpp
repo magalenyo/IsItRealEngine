@@ -28,20 +28,30 @@ void FSMaterial::ExportMaterial(ComponentMaterial* material)
 	myfile.open(PATH_LIBRARY_MATERIALS + material->GetName() + FORMAT_MATERIAL);
 	LOG("MAT EXPORTED %s", material->GetName().c_str());
 	myfile << buffer.GetString();
-	myfile.close();
-
-	ImportMaterial("./Library/Materials/EyesMaterial.material");
-	
-
-
+	myfile.close();	
 }
 
 ComponentMaterial* FSMaterial::ImportMaterial(std::string path)
 {
-	/*const char json[] = "{\"material\":{}}";
-	document.Parse(json);*/
+	ComponentMaterial* result = nullptr;
 
+    std::ifstream file(path);
+    if (file.is_open()) {
+		std::string aux; getline(file, aux);
 
+		Document document;
+		document.SetObject();
+		document.Parse(aux.c_str());
+		Value& material = document["material"];
+		if (material.IsObject() && !material.ObjectEmpty()) {
+			result = ComponentMaterial::Deserialize(material);	
+		}
 
-	return nullptr;
+		file.close();
+    }
+    else {
+		LOG("[ERROR] Cannot open file: %s", path.c_str());
+    }
+
+	return result;
 }
