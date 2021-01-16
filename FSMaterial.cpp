@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "SceneImporter.h"
 #include "FSJsonIncluders.h"
-#include "FSConstants.h"
 #include "ComponentMaterial.h"
 #include <iostream>
 #include <fstream>
@@ -29,10 +28,11 @@ void FSMaterial::ExportMaterial(ComponentMaterial* material)
 	document.Accept(writer);
 
 	std::ofstream myfile;
-	myfile.open(App->sceneImporter->PATH_LIBRARY_MATERIALS + material->GetName() + App->sceneImporter->FORMAT_MATERIAL);
-	LOG("MAT EXPORTED %s", material->GetName().c_str());
+	myfile.open(material->GetSerializedName());
+	//LOG("MAT EXPORTED %s", material->GetSerializedName().c_str()); -> this generates mem leaks
 	myfile << buffer.GetString();
-	myfile.close();	
+	myfile.close();
+
 }
 
 ComponentMaterial* FSMaterial::ImportMaterial(std::string path)

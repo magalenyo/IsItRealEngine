@@ -173,13 +173,14 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 
 	ComponentMaterial* material = new ComponentMaterial(nullptr);
 	material->SetName(std::string(materialName.C_Str()));
+	material->SetSerializedName(App->sceneImporter->PATH_LIBRARY_MATERIALS + std::string(materialName.C_Str()) + App->sceneImporter->FORMAT_MATERIAL);
 
 	aiReturn returnTexture = mMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &file);
 	if (returnTexture == AI_SUCCESS)
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());																// Generate texture to OpenGL
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {																										// If loaded correctly
-			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;		// Generate name from sanitized name and add the library path
 			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE);		// Create Texture Object
 			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
 			material->SetDiffuseTexture(texture);																												// Set texture to material
@@ -192,7 +193,7 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;		// Generate name from sanitized name and add the library path
 			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR);		// Create Texture Object
 			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
 			material->SetSpecularTexture(texture);																												// Set texture to material
@@ -205,7 +206,7 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			std::string texturePath = App->sceneImporter->PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + App->sceneImporter->FORMAT_DDS;		// Generate name from sanitized name and add the library path
 			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL);		// Create Texture Object
 			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
 			material->SetNormalTexture(texture);																												// Set texture to material

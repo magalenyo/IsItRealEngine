@@ -152,6 +152,7 @@ std::string ComponentMaterial::GetSerializedName() const
 void ComponentMaterial::Serialize(Value& value, Document::AllocatorType& allocator)
 {
 	Component::Serialize(value, allocator);
+	value.AddMember("serializedName", StringRef(serializedName.c_str()), allocator);
 	FSMaterial::ExportMaterial(this);
 }
 
