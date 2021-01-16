@@ -1,6 +1,7 @@
 #include "ComponentCamera.h"
 #include "GameObject.h"
 #include "Math/Quat.h"
+#include "imgui.h"
 
 ComponentCamera::ComponentCamera(GameObject* owner) : Component(owner, ComponentType::CAMERA)
 {
@@ -19,6 +20,8 @@ ComponentCamera::~ComponentCamera()
 
 void ComponentCamera::RenderToEditor()
 {
+	ImGui::Separator();
+	ImGui::Checkbox("Activate Frustum Culling", &isCullingActive);
 }
 
 Frustum ComponentCamera::GetFrustum() const
@@ -34,5 +37,10 @@ bool ComponentCamera::GetCullingStatus() const
 void ComponentCamera::SetNewPosition(float3 newPosition)
 {
 	frustum.SetPos(newPosition);
+}
+
+void ComponentCamera::SetFrustum(Frustum newFrustum)
+{
+	frustum = newFrustum;
 }
 

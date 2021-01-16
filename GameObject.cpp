@@ -137,8 +137,12 @@ void GameObject::Draw() const
 			if (camera != nullptr)
 			{
 				camera->SetNewPosition(transform->GetPosition());
+				float3x3 rotationMatrix = float3x3::FromQuat(transform->GetRotation());
+				Frustum frustum = camera->GetFrustum();
+				frustum.SetFront(rotationMatrix * float3::unitZ);
+				frustum.SetUp(rotationMatrix * float3::unitY);
+				camera->SetFrustum(frustum);
 				dd::frustum((camera->GetFrustum().ProjectionMatrix() * camera->GetFrustum().ViewMatrix()).Inverted(), dd::colors::Red);
-
 			}
 		}
 		if (drawAABB)
@@ -207,13 +211,15 @@ void GameObject::RenderToEditor()
 		ImGui::TextWrapped(editorUID.c_str());
 		ImGui::PopStyleColor(1);
 
-		ImGui::Separator();
-
-		if (ImGui::CollapsingHeader("Draw Boxes"))
+		if(GetComponent<ComponentCamera>() == nullptr)
 		{
-			ImGui::Checkbox("Draw AABBs", &drawAABB);
+			ImGui::Separator();
+			if (ImGui::CollapsingHeader("Draw Boxes"))
+			{
+				ImGui::Checkbox("Draw AABBs", &drawAABB);
 
-			ImGui::Checkbox("Draw OBBs", &drawOBB);
+				ImGui::Checkbox("Draw OBBs", &drawOBB);
+			}
 		}
 
 		ImGui::Separator();
