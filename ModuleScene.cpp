@@ -26,8 +26,8 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Clock/Clock.fbx");
 	//Load("./resources/scene/Firetruck/Firetruck.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
-	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
-	Load("./resources/scene/Zombunny/Zombunny.fbx");
+	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
+	//Load("./resources/scene/Zombunny/Zombunny.fbx");
 
 	//Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
@@ -166,15 +166,9 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 {
 	std::vector<ComponentMaterial*> result;
 	aiString file;
-	
-	//for (unsigned j = 0; j < mMaterial->mNumProperties; ++j)
-	//{
-	//	LOG(mMaterial->mProperties[j]->mKey.C_Str());
-	//}
 
-	aiString materialName;										//The name of the material found in mesh file
-	aiReturn ret;												//Code which says whether loading something has been successful of not
-	ret = mMaterial->Get(AI_MATKEY_NAME, materialName);			//Get the material name (pass by reference)
+	aiString materialName;													//The name of the material found in mesh file
+	aiReturn ret = mMaterial->Get(AI_MATKEY_NAME, materialName);			//Get the material name (pass by reference)
 	
 
 	ComponentMaterial* material = new ComponentMaterial(nullptr);
@@ -183,10 +177,13 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	aiReturn returnTexture = mMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &file);
 	if (returnTexture == AI_SUCCESS)
 	{
-		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
-		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			material->SetDiffuseTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::DIFFUSE));
-			FSTexture::ExportTexture(PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false));
+		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());																// Generate texture to OpenGL
+		if (textureId != ModuleTexture::TEXTURE_ERROR) {																										// If loaded correctly
+			std::string texturePath = PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE);		// Create Texture Object
+			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
+			material->SetDiffuseTexture(texture);																												// Set texture to material
+			FSTexture::ExportTexture(texturePath);																												// Export texture to dds
 		}
 	}
 
@@ -195,7 +192,11 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			material->SetSpecularTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::SPECULAR));
+			std::string texturePath = PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR);		// Create Texture Object
+			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
+			material->SetSpecularTexture(texture);																												// Set texture to material
+			FSTexture::ExportTexture(texturePath);																												// Export texture to dds
 		}
 	}
 
@@ -204,7 +205,11 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* 
 	{
 		int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
 		if (textureId != ModuleTexture::TEXTURE_ERROR) {
-			material->SetNormalTexture(new Texture(App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), textureId, Texture::TextureType::NORMAL));
+			std::string texturePath = PATH_LIBRARY_MATERIALS + SanitizeTextureName(file.data, false) + FORMAT_DDS;															// Generate name from sanitized name and add the library path
+			Texture* texture = new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL);		// Create Texture Object
+			texture->SetTexturePath(texturePath);																												// Set path of generated dds texture
+			material->SetNormalTexture(texture);																												// Set texture to material
+			FSTexture::ExportTexture(texturePath);																												// Export texture to dds
 		}
 	}
 

@@ -24,8 +24,11 @@ public:
 	void SetSerializedName(std::string _serializedName);
 
 	Texture* GetDiffuseTexture() const;
+	std::string GetName() const;
+	std::string GetSerializedName() const;
 
-	void Serialize(Value& value, Document::AllocatorType& allocator) override;
+	void Serialize(Value& value, Document::AllocatorType& allocator) override;				// This method serializes 
+	void SerializeExport(Value& value, Document::AllocatorType& allocator);					// This method serializes material's data to be exported as a material file
 
 private:
 	float3 diffuseColor			= float3(0, 0, 0);

@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Texture.h"
 #include "MemoryLeakDetector.h"
+#include "FSMaterial.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(owner, ComponentType::MATERIAL) {}
 
@@ -138,14 +139,67 @@ Texture* ComponentMaterial::GetDiffuseTexture() const
 	return diffuse;
 }
 
+std::string ComponentMaterial::GetName() const
+{
+	return name;
+}
+
+std::string ComponentMaterial::GetSerializedName() const
+{
+	return serializedName;
+}
+
 void ComponentMaterial::Serialize(Value& value, Document::AllocatorType& allocator)
 {
 	Component::Serialize(value, allocator);
-	//document.AddMember("diffuseColor", diffuseColor, allocator);
-	//document.AddMember("specularColor", diffuseColor, allocator);
-	//document.AddMember("diffuseColor", diffuseColor, allocator);
-	//document.AddMember("diffuseColor", diffuseColor, allocator);
-	//document.AddMember("diffuseColor", diffuseColor, allocator);
-	//document.AddMember("diffuseColor", diffuseColor, allocator);
+	FSMaterial::ExportMaterial(this);
+}
 
+void ComponentMaterial::SerializeExport(Value& value, Document::AllocatorType& allocator)
+{
+	Component::Serialize(value, allocator);
+
+	value.AddMember("name", StringRef(name.c_str()), allocator);
+	value.AddMember("serializedName", StringRef(serializedName.c_str()), allocator);
+	value.AddMember("shininess", shininess, allocator);
+
+	Value diffuseColorSerialized(kArrayType);
+	diffuseColorSerialized.PushBack(diffuseColor.x, allocator);
+	diffuseColorSerialized.PushBack(diffuseColor.y, allocator);
+	diffuseColorSerialized.PushBack(diffuseColor.z, allocator);
+	value.AddMember("diffuseColor", diffuseColorSerialized, allocator);
+
+	Value specularColorSerialized(kArrayType);
+	specularColorSerialized.PushBack(specularColor.x, allocator);
+	specularColorSerialized.PushBack(specularColor.y, allocator);
+	specularColorSerialized.PushBack(specularColor.z, allocator);
+	value.AddMember("specularColor", specularColorSerialized, allocator);
+
+	Value diffuseTextureSerialized(kObjectType);
+	if (diffuse != nullptr) {
+		diffuse->SerializeExport(diffuseTextureSerialized, allocator);
+	}
+	else {
+		// MIGHT NOT BE NEEDED
+		//diffuseTextureSerialized.AddMember("MemberWhoseValueIsNULL", Value());
+	}
+	value.AddMember("diffuse", diffuseTextureSerialized, allocator);
+
+	Value specularTextureSerialized(kObjectType);
+	if (specular != nullptr) {
+		specular->SerializeExport(specularTextureSerialized, allocator);
+	}
+	value.AddMember("specular", specularTextureSerialized, allocator);
+
+	Value normalTextureSerialized(kObjectType);
+	if (normal != nullptr) {
+		normal->SerializeExport(normalTextureSerialized, allocator);
+	}
+	value.AddMember("normal", normalTextureSerialized, allocator);
+
+	Value emissiveTextureSerialized(kObjectType);
+	if (emissive != nullptr) {
+		emissive->SerializeExport(emissiveTextureSerialized, allocator);
+	}
+	value.AddMember("emissive", emissiveTextureSerialized, allocator);
 }

@@ -196,11 +196,16 @@
     <ClCompile Include="UIHierarchy.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ModuleRenderScene.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="FSTexture.cpp">
       <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMaterial.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,7 +525,6 @@
     <ClInclude Include="UIHierarchy.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h" />
     <ClInclude Include="ModuleRenderScene.h" />
     <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="FSTexture.h">
@@ -531,6 +535,12 @@
     </ClInclude>
     <ClInclude Include="FSConstants.h">
       <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMaterial.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

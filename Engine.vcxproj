@@ -149,6 +149,7 @@
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="FSConstants.h" />
     <ClInclude Include="FSJsonIncluders.h" />
+    <ClInclude Include="FSMaterial.h" />
     <ClInclude Include="FSTexture.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
+    <ClCompile Include="FSMaterial.cpp" />
     <ClCompile Include="FSTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUIDGenerator.cpp" />

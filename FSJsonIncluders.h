@@ -6,19 +6,34 @@
 
 using namespace rapidjson;
 
+#include <string>
+
 /* CONSTANT KEYS TO IMPORT / EXPORT GAMEOBJECTS AND COMPONENTS */
 
 /************************ GAMEOBJECT ***************************/
-//static const std::string S_GAMEOBJECT_UID = "uid";
-//static const std::string S_GAMEOBJECT_NAME = "name";
-//static const std::string S_GAMEOBJECT_ENABLED = "enabled";
-//static const std::string S_GAMEOBJECT_COMPONENTLIST = "components";
-//static const std::string S_GAMEOBJECT_GAMEOBJECTLIST = "gameObjects";
-/************************ GAMEOBJECT ***************************/
+const std::string S_GAMEOBJECT_UID				= "uid";
+const std::string S_GAMEOBJECT_NAME				= "name";
+const std::string S_GAMEOBJECT_ENABLED			= "enabled";
+const std::string S_GAMEOBJECT_COMPONENTLIST	= "components";
+const std::string S_GAMEOBJECT_GAMEOBJECTLIST	= "gameObjects";
+/************************* GAMEOBJECT ***************************/
 
 /************************* COMPONENT ***************************/
 
 /************************* COMPONENT ***************************/
+
+/************************* MATERIAL ***************************/
+/************************* MATERIAL ***************************/
+
+/************************* TEXTURE ****************************/
+
+//const std::string S_TEXTURE_WIDTH				= "width";
+//const std::string S_TEXTURE_HEIGHT				= "height";
+//const std::string S_TEXTURE_TYPE				= "type";
+//const std::string S_TEXTURE_TEXTUREPATH			= "texturePath";
+//const std::string S_TEXTURE_TEXTURETYPE			= "textureType";
+
+/************************* TEXTURE ****************************/
 
 
 

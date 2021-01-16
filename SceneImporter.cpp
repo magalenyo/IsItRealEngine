@@ -54,20 +54,15 @@ void SceneImporter::ExportScene(GameObject* scene)
 		scene->Serialize(rootNodeValue, allocator);
 		document.AddMember("root", rootNodeValue, allocator);
 
-
 		StringBuffer buffer;
-		//PrettyWriter<StringBuffer> writer(buffer);
+		//PrettyWriter<StringBuffer> writer(buffer);	// -> beautified version
 		Writer<StringBuffer> writer(buffer);			// -> minified version
 		document.Accept(writer);
-
-		//std::string aux = buffer.GetString();
 
 		std::ofstream myfile;
 		myfile.open("root.scene");
 		myfile << buffer.GetString();
 		myfile.close();
-
-		//LOG(aux.c_str());
 	}
 }
 
