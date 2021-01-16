@@ -31,8 +31,9 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	// float, float, float -> v0
+	// float, float, float -> normal0
 	// uv, uv			   -> uv0
-	unsigned vertexSize = (sizeof(float) * 3 + sizeof(float) * 2);
+	unsigned vertexSize = (sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2);
 	unsigned bufferSize = vertexSize * mesh->mNumVertices;
 	glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW);
 	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
@@ -43,6 +44,11 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 		*(vertices++) = mesh->mVertices[i].x;
 		*(vertices++) = mesh->mVertices[i].y;
 		*(vertices++) = mesh->mVertices[i].z;
+
+		*(vertices++) = mesh->mNormals[i].x;
+		*(vertices++) = mesh->mNormals[i].y;
+		*(vertices++) = mesh->mNormals[i].z;
+
 		aiVector3D* textureVec = mesh->mTextureCoords[0];
 		if (textureVec != nullptr) {
 			*(vertices++) = mesh->mTextureCoords[0][i].x;
@@ -98,9 +104,9 @@ void ComponentMesh::CreateVAO()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float) * 5), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float) * 8), (void*)0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (sizeof(float) * 5), (void*)(sizeof(float) * 3));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (sizeof(float) * 8), (void*)(sizeof(float) * 6));
 	// needs to be called 0 in order to "close" the glBindVertexArray(vao)
 	glBindVertexArray(BIND_VERTEX_ARRAY_END);
 }
