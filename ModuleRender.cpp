@@ -146,12 +146,7 @@ update_status ModuleRender::Update()
 	RenderGrid();
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
 	//RenderModel();
-	aabbsToDraw.clear();
-	App->scene->GetQuadtree()->Draw();
-	for (AABB aabb : aabbsToDraw)
-	{
-		dd::aabb(aabb.minPoint, aabb.maxPoint, dd::colors::White);
-	}
+	
 	// unbind FBO
 	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
@@ -170,6 +165,7 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
+	RenderBoxes();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	SDL_GL_SwapWindow(App->window->GetWindow());
@@ -231,9 +227,9 @@ bool& ModuleRender::GetGLCullFaceState()
 	return activeGLCullFace;
 }
 
-bool& ModuleRender::GetDrawBoxesState()
+bool& ModuleRender::GetDrawQuadtreeState()
 {
-	return activeDrawBoxes;
+	return activeDrawQuadtree;
 }
 
 void ModuleRender::TurnAxis(bool state)
@@ -271,9 +267,9 @@ void ModuleRender::OnSceneResize(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void ModuleRender::AddAABB(AABB aabb)
+void ModuleRender::AddAABBQuadtree(AABB aabb)
 {
-	aabbsToDraw.push_back(aabb);
+	aabbsQuadtree.push_back(aabb);
 }
 
 void ModuleRender::RenderAxis()
@@ -286,8 +282,22 @@ void ModuleRender::RenderAxis()
 void ModuleRender::RenderGrid()
 {
 	if (activeGrid) {
-		dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, gridColor);
+		dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, gridColor);
 	}
+}
+
+void ModuleRender::RenderBoxes()
+{
+	if (activeDrawQuadtree)
+	{
+		App->scene->GetQuadtree()->Draw();
+		for (AABB aabb : aabbsQuadtree)
+		{
+			dd::aabb(aabb.minPoint, aabb.maxPoint, dd::colors::Yellow);
+		}
+	}
+	aabbsQuadtree.clear();
+	
 }
 
 void ModuleRender::LoadRenderConfiguration()

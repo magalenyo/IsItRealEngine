@@ -64,6 +64,11 @@ private:
 	AABB localaabb = { {0,0,0},{0,0,0} };
 	AABB aabb = { {0,0,0},{0,0,0} };
 	OBB obb = { aabb };
+
+	bool drawAABB = false;
+	bool drawOBB = false;
+
+	void calculateAABBbounds(vec& minPoint, vec& maxPoint);
 };
 
 template<class T>

@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleRender.h"
 #include "GUIDGenerator.h"
 #include "imgui.h"
 #include "debugdraw.h"
@@ -31,9 +33,26 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
+	vec minPoint = vec(FLOAT_INF, FLOAT_INF, FLOAT_INF);
+	vec maxPoint = vec(-FLOAT_INF, -FLOAT_INF, -FLOAT_INF);
 	ComponentTransform* transform = GetComponent<ComponentTransform>();
-	obb = localaabb.Transform(transform->GetGlobalModelMatrix());
+	float4x4 modelMatrix = transform->GetGlobalModelMatrix();
+
+	if (!children.empty())
+	{
+		for (GameObject* child : children)
+		{
+			child->calculateAABBbounds(minPoint, maxPoint);
+			modelMatrix = child->GetComponent<ComponentTransform>()->GetGlobalModelMatrix();
+		}
+
+		localaabb = AABB(minPoint, maxPoint);
+		//localaabb.SetFromCenterAndSize(transform->GetPosition(), transform->GetScale());
+	}
+		
+	obb = localaabb.Transform(modelMatrix);
 	aabb = obb.MinimalEnclosingAABB();
+
 	
 }
 
@@ -122,6 +141,16 @@ void GameObject::Draw() const
 
 			}
 		}
+		if (drawAABB)
+		{
+			dd::aabb(aabb.minPoint, aabb.maxPoint, dd::colors::Green);
+		}
+		if (drawOBB)
+		{
+			float3 points[8];
+			obb.GetCornerPoints(points);
+			dd::box(points, dd::colors::Orange);
+		}
 	}
 }
 
@@ -163,24 +192,35 @@ std::vector<GameObject*> GameObject::GetChildren() const
 
 void GameObject::RenderToEditor()
 {
-	ImGui::Checkbox("Enabled", &enabled); ImGui::SameLine();
+	if (parent != nullptr) //To not show properties on ROOT (Scene) node
+	{
+		ImGui::Checkbox("Enabled", &enabled); ImGui::SameLine();
 
-	std::string editorTitle = name;
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 255, 255)));
-	ImGui::TextWrapped(editorTitle.c_str());
-	ImGui::PopStyleColor(1);
-
-
-	std::string editorUID = " [UID: " + uid + "]";
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(245, 66, 66)));
-	ImGui::TextWrapped(editorUID.c_str());
-	ImGui::PopStyleColor(1);
+		std::string editorTitle = name;
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 255, 255)));
+		ImGui::TextWrapped(editorTitle.c_str());
+		ImGui::PopStyleColor(1);
 
 
-	ImGui::Separator();
-	if (enabled) {
-		for (Component* component : components) {
-			component->RenderToEditor();
+		std::string editorUID = " [UID: " + uid + "]";
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(245, 66, 66)));
+		ImGui::TextWrapped(editorUID.c_str());
+		ImGui::PopStyleColor(1);
+
+		ImGui::Separator();
+
+		if (ImGui::CollapsingHeader("Draw Boxes"))
+		{
+			ImGui::Checkbox("Draw AABBs", &drawAABB);
+
+			ImGui::Checkbox("Draw OBBs", &drawOBB);
+		}
+
+		ImGui::Separator();
+		if (enabled) {
+			for (Component* component : components) {
+				component->RenderToEditor();
+			}
 		}
 	}
 
@@ -194,4 +234,32 @@ GameObject* GameObject::GetParent()
 void GameObject::SetAABB(AABB localAABB)
 {
 	localaabb = localAABB;
+}
+
+void GameObject::calculateAABBbounds(vec& minPoint, vec& maxPoint)
+{
+	if(localaabb.minPoint.x < minPoint.x)
+	{
+		minPoint.x = localaabb.minPoint.x;
+	}
+	if (localaabb.minPoint.y < minPoint.y)
+	{
+		minPoint.y = localaabb.minPoint.y;
+	}
+	if (localaabb.minPoint.z < minPoint.z)
+	{
+		minPoint.z = localaabb.minPoint.z;
+	}
+	if (localaabb.maxPoint.x > maxPoint.x)
+	{
+		maxPoint.x = localaabb.maxPoint.x;
+	}
+	if (localaabb.maxPoint.y > maxPoint.y)
+	{
+		maxPoint.y = localaabb.maxPoint.y;
+	}
+	if (localaabb.maxPoint.z > maxPoint.z)
+	{
+		maxPoint.z = localaabb.maxPoint.z;
+	}
 }

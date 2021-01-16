@@ -25,7 +25,6 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
 	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("./resources/scene/Zombunny/Zombunny.fbx");
-	//objectsInScene.push_back(root);
 
 	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
@@ -38,8 +37,6 @@ bool ModuleScene::Init()
 
 	root->AddGameObject(camera);
 
-	//objectsInScene.push_back(camera);
-
 	return true;
 }
 
@@ -48,7 +45,7 @@ update_status ModuleScene::Update()
 	quadtree->Clear();
 	for (GameObject* go : objectsInScene)
 	{
-		if (go->GetParent() != nullptr)
+		if (go->GetParent() != nullptr && go->GetParent() != root)
 		{
 			quadtree->AddGameObject(go);
 		}

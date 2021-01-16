@@ -9,9 +9,8 @@ ComponentCamera::ComponentCamera(GameObject* owner) : Component(owner, Component
 	frustum.SetFront(float3::unitZ);
 	frustum.SetUp(float3::unitY);
 
-	frustum.SetViewPlaneDistances(0.1f, 10.0f);
-	//frustum.SetPerspective(1.0f, 1.0f);
-	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
+	frustum.SetViewPlaneDistances(0.1f, 7.0f);
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 60.0f, 1.3f);
 }
 
 ComponentCamera::~ComponentCamera()

@@ -144,6 +144,9 @@ void UIConfiguration::Draw()
 
         bool& depthTestActivated = App->renderer->GetGLDepthTestState();
         ImGui::Checkbox("Activate Depth Test", &depthTestActivated);
+
+        bool& quadtreeActivated = App->renderer->GetDrawQuadtreeState();
+        ImGui::Checkbox("Draw Quadtree", &quadtreeActivated);
     }
 
     if (ImGui::CollapsingHeader("Window"))

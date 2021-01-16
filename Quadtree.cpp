@@ -141,12 +141,8 @@ void QTNode::Restructure()
 void QTNode::Draw()
 {
 	AABB surfaceToDraw = surface;
-	/*surfaceToDraw.minPoint.x += 1;
-	surfaceToDraw.minPoint.z += 1;
-	surfaceToDraw.maxPoint.x -= 1;
-	surfaceToDraw.maxPoint.z -= 1;*/
-
-	App->renderer->AddAABB(surfaceToDraw);
+	
+	App->renderer->AddAABBQuadtree(surfaceToDraw);
 
 	for (unsigned int i = 0; i < childNodes.size(); ++i)
 	{

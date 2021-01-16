@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "Math/float3.h"
 #include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -33,8 +34,8 @@ public:
 	bool& GetModelState();
 	bool& GetGLDepthTestState();
 	bool& GetGLCullFaceState();
-	bool& GetDrawBoxesState();
-
+	bool& GetDrawQuadtreeState();
+	
 	unsigned int GetSceneFBO() { return sceneFBO; }
 	unsigned int GetSceneTexture() { return sceneTexture; }
 	unsigned int GetMissingTexture() const { return missingTextureID; }
@@ -44,7 +45,8 @@ public:
 
 	void OnSceneResize(int width, int height);
 	
-	void AddAABB(AABB aabb);
+	void AddAABBQuadtree(AABB aabb);
+	
 
 public:
 	unsigned int viewportWidth = 0;
@@ -59,8 +61,8 @@ private:
 	unsigned int sceneTexture = 0;
 	unsigned int missingTextureID;			// This texture is used when there is no texture for a Mesh
 
-	std::vector<AABB> aabbsToDraw;
-
+	std::vector<AABB> aabbsQuadtree;
+	
 	/* CONFIGURATION VARIABLES */
 	float3 gridColor = { 1.000000f, 1.000000f, 1.000000f };
 	bool activeAxis = true;
@@ -68,9 +70,10 @@ private:
 	bool activeModel = true;
 	bool activeGLDepthTest = true;
 	bool activeGLCullFace = true;
-	bool activeDrawBoxes = false;
-
+	bool activeDrawQuadtree = false;
+	
 	void LoadRenderConfiguration();
 	void RenderAxis();
 	void RenderGrid();
+	void RenderBoxes();
 };
