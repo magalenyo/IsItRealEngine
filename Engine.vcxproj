@@ -74,7 +74,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./pcg-cpp-0.98/include;./MathGeoLib-master/src;./glew-2.1.0/include;./SDL/include;./DevIL/include;./Assimp/include;./ImGui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pcg-cpp-0.98/include;./MathGeoLib-master/src;./glew-2.1.0/include;./SDL/include;./DevIL/include;./Assimp/include;./ImGui;./ImGuizmo</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(TEMP)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
@@ -151,6 +151,11 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GUIDGenerator.h" />
+    <ClInclude Include="ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="ImGuizmo\ImGradient.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="ImGuizmo\ImZoomSlider.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
@@ -271,6 +276,10 @@
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUIDGenerator.cpp" />
+    <ClCompile Include="ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />

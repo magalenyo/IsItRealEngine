@@ -202,6 +202,18 @@
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGradient.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -526,6 +538,21 @@
     <ClInclude Include="ComponentCamera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGradient.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImSequencer.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImZoomSlider.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MathGeoLib">
@@ -560,6 +587,9 @@
     </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{f5bb81ef-3901-4063-8f0f-acd010ccdf16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGuizmo">
+      <UniqueIdentifier>{5605522f-ed56-4d1b-bae6-89dd7bad538d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
