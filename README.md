@@ -48,6 +48,7 @@ Left click outside of the information windows to focus on the scene.
 - Mouse wheel to zoom.
 - F key to focus in the center of the scene.
 - Left Ctrl + Left-click while hovering an object from the scene will automatically select that object on the hierarchy and display its gizmo.
+- You can use the letters T, R and Y to change the gizmo function to Translate, Rotate and Scale respectively.
   
 ### Configuration windows
 

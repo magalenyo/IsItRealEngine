@@ -2,18 +2,16 @@
 
 #include "MemoryLeakDetector.h"
 
-//const std::string Model::MODEL_EXTENSION_FBX	= ".fbx";
-
 bool Model::CanLoadFBX(const std::string& path)
 {
-	static const std::string MODEL_EXTENSION_FBX = ".fbx";
+	std::string MODEL_EXTENSION_FBX = ".fbx";
+	std::string MODEL_EXTENSION_FBX_CAPS = ".FBX";
 
-	if (path.length() >= MODEL_EXTENSION_FBX.length())
-	{
-		if (path.compare(path.length() - MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX) == 0)
-		{
-			return true;
-		}
+	char extension[_MAX_EXT];
+	_splitpath_s(path.c_str(), NULL, 0, NULL, 0, NULL, 0, extension, _MAX_EXT);
+
+	if (strcmp(extension, MODEL_EXTENSION_FBX.c_str()) == 0 || strcmp(extension, MODEL_EXTENSION_FBX_CAPS.c_str()) == 0) {
+		return true;
 	}
 	return false;
 }

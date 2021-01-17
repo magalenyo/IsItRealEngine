@@ -22,8 +22,7 @@ UIMainMenu::~UIMainMenu()
 
 void UIMainMenu::Draw()
 {
-    if (show_about) 
-    {
+    if (show_about) {
         RenderAbout(&show_about);
     }
 
@@ -53,9 +52,7 @@ void UIMainMenu::Draw()
     // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
     // and handle the pass-thru hole, so we ask Begin() to not render a background.
     if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-    {
         window_flags |= ImGuiWindowFlags_NoBackground;
-    }
 
     // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
     // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
@@ -63,20 +60,14 @@ void UIMainMenu::Draw()
     // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
     // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
     if (!opt_padding)
-    {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    }
     static bool show_app_dockspace = false;
     ImGui::Begin("DockSpace Demo", &show_app_dockspace, window_flags);
     if (!opt_padding)
-    {
         ImGui::PopStyleVar();
-    }
 
     if (opt_fullscreen)
-    {
-        ImGui::PopStyleVar(2);        
-    }
+        ImGui::PopStyleVar(2);
 
     // DockSpace
     ImGuiIO& io = ImGui::GetIO();
@@ -93,67 +84,24 @@ void UIMainMenu::Draw()
     if (ImGui::BeginMenuBar())
     {
 
-        if (ImGui::BeginMenu("File")) 
-        {
-            if (ImGui::MenuItem("Save SCENE")) 
-            {
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Save SCENE")) {
                 App->sceneImporter->ExportScene(App->scene->GetRootNode());
             }
 
-            if (ImGui::MenuItem("Load SCENE")) 
-            {
+            if (ImGui::MenuItem("Load SCENE")) {
                 App->sceneImporter->ImportScene(App->sceneImporter->PATH_ROOT_SCENE);
             }
 
-            if (ImGui::MenuItem("Quit"))
-            {
+            if (ImGui::MenuItem("Quit")) {
                 App->editor->ExitApplication();
             }
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("External links")) 
-        {
-            if (ImGui::MenuItem("Github"))
-            {
+        if (ImGui::BeginMenu("External links")) {
+            if (ImGui::MenuItem("Github")) {
                 ShellExecute(0, 0, "https://github.com/magalenyo/IsItRealEngine", 0, 0, SW_SHOW);
-            }
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Options"))
-        {
-            // Disabling fullscreen would allow the window to be moved to the front of other windows,
-            // which we can't undo at the moment without finer window depth/z control.
-            ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-            ImGui::MenuItem("Padding", NULL, &opt_padding);
-            ImGui::Separator();
-
-            if (ImGui::MenuItem("Flag: NoSplit", "", (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0))
-            { 
-                dockspace_flags ^= ImGuiDockNodeFlags_NoSplit; 
-            }
-            if (ImGui::MenuItem("Flag: NoResize", "", (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0))
-            { 
-                dockspace_flags ^= ImGuiDockNodeFlags_NoResize; 
-            }
-            if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) 
-            {
-                dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; 
-            }
-            if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) 
-            {
-                dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; 
-            }
-            if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen))
-            {
-                dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; 
-            }
-            ImGui::Separator();
-
-            if (ImGui::MenuItem("Close", NULL, false, &show_app_dockspace != NULL))
-            {
-                show_app_dockspace = false;
             }
             ImGui::EndMenu();
         }
