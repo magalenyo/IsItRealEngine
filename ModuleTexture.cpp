@@ -90,12 +90,8 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		/* Error occured */
 		return TEXTURE_ERROR;
 	}
-	ilDeleteImages(1, &newTextureId); /* Because we have already copied image data into texture data
-									  // TODO CHANGING the delete for the newImageId
-	  we can release memory used by image. */
+	ilDeleteImages(1, &newTextureId); /* Because we have already copied image data into texture data we can release memory used by image. */
 
-
-	// TODO: reload texture on the openGL buffer only.
 	return newTextureId;
 }
 
