@@ -123,8 +123,6 @@ void UIMainMenu::Draw()
         if (ImGui::BeginMenu("Help"))
         {
             ImGui::MenuItem("About RealDisunity", NULL, &show_about);
-            ImGui::Separator();
-            ImGui::MenuItem("License", NULL, &show_license);
             ImGui::EndMenu();
         }
 
@@ -163,9 +161,10 @@ void UIMainMenu::RenderAbout(bool* p_open)
     }
    
     ImGui::Text("RealDisunity v1.0\n");
-    ImGui::Text("Engine developed as First Assignment for the UPC's Master Degree in Advanced Programming for AAA Video Games.");
+    ImGui::Text("Engine developed as the Second Assignment for the UPC's Master Degree in Advanced Programming for AAA Video Games.");
     ImGui::Separator();
-    ImGui::Text("Author: Miguel �ngel Bueno Rivera - magalenyo on GitHub");
+    ImGui::Text("Authors: Miguel Ángel Bueno Rivera - magalenyo on GitHub");
+    ImGui::Text("         Isaac Fernández Fontao - isaacfdez on GitHub");
     ImGui::Text("Github Repository: https://github.com/magalenyo/IsItRealEngine");
     ImGui::Text("");
 
@@ -175,7 +174,7 @@ void UIMainMenu::RenderAbout(bool* p_open)
         std::string aux =
             std::string("MIT License\n\n") +
 
-            "Copyright(c) 2020 magalenyo\n\n" +
+            "Copyright(c) 2020 magalenyo, isaacfdez\n\n" +
 
             "Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
             "of this software and associated documentation files(the \"Software\"), to deal\n" +
