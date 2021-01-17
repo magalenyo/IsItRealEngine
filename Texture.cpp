@@ -8,8 +8,6 @@ Texture::Texture(unsigned int textureID, float width, float height, TextureType 
 
 Texture::~Texture()
 {
-	// TODO MAYBE CALL DELETE BUFFER OR SOMETHING?
-	// THIS NEEDS TESTING
 	glDeleteTextures(1, &textureID);
 }
 

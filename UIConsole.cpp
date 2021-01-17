@@ -48,7 +48,6 @@ void UIConsole::Draw()
         return;
     }
 
-    // TODO: display items starting from the bottom
     if (ImGui::Button("Clear")) { 
         ClearLog(); 
     }
