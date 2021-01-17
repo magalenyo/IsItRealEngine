@@ -9,8 +9,10 @@ public:
     void Draw() override;
 
     float2 GetMousePos() const;
+    float2 GetViewportPos() const;
 
 private:
     ImVec2 mousePos;
+    ImVec2 viewportPos;
 };
 

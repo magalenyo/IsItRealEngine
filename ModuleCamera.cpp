@@ -8,6 +8,7 @@
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleWindow.h"
 #include "Math/float3x3.h"
 #include "Geometry/LineSegment.h"
 #include "MemoryLeakDetector.h"
@@ -35,11 +36,11 @@ GameObject* ModuleCamera::Pick() const
 	float width = App->renderer->viewportWidth;
 	float height = App->renderer->viewportHeight;
 
-	const float2& mouse = App->input->GetMousePosition();
-	const float2& mouse2 = App->editor->GetSceneviewPosition();
+	const float2& mouse = App->editor->GetSceneMousePosition();
+	const float2& viewportPos = App->editor->GetSceneViewportPosition();
 
-	float normalizedX = -(1.0f - (float(mouse2.x) * 2.0f) / width);
-	float normalizedY = 1.0f - (float(mouse2.y) * 2.0f) / height;
+	float normalizedX = -(1.0f - (float(mouse.x - viewportPos.x) * 2.0f) / width);
+	float normalizedY = 1.0f - (float(mouse.y - viewportPos.y) * 2.0f) / height;
 
 	LineSegment picking = camera.UnProjectLineSegment(normalizedX, normalizedY);
 

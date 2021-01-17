@@ -33,7 +33,8 @@ public:
 	bool& GetShowHierarchyView();
 	GameObject* GetSelectedGameObject();
 	void SetSelectedGameObject(GameObject* newSelected);
-	float2 GetSceneviewPosition() const;
+	float2 GetSceneMousePosition() const;
+	float2 GetSceneViewportPosition() const;
 
 public:
 	bool isReady = false;

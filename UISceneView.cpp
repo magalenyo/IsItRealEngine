@@ -41,7 +41,8 @@ void UISceneView::Draw()
             App->camera->OnWindowResized(wsize.x, wsize.y);
         }
         
-        mousePos = ImGui::GetCursorScreenPos();
+        mousePos = ImGui::GetMousePos();
+        viewportPos = ImGui::GetCursorScreenPos();
 
         ImGui::Image((ImTextureID)App->renderer->GetSceneTexture(), wsize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::EndChild();
@@ -52,4 +53,9 @@ void UISceneView::Draw()
 float2 UISceneView::GetMousePos() const
 {
     return float2(mousePos.x, mousePos.y);
+}
+
+float2 UISceneView::GetViewportPos() const
+{
+    return float2(viewportPos.x, viewportPos.y);
 }
