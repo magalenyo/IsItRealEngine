@@ -155,25 +155,27 @@ void ComponentMesh::SetMaterialIndex(unsigned int newMaterialIndex)
 
 void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const float4x4 &modelMatrix)
 {
-	unsigned program = App->renderer->GetDefaultProgram();
-	const float4x4& view = App->camera->GetViewMatrix();
-	const float4x4& proj = App->camera->GetProjectionMatrix();
-	
-	unsigned int textureId = App->renderer->GetMissingTexture();
-	if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr) {
-		textureId = materials[materialIndex]->GetDiffuseTexture()->GetTextureID();
-	}
+	if (enabled) {
+		unsigned program = App->renderer->GetDefaultProgram();
+		const float4x4& view = App->camera->GetViewMatrix();
+		const float4x4& proj = App->camera->GetProjectionMatrix();
 
-	glUseProgram(program);
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&modelMatrix);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureId);
-	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
-	glBindVertexArray(BIND_VERTEX_ARRAY_END);
+		unsigned int textureId = App->renderer->GetMissingTexture();
+		if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr) {
+			textureId = materials[materialIndex]->GetDiffuseTexture()->GetTextureID();
+		}
+
+		glUseProgram(program);
+		glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&modelMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+		glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureId);
+		glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
+		glBindVertexArray(vao);
+		glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(BIND_VERTEX_ARRAY_END);
+	}
 }
 
 void ComponentMesh::RenderToEditor()

@@ -255,12 +255,11 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	aiQuaternion rotation;
 	node->mTransformation.Decompose(scale, rotation, translation);
 
-	// TODO SHOULD BE USING ASSIMP'S SCALE BUT SINCE IT'S USING CENTIMETERS SCALE, IT WILL MESS WITH OBJECTS
-	// THERE'S N EASY WAY TO SET THE UNIT SCALE FACTOR
+	// SHOULD BE USING ASSIMP'S SCALE BUT SINCE IT'S USING CENTIMETERS SCALE, IT WILL MESS WITH OBJECTS
+	// THERE' IS NO WAY TO SET THE UNIT SCALE FACTOR
 	double factor(0.0);
 	scene->mMetaData->Get("UnitScaleFactor", factor);
 	scene->mMetaData->Get("OriginalUnitScaleFactor", factor);
-
 
 	float scaleFactor = 1;
 	if (scale.x == 100) {
