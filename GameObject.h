@@ -42,6 +42,7 @@ public:
 	std::vector<T*> GetComponents() const;
 
 	void Serialize(Value &value, Document::AllocatorType& allocator);
+	static GameObject* Deserialize(Value& value, GameObject* parent);
 
 private:
 	std::string uid;

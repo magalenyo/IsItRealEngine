@@ -93,6 +93,10 @@ void UIMainMenu::Draw()
                 App->sceneImporter->ExportScene(App->scene->GetRootNode());
             }
 
+            if (ImGui::MenuItem("Load SCENE")) {
+                App->sceneImporter->ImportScene(App->sceneImporter->PATH_ROOT_SCENE);
+            }
+
             if (ImGui::MenuItem("Quit")) {
                 App->editor->ExitApplication();
             }

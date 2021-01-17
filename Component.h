@@ -9,9 +9,9 @@ class Component
 {
 public:
 	enum ComponentType {
-		MATERIAL,
-		MESH,
 		TRANSFORM,
+		MESH,
+		MATERIAL,
 		UNDEFINED
 	};
 
@@ -24,6 +24,7 @@ public:
 	virtual void Disable() {}
 	virtual void RenderToEditor() {}
 	virtual void Serialize(Value& value, Document::AllocatorType& allocator);
+	virtual Component* Deserialize() { return new Component(); }
 
 	void SetParent(GameObject* parent);
 	

@@ -24,7 +24,7 @@ public:
 
 	bool ExistsInSystem(const std::string& path);
 	void ExportScene(GameObject* scene);
-	GameObject* ImportScene(const char* json);
+	GameObject* ImportScene(const std::string& path);
 
 private:
 	bool CreateAssetsDirectory();

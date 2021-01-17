@@ -155,17 +155,6 @@ GameObject* GameObject::GetParent()
 
 void GameObject::Serialize(Value &value, Document::AllocatorType& allocator)
 {
-	/*std::string result = "\"uid\": " + uid + "," +
-						 "\"name\":" + name + "," +
-						 "\"enabled\":" + enabled + "," +
-						 "\"components\":";
-
-	result += "{";
-	for (Component* component : components) {
-		result += ", ";
-	}
-	result += "},";*/
-
 	value.AddMember("uid", StringRef(uid.c_str()), allocator);
 	value.AddMember("name", StringRef(name.c_str()), allocator);
 	value.AddMember("enabled", enabled, allocator);
@@ -184,4 +173,31 @@ void GameObject::Serialize(Value &value, Document::AllocatorType& allocator)
 		serializedGameObjectList.PushBack(serializedGameObject, allocator);
 	}
 	value.AddMember("children", serializedGameObjectList, allocator);
+}
+
+GameObject* GameObject::Deserialize(Value& value, GameObject* parent)
+{
+	GameObject* result = new GameObject();
+
+	result->uid = value["uid"].GetString();
+	result->parent = parent;
+	result->name = value["name"].GetString();
+	result->enabled = value["enabled"].GetBool();
+
+	std::vector<Component*> newComponents;
+	Value newComponentsSerialized = value["components"].GetArray();
+	if (newComponentsSerialized.Size() > 0) {
+
+	}
+	result->components = newComponents;
+
+	std::vector<GameObject*> newChildren;
+	Value newChildrenSerialized = value["children"].GetArray();
+	for (int i = 0; i < newChildrenSerialized.Size(); ++i) {
+		GameObject* newChild = GameObject::Deserialize(newChildrenSerialized[i], result);
+		newChildren.push_back(newChild);
+	}
+	result->children = newChildren;
+
+	return result;
 }

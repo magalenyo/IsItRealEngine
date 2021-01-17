@@ -74,9 +74,29 @@ void SceneImporter::ExportScene(GameObject* scene)
 	}
 }
 
-GameObject* SceneImporter::ImportScene(const char* json)
+GameObject* SceneImporter::ImportScene(const std::string& path)
 {
-	return nullptr;
+	GameObject* result = nullptr;
+
+	std::ifstream file(path);
+	if (file.is_open()) {
+		std::string aux; getline(file, aux);
+
+		Document document;
+		document.SetObject();
+		document.Parse(aux.c_str());
+		Value& value = document["root"];
+		if (value.IsObject() && !value.ObjectEmpty()) {
+			result = GameObject::Deserialize(value, nullptr);
+		}
+
+		file.close();
+	}
+	else {
+		LOG("[ERROR] Cannot open file: %s", path.c_str());
+	}
+
+	return result;
 }
 
 bool SceneImporter::CreateAssetsDirectory()
