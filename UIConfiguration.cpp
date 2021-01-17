@@ -155,9 +155,9 @@ void UIConfiguration::Draw()
         ImGui::Text("Window mode");
         int currentType = App->window->GetWindowType();
         int type = currentType;
-        ImGui::RadioButton("Fullscreen", &type, 0); ImGui::SameLine();
-        ImGui::RadioButton("Fullscreen Desktop", &type, 1); ImGui::SameLine();
-        ImGui::RadioButton("Borderless", &type, 2); ImGui::SameLine();
+        ImGui::RadioButton("Fullscreen", &type, 0);
+        ImGui::RadioButton("Fullscreen Desktop", &type, 1); 
+        ImGui::RadioButton("Borderless", &type, 2);
         ImGui::RadioButton("Resizable", &type, 3);
         if (currentType != type) {
             App->window->SetWindowType(type);

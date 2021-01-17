@@ -13,7 +13,6 @@ private:
 	bool show_about = false;
 	bool show_license = false;
 
-	void RenderAbout(bool* p_open);
-	void RenderLicense(bool* p_open);
+	void RenderAbout(bool* p_open);	
 };
 
