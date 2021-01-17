@@ -134,4 +134,9 @@ This window prints all logged information in the engine.
 
 Project License: [MIT](https://github.com/magalenyo/IsItRealEngine/blob/main/LICENSE)
 
+## Comments for the teachers
+
+- Sometimes the Guizmos provoke an unexpected error that we haven't been able to solve and closes the program.
+- There is an unresolved issue that happens when you delete from the scene the second object that you loaded after the engine starts and causes all the geometries to stop drawing themselves properly.
+
 
