@@ -209,6 +209,8 @@ std::string ComponentMesh::GetSerializedName() const
 void ComponentMesh::Serialize(Value& value, Document::AllocatorType& allocator)
 {
 	Component::Serialize(value, allocator);
+
+	value.AddMember("serializedName", StringRef(serializedName.c_str()), allocator);
 }
 
 void ComponentMesh::DestroyBuffer(unsigned int buffer)

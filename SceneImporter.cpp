@@ -43,6 +43,7 @@ bool SceneImporter::ExistsInSystem(const std::string& path)
 void SceneImporter::ExportScene(GameObject* scene)
 {
 	if (scene != nullptr) {
+		LOG("Scene: starting export...");
 		const char json[]  = "{\"root\":}";
 
 		Document document;
@@ -61,8 +62,15 @@ void SceneImporter::ExportScene(GameObject* scene)
 
 		std::ofstream myfile;
 		myfile.open(PATH_ROOT_SCENE);
-		myfile << buffer.GetString();
-		myfile.close();
+		if (myfile.is_open()) {
+			myfile << buffer.GetString();
+			myfile.close();
+			LOG("Scene: root.scene exported succesfully!");
+		}
+		else {
+			LOG("[ERROR] Scene could not be exported");
+		}
+		
 	}
 }
 
