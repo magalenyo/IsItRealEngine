@@ -14,11 +14,12 @@ Click on any of the names to access each repository.
 ### Loading models and textures
 
 - Drag model files (.fbx) inside the engine window to load it and replace the current model.
+- Dragged texture will replace the current diffuse texture from the currently selected GameObject.
 
 ### Menu items
 
 - File
-  - Save Scene: Not fully implemented.
+  - Save Scene: Partially implemented.
   - Load Scene: Not fully implemented.
   - Quit: Exit the engine.
 
@@ -132,11 +133,11 @@ This window prints all logged information in the engine.
   - *contact: isaacfdez94@gmail.com*
 
 
-Project License: [MIT](https://github.com/magalenyo/IsItRealEngine/blob/main/LICENSE)
+Project License: [MIT](https://github.com/magalenyo/RealDisunity/blob/main/LICENSE)
 
 ## Comments for the teachers
 
 - Sometimes the Guizmos provoke an unexpected error that we haven't been able to solve and closes the program.
 - There is an unresolved issue that happens when you delete from the scene the second object that you loaded after the engine starts and causes all the geometries to stop drawing themselves properly.
-
+- The export in serialization is partially done since ComponentCamera remains untouched, but the serialization of the scene exports correctly all the GameObjects in the root node and its components. The import is not fully operational and we have disabled the option to do so in the engine.
 
