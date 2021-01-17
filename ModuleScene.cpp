@@ -28,18 +28,9 @@ bool ModuleScene::Init()
 {
 	quadtree = new Quadtree();
 	root = new GameObject("ROOT", nullptr);
-	//Load("./resources/models/turret cannon multicolored.fbx");
-	//Load("./resources/scene/Clock/ClockCustom.fbx");
-	//Load("./resources/scene/Clock/Clock.fbx");
-	//Load("./resources/scene/Firetruck/Firetruck.fbx");
-	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
-	Load("./resources/scene/Dollhouse/DollhouseCustom.fbx");
-	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
-	//Load("./resources/scene/Zombunny/Zombunny.fbx");
-
+	Load("./resources/scene/Hearse/HearseCustom.fbx");
+	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	Load("./resources/models/BakerHouse.fbx");
-	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
-	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
 
 	camera = new GameObject("Camera", root);
 	camera->AddComponent(new ComponentCamera(camera));

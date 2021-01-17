@@ -274,7 +274,7 @@ void ModuleRender::RenderGrid()
 {
 	if (activeGrid) 
 	{
-		dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, gridColor);
+		dd::xzSquareGrid(-50, 50, 0.0f, 1.0f, gridColor);
 	}
 }
 
