@@ -72,16 +72,11 @@ void UISceneView::Draw()
                 transform->CalculateGlobalMatrix();
                 float4x4 matrix = transform->GetLocalMatrix().Transposed();
 
-                if (ImGuizmo::Manipulate(camera_view.ptr(), camera_projection.ptr(), transform->GetGizmoOperation(), transform->GetGizmoMode(), matrix.ptr(), NULL, transform->GetUseSnap() ? transform->GetSnap().ptr() : NULL))
+                if (ImGuizmo::Manipulate(camera_view.ptr(), camera_projection.ptr(), transform->GetGizmoOperation(), transform->GetGizmoMode(), matrix.ptr(), NULL, NULL))
                 {
                     float4x4 matrix_t = matrix.Transposed();
                     float3 angles = matrix_t.ToEulerXYZ();
                     transform->RecalculateMatrices(matrix_t.TranslatePart(), Quat::FromEulerXYZ(angles[0], angles[1], angles[2]), matrix_t.GetScale());
-                    //transform->SetPosition(matrix_t.TranslatePart());
-                    //transform->SetRotation(Quat::FromEulerXYZ(angles[0], angles[1], angles[2]));
-                    //transform->SetScale(matrix_t.GetScale());
-
-                    //transform->RegenerateGlobalMatrix();
                 }
                 ImGuizmo::ViewManipulate(camera_view.ptr(), 4, ImVec2(viewManipulateRight - imguizmoSize, viewManipulateTop), ImVec2(imguizmoSize, imguizmoSize), 0x10101010);
             }

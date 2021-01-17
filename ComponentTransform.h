@@ -36,8 +36,6 @@ public:
 
 	ImGuizmo::OPERATION GetGizmoOperation() const;
 	ImGuizmo::MODE GetGizmoMode() const;
-	bool GetUseSnap() const;
-	float3 GetSnap();
 
 private:
 
@@ -50,12 +48,5 @@ private:
 
 	ImGuizmo::OPERATION current_guizmo_operation = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE current_guizmo_mode = ImGuizmo::WORLD;
-
-	bool useSnap = false;
-	float snap[3] = { 1.f, 1.f, 1.f };
-	float bounds[6] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-	float boundsSnap[3] = { 0.1f, 0.1f, 0.1f };
-	bool boundSizing = false;
-	bool boundSizingSnap = false;
 };
 
