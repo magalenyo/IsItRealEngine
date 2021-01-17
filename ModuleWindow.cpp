@@ -48,7 +48,8 @@ bool ModuleWindow::Init()
 			windowType = WindowType::W_WINDOW_BORDERLESS;
 		}
 
-		if (WINDOW_RESIZABLE == true) {
+		if (WINDOW_RESIZABLE == true) 
+		{
 			flags |= SDL_WINDOW_RESIZABLE;
 			windowType = WindowType::W_WINDOW_RESIZABLE;
 		}

@@ -14,9 +14,9 @@ public:
 	void Draw();
 
 private:
-	const static unsigned short MAX_FRAMES_STORAGE = 60;
+	const static unsigned short MAX_FRAMES_STORAGE	= 60;
 
-	ImVec4 purple = ImVec4(1.0f, 0.0f, 1.0f, 1.0f);
+	ImVec4 purple									= ImVec4(1.0f, 0.0f, 1.0f, 1.0f);
 
 	std::vector<float> frames;
 	std::vector<float> millis;

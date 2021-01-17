@@ -16,32 +16,32 @@ void ComponentTransform::RenderToEditor()
 {
     if (App->input->GetKey(SDL_SCANCODE_T) == KeyState::KEY_REPEAT)
     {
-        current_guizmo_operation = ImGuizmo::TRANSLATE;
+        currentGuizmoOperation = ImGuizmo::TRANSLATE;
     }
     if (App->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_REPEAT)
     {
-        current_guizmo_operation = ImGuizmo::ROTATE;
+        currentGuizmoOperation = ImGuizmo::ROTATE;
     }
     if (App->input->GetKey(SDL_SCANCODE_Y) == KeyState::KEY_REPEAT)
     {
-        current_guizmo_operation = ImGuizmo::SCALE;
+        currentGuizmoOperation = ImGuizmo::SCALE;
     }
     ImGui::PushID(GetUID().c_str());
     ImGui::Text("Transform component");
     if (ImGui::CollapsingHeader("Transform"))
     {
-        if (ImGui::RadioButton("Translate", current_guizmo_operation == ImGuizmo::TRANSLATE))
+        if (ImGui::RadioButton("Translate", currentGuizmoOperation == ImGuizmo::TRANSLATE))
         {
-            current_guizmo_operation = ImGuizmo::TRANSLATE;
+            currentGuizmoOperation = ImGuizmo::TRANSLATE;
         }        
-        if (ImGui::RadioButton("Rotate", current_guizmo_operation == ImGuizmo::ROTATE))
+        if (ImGui::RadioButton("Rotate", currentGuizmoOperation == ImGuizmo::ROTATE))
         {
-            current_guizmo_operation = ImGuizmo::ROTATE;
+            currentGuizmoOperation = ImGuizmo::ROTATE;
         }
         
-        if (ImGui::RadioButton("Scale", current_guizmo_operation == ImGuizmo::SCALE))
+        if (ImGui::RadioButton("Scale", currentGuizmoOperation == ImGuizmo::SCALE))
         {
-            current_guizmo_operation = ImGuizmo::SCALE;
+            currentGuizmoOperation = ImGuizmo::SCALE;
         }
         ImGui::Separator();
 
@@ -186,10 +186,10 @@ void ComponentTransform::RecalculateMatrices(float3 _position, Quat _rotation, f
 
 ImGuizmo::OPERATION ComponentTransform::GetGizmoOperation() const
 {
-    return current_guizmo_operation;
+    return currentGuizmoOperation;
 }
 
 ImGuizmo::MODE ComponentTransform::GetGizmoMode() const
 {
-    return current_guizmo_mode;
+    return currentGuizmoMode;
 }

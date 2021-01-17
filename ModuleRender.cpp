@@ -26,7 +26,6 @@
 
 ModuleRender::ModuleRender()
 {
-
 }
 
 // Destructor
@@ -80,7 +79,8 @@ bool ModuleRender::Init()
 	gridColor = { 1.000000f, 1.000000f, 1.000000f };
 
 	missingTextureID = App->textures->LoadTexture("./resources/textures/missing_texture.png");
-	if (missingTextureID == ModuleTexture::TEXTURE_ERROR) {
+	if (missingTextureID == ModuleTexture::TEXTURE_ERROR)
+	{
 		missingTextureID = 0;
 	}
 	
@@ -119,7 +119,8 @@ bool ModuleRender::Init()
 	// switch back to window-system-provided framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
 		LOG("ERROR: FrameBuffer incomplete");
 	}
 
@@ -248,7 +249,8 @@ void ModuleRender::OnSceneResize(int width, int height)
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, sceneRBO);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
 		LOG("ERROR: FrameBuffer incomplete");
 	}
 	
@@ -262,14 +264,16 @@ void ModuleRender::AddAABBQuadtree(AABB aabb)
 
 void ModuleRender::RenderAxis()
 {
-	if (activeAxis) {
+	if (activeAxis) 
+	{
 		dd::axisTriad(float4x4::identity, 0.1f, 2.0f);
 	}
 }
 
 void ModuleRender::RenderGrid()
 {
-	if (activeGrid) {
+	if (activeGrid) 
+	{
 		dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, gridColor);
 	}
 }
@@ -290,17 +294,21 @@ void ModuleRender::RenderBoxes()
 
 void ModuleRender::LoadRenderConfiguration()
 {
-	if (activeGLCullFace) {
+	if (activeGLCullFace) 
+	{
 		glEnable(GL_CULL_FACE); // Enable cull backward faces
 	}
-	else {
+	else 
+	{
 		glDisable(GL_CULL_FACE);
 	}
 
-	if (activeGLDepthTest) {
+	if (activeGLDepthTest) 
+	{
 		glEnable(GL_DEPTH_TEST); // Enable depth test
 	}
-	else {
+	else 
+	{
 		glDisable(GL_DEPTH_TEST);
 	}
 }

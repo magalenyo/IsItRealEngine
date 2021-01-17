@@ -54,26 +54,38 @@ update_status ModuleInput::PreUpdate()
 		if (keys[i] == 1)
 		{
 			if (keyboard[i] == KEY_IDLE)
+			{
 				keyboard[i] = KEY_DOWN;
+			}
 			else
+			{
 				keyboard[i] = KEY_REPEAT;
+			}
 		}
 		else
 		{
 			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			{
 				keyboard[i] = KEY_UP;
+			}
 			else
+			{
 				keyboard[i] = KEY_IDLE;
+			}
 		}
 	}
 
 	for (int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
 		if (mouseButtons[i] == KEY_DOWN)
+		{
 			mouseButtons[i] = KEY_REPEAT;
+		}
 
 		if (mouseButtons[i] == KEY_UP)
+		{
 			mouseButtons[i] = KEY_IDLE;
+		}
 	}
 
 	while (SDL_PollEvent(&event) != 0)
@@ -144,7 +156,9 @@ update_status ModuleInput::PreUpdate()
 	}
 
 	if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
 		return UPDATE_STOP;
+	}
 
 	return UPDATE_CONTINUE;
 }

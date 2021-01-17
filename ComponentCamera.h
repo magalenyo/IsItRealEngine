@@ -20,7 +20,7 @@ public:
 	void SetFrustum(Frustum newFrustum);
 
 private:
-	Frustum frustum = Frustum();
-	bool isCullingActive = false;
+	Frustum frustum			= Frustum();
+	bool isCullingActive	= false;
 };
 

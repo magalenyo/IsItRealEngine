@@ -41,14 +41,14 @@ public:
 
 private:
 
-	float3 position = float3(0, 0, 0);		// Local Matrix position
-	float3 scale	= float3(1, 1, 1);		// Local Matrix scale
-	Quat rotation	= Quat(0, 0, 0, 0);		// Local Matrix rotation
+	float3 position								= float3(0, 0, 0);		// Local Matrix position
+	float3 scale								= float3(1, 1, 1);		// Local Matrix scale
+	Quat rotation								= Quat(0, 0, 0, 0);		// Local Matrix rotation
 
-	float4x4 localMatrix = float4x4::identity;				// Local Model Matrix
-	float4x4 globalMatrix = float4x4::identity;				// Global Model Matrix
+	float4x4 localMatrix						= float4x4::identity;				// Local Model Matrix
+	float4x4 globalMatrix						= float4x4::identity;				// Global Model Matrix
 
-	ImGuizmo::OPERATION current_guizmo_operation = ImGuizmo::TRANSLATE;
-	ImGuizmo::MODE current_guizmo_mode = ImGuizmo::WORLD;
+	ImGuizmo::OPERATION currentGuizmoOperation	= ImGuizmo::TRANSLATE;
+	ImGuizmo::MODE currentGuizmoMode			= ImGuizmo::WORLD;
 };
 

@@ -62,7 +62,8 @@ void UIConfiguration::Draw()
         ImGui::Separator();
     }
 
-    if (ImGui::CollapsingHeader("Hardware Information")) {
+    if (ImGui::CollapsingHeader("Hardware Information")) 
+    {
         ImGui::Text("Number of CPUs:");
         ImGui::SameLine();
         ImGui::TextColored(purple, "%i", SDL_GetCPUCount());
@@ -97,7 +98,8 @@ void UIConfiguration::Draw()
         ImGui::TextColored(purple, "%iByte", SDL_GetCPUCacheLineSize());
     }
 
-    if (ImGui::CollapsingHeader("Libraries' Versions")) {
+    if (ImGui::CollapsingHeader("Libraries' Versions")) 
+    {
         ImGui::Text("Assimp:");
         ImGui::SameLine();
         ImGui::TextColored(purple, "%i.%i.%i", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
@@ -126,7 +128,8 @@ void UIConfiguration::Draw()
         bool& gridActivated = App->renderer->GetGridState();
         ImGui::Checkbox("Activate Grid", &gridActivated);
 
-        if (gridActivated) {
+        if (gridActivated) 
+        {
             float3 auxColor = App->renderer->GetGridColor();
             float color[] = { auxColor.x, auxColor.y, auxColor.z };
             ImGui::ColorEdit3("Color", color);
@@ -159,7 +162,8 @@ void UIConfiguration::Draw()
         ImGui::RadioButton("Fullscreen Desktop", &type, 1); 
         ImGui::RadioButton("Borderless", &type, 2);
         ImGui::RadioButton("Resizable", &type, 3);
-        if (currentType != type) {
+        if (currentType != type) 
+        {
             App->window->SetWindowType(type);
         }
         ImGui::Separator();
@@ -169,7 +173,8 @@ void UIConfiguration::Draw()
         int currentWidth;
         int currentHeight;
         App->window->GetWindowSize(currentWidth, currentHeight);
-        if (type != 0 && type != 1) {            // can bug the application because it's true desktop size related to app's size so if changed too fast can lead to problems
+        if (type != 0 && type != 1) 
+        {            // can bug the application because it's true desktop size related to app's size so if changed too fast can lead to problems
             int maxWidth;
             int maxHeight;
             App->window->GetWindowMaxSize(maxWidth, maxHeight);
@@ -179,13 +184,15 @@ void UIConfiguration::Draw()
             ImGui::SliderInt("Width", &width, 300, maxWidth);
             ImGui::SliderInt("Height", &height, 450, maxHeight);
 
-            if (width != currentWidth || height != currentHeight) {
+            if (width != currentWidth || height != currentHeight) 
+            {
                 App->window->SetWindowSize(width, height);
                 App->camera->OnWindowResized(width, height);
             }
 
         }
-        else {
+        else 
+        {
             ImGui::Text((std::string("Width: ") + std::to_string(currentWidth)).c_str());
             ImGui::Text((std::string("Height: ") + std::to_string(currentHeight)).c_str());
         }
@@ -201,7 +208,8 @@ void UIConfiguration::Draw()
         int magnificationFilter = App->textures->GetMagnificationFilter();
         ImGui::RadioButton("Magnification GL_LINEAR", &magnificationFilter, GL_LINEAR); ImGui::SameLine();
         ImGui::RadioButton("Magnification GL_NEAREST", &magnificationFilter, GL_NEAREST);
-        if (currentMagnificationFilter != magnificationFilter) {
+        if (currentMagnificationFilter != magnificationFilter) 
+        {
             App->textures->SetMagnificationFilter(magnificationFilter);
         }
 
@@ -210,11 +218,13 @@ void UIConfiguration::Draw()
         int minificationFilter = App->textures->GetMinificationFilter();
         ImGui::RadioButton("Minification GL_LINEAR", &minificationFilter, GL_LINEAR); ImGui::SameLine();
         ImGui::RadioButton("Minification GL_NEAREST", &minificationFilter, GL_NEAREST);
-        if (currentMinificationFilter != minificationFilter) {
+        if (currentMinificationFilter != minificationFilter) 
+        {
             App->textures->SetMinificationFilter(minificationFilter);
         }
 
-        if (ImGui::Button("Reset to default filters")) {
+        if (ImGui::Button("Reset to default filters")) 
+        {
             App->textures->SetDefaultConfig();
         }
 
@@ -234,33 +244,44 @@ void UIConfiguration::Draw()
         ImGuiIO& io = ImGui::GetIO();
 
         if (ImGui::IsMousePosValid())
+        {
             ImGui::Text("Mouse position: (%g, %g)", io.MousePos.x, io.MousePos.y);
+        }
         else
+        {
             ImGui::Text("Mouse position: <INVALID>");
+        }
 
         ImGui::Text("Mouse down:");
-        for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
-            if (io.MouseDownDuration[i] >= 0.0f) {
+        for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) 
+        {
+            if (io.MouseDownDuration[i] >= 0.0f) 
+            {
                 ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]);
             }
         }
 
         ImGui::Text("Mouse clicked:");
-        for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
-            if (ImGui::IsMouseClicked(i)) {
+        for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) 
+        {
+            if (ImGui::IsMouseClicked(i)) 
+            {
                 ImGui::SameLine(); ImGui::Text("b%d", i);
             }
         }
 
         ImGui::Text("Mouse released:");
-        for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) {
-            if (ImGui::IsMouseReleased(i)) {
+        for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) 
+        {
+            if (ImGui::IsMouseReleased(i)) 
+            {
                 ImGui::SameLine(); ImGui::Text("b%d", i);
             }
         }
     }
 
-    if (ImGui::CollapsingHeader("Camera")) {
+    if (ImGui::CollapsingHeader("Camera")) 
+    {
         vec front = App->camera->GetFront();
         vec up = App->camera->GetUp();
         vec position = App->camera->GetPosition();
@@ -288,7 +309,8 @@ void UIConfiguration::Draw()
 
 void UIConfiguration::AddFrame(float fps)
 {
-    if (frames.size() == MAX_FRAMES_STORAGE) {
+    if (frames.size() == MAX_FRAMES_STORAGE) 
+    {
         frames.erase(frames.begin());
     }
     frames.push_back(fps);
@@ -296,7 +318,8 @@ void UIConfiguration::AddFrame(float fps)
 
 void UIConfiguration::AddMillis(float frameMillis)
 {
-    if (millis.size() == MAX_FRAMES_STORAGE) {
+    if (millis.size() == MAX_FRAMES_STORAGE) 
+    {
         millis.erase(millis.begin());
     }
     millis.push_back(frameMillis);

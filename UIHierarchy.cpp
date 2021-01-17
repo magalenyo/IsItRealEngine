@@ -88,24 +88,28 @@ void UIHierarchy::SetSelectedGameObject(GameObject* newSelected)
 
 void UIHierarchy::RenderRecursively(GameObject* gameObject)
 {
-    if (gameObject != nullptr) {
+    if (gameObject != nullptr) 
+    {
         static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
         ImGuiTreeNodeFlags node_flags = base_flags;
 
-        if (gameObject->IsLeaf()) {
+        if (gameObject->IsLeaf()) 
+        {
             node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
             ImGui::TreeNodeEx(gameObject, node_flags, "%s", gameObject->GetName().c_str());
 
             RenderActionsForGameObject(gameObject);
         }
-        else {
+        else 
+        {
             bool node_open = ImGui::TreeNodeEx(gameObject, node_flags, "%s", gameObject->GetName().c_str());
 
             RenderActionsForGameObject(gameObject);
 
             if (gameObject != nullptr && node_open)
             {
-                for (GameObject* go : gameObject->GetChildren()) {
+                for (GameObject* go : gameObject->GetChildren())
+                {
                     RenderRecursively(go);
                 }
                 ImGui::TreePop();
@@ -117,7 +121,8 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
 
 void UIHierarchy::RenderActionsForGameObject(GameObject* gameObject)
 {
-    if (ImGui::IsItemClicked()) {
+    if (ImGui::IsItemClicked())
+    {
         selectedGameObject = gameObject;
     }
 
@@ -145,28 +150,35 @@ void UIHierarchy::RenderActionsForGameObject(GameObject* gameObject)
     ImGui::PushID(gameObject);
     if (ImGui::BeginPopupContextItem("GameObject"))
     {
-        if (ImGui::Selectable("Create empty GameObject")) {
+        if (ImGui::Selectable("Create empty GameObject")) 
+        {
             GameObject* emptyGameObject = new GameObject("GameObject(" + std::to_string(emptyGameobjectCounter) + ")", gameObject);
             gameObject->AddGameObject(emptyGameObject);
             emptyGameobjectCounter++;
             LOG(("Created new empty GameObject: " + emptyGameObject->GetName() + " under " + gameObject->GetName()).c_str());
         }
 
-        if (gameObject != App->scene->GetRootNode()) {
+        if (gameObject != App->scene->GetRootNode()) 
+        {
 
-            if (!gameObject->IsFirstChildOfParent()) {
-                if (ImGui::Selectable("Move up")) {
+            if (!gameObject->IsFirstChildOfParent()) 
+            {
+                if (ImGui::Selectable("Move up")) 
+                {
                     gameObject->MoveUpOnHiearchy();
                 }
             }
 
-            if (!gameObject->IsLastChildOfParent()) {
-                if (ImGui::Selectable("Move down")) {
+            if (!gameObject->IsLastChildOfParent()) 
+            {
+                if (ImGui::Selectable("Move down")) 
+                {
                     gameObject->MoveDownOnHierarchy();
                 }
             }
 
-            if (ImGui::Selectable("Delete GameObject")) {
+            if (ImGui::Selectable("Delete GameObject")) 
+            {
                 LOG("Removing %s ...", gameObject->GetName().c_str());
                 App->scene->RemoveObjectFromScene(gameObject);
                 App->scene->ResetQuadtree();

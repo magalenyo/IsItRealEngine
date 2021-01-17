@@ -67,7 +67,8 @@ bool ModuleEditor::CleanUp()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
-    for (UIComponent* component : components) {
+    for (UIComponent* component : components)
+    {
         delete component;
     }
     components.clear();
@@ -84,27 +85,33 @@ bool ModuleEditor::CleanUp()
 
 update_status ModuleEditor::Update()
 {
-    if (showMainMenu) {
+    if (showMainMenu) 
+    {
         mainMenu->Draw();
     }
 
-    if (showConsole) {
+    if (showConsole) 
+    {
         console->Draw();
     }
 
-    if (showConfiguration) {
+    if (showConfiguration)
+    {
         configuration->Draw();
     }
     
-    if (showProperties) {
+    if (showProperties) 
+    {
         properties->Draw();
     }
 
-    if (showScene) {
+    if (showScene)
+    {
         scene->Draw();
     }
 
-    if (showHierarchy) {
+    if (showHierarchy)
+    {
         hierarchy->Draw();
     }
 
@@ -183,7 +190,10 @@ GameObject* ModuleEditor::GetSelectedGameObject()
     {
         return hierarchy->GetSelectedGameObject();
     }
-    else return nullptr;
+    else
+    {
+        return nullptr;
+    }
 }
 
 void ModuleEditor::SetSelectedGameObject(GameObject* newSelected)
@@ -199,7 +209,9 @@ float2 ModuleEditor::GetSceneMousePosition() const
     if (scene != nullptr) {
         return scene->GetMousePos();
     }
-    else return float2(0, 0);
+    {
+        return float2(0, 0);
+    }
 }
 
 float2 ModuleEditor::GetSceneViewportPosition() const
@@ -207,6 +219,8 @@ float2 ModuleEditor::GetSceneViewportPosition() const
     if (scene != nullptr) {
         return scene->GetViewportPos();
     }
-    else return float2(0, 0);
+    {
+        return float2(0, 0);
+    }
 }
 

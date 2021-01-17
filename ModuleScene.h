@@ -13,8 +13,8 @@ class ComponentMesh;
 class ModuleScene : public Module
 {
 public:
-    const std::string PATH_TEXTURES = "./resources/textures/";
-    const std::string PATH_MODELS = "./resources/models/";
+    const std::string PATH_TEXTURES         = "./resources/textures/";
+    const std::string PATH_MODELS           = "./resources/models/";
 
     bool Init() override;
     update_status Update() override;
@@ -33,13 +33,13 @@ public:
     std::vector<GameObject*> GetObjectsInScene();
 
 private:
-    const std::string MODEL_EXTENSION_FBX = ".fbx";
+    const std::string MODEL_EXTENSION_FBX   = ".fbx";
 
-    GameObject* root = nullptr;
-    GameObject* camera = nullptr;
+    GameObject* root                        = nullptr;
+    GameObject* camera                      = nullptr;
     std::vector<GameObject*> objectsInScene;
 
-    Quadtree* quadtree = nullptr;
+    Quadtree* quadtree                      = nullptr;
 
     void TestRay(LineSegment& picking, float& distance, GameObject** picked);
     

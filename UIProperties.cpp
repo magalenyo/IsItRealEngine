@@ -31,10 +31,12 @@ void UIProperties::Draw()
 
     GameObject* gameObject = App->editor->GetSelectedGameObject();
 
-    if (gameObject != nullptr) {
+    if (gameObject != nullptr) 
+    {
         gameObject->RenderToEditor();
     }
-    else {
+    else 
+    {
         ImGui::Text("GameObject is not currently available");
     }
 

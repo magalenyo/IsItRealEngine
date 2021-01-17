@@ -32,23 +32,23 @@ public:
 	bool HasEnded() const;
 
 public:
-	ModuleRender* renderer = nullptr;
-	ModuleWindow* window = nullptr;
-	ModuleInput* input = nullptr;
-	ModuleCamera* camera = nullptr;
-	ModuleTime* time = nullptr;
-	ModuleProgram* program = nullptr;
-	ModuleTexture* textures = nullptr;
-	ModuleEditor* editor = nullptr;
-	ModuleDebugDraw* debugDraw = nullptr;
-	ModuleScene* scene = nullptr;
-	ModuleRenderScene* sceneRender = nullptr;
-	SceneImporter* sceneImporter = nullptr;
+	ModuleRender* renderer			= nullptr;
+	ModuleWindow* window			= nullptr;
+	ModuleInput* input				= nullptr;
+	ModuleCamera* camera			= nullptr;
+	ModuleTime* time				= nullptr;
+	ModuleProgram* program			= nullptr;
+	ModuleTexture* textures			= nullptr;
+	ModuleEditor* editor			= nullptr;
+	ModuleDebugDraw* debugDraw		= nullptr;
+	ModuleScene* scene				= nullptr;
+	ModuleRenderScene* sceneRender	= nullptr;
+	SceneImporter* sceneImporter	= nullptr;
 
 private:
 
 	std::vector<Module*> modules;
-	bool ended = false;
+	bool ended						= false;
 
 };
 

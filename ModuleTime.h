@@ -1,5 +1,4 @@
-#ifndef __ModuleTime_H__
-#define __ModuleTime_H__
+#pragma once
 
 #include "Module.h"
 #include <ctime>
@@ -32,5 +31,3 @@ private:
 	clock_t lastTime;
 	clock_t currentTime;
 };
-
-#endif

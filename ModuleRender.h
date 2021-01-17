@@ -49,28 +49,28 @@ public:
 	
 
 public:
-	unsigned int viewportWidth = 0;
+	unsigned int viewportWidth	= 0;
 	unsigned int viewportHeight = 0;
 
 private:
 	
 	void* context;
 	unsigned int defaultProgram;
-	unsigned int sceneFBO = 0;
-	unsigned int sceneRBO = 0;
-	unsigned int sceneTexture = 0;
+	unsigned int sceneFBO		= 0;
+	unsigned int sceneRBO		= 0;
+	unsigned int sceneTexture	= 0;
 	unsigned int missingTextureID;			// This texture is used when there is no texture for a Mesh
 
 	std::vector<AABB> aabbsQuadtree;
 	
 	/* CONFIGURATION VARIABLES */
-	float3 gridColor = { 1.000000f, 1.000000f, 1.000000f };
-	bool activeAxis = true;
-	bool activeGrid = true;
-	bool activeModel = true;
-	bool activeGLDepthTest = true;
-	bool activeGLCullFace = true;
-	bool activeDrawQuadtree = false;
+	float3 gridColor			= { 1.000000f, 1.000000f, 1.000000f };
+	bool activeAxis				= true;
+	bool activeGrid				= true;
+	bool activeModel			= true;
+	bool activeGLDepthTest		= true;
+	bool activeGLCullFace		= true;
+	bool activeDrawQuadtree		= false;
 	
 	void LoadRenderConfiguration();
 	void RenderAxis();

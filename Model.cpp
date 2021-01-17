@@ -8,8 +8,10 @@ bool Model::CanLoadFBX(const std::string& path)
 {
 	static const std::string MODEL_EXTENSION_FBX = ".fbx";
 
-	if (path.length() >= MODEL_EXTENSION_FBX.length()) {
-		if (path.compare(path.length() - MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX) == 0) {
+	if (path.length() >= MODEL_EXTENSION_FBX.length())
+	{
+		if (path.compare(path.length() - MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX.length(), MODEL_EXTENSION_FBX) == 0)
+		{
 			return true;
 		}
 	}

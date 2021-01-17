@@ -41,7 +41,8 @@ void UISceneView::Draw()
 
         //}
 
-        if (App->renderer->viewportWidth != wsize.x || App->renderer->viewportHeight != wsize.y) {
+        if (App->renderer->viewportWidth != wsize.x || App->renderer->viewportHeight != wsize.y) 
+        {
             App->renderer->OnSceneResize(wsize.x, wsize.y);
             App->camera->OnWindowResized(wsize.x, wsize.y);
 

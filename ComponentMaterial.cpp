@@ -8,22 +8,26 @@ ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(owner, Compo
 
 ComponentMaterial::~ComponentMaterial()
 {
-	if (diffuse != nullptr) {
+	if (diffuse != nullptr) 
+	{
 		delete diffuse;
 		diffuse = nullptr;
 	}
 
-	if (specular != nullptr) {
+	if (specular != nullptr) 
+	{
 		delete specular;
 		specular = nullptr;
 	}
 
-	if (normal != nullptr) {
+	if (normal != nullptr) 
+	{
 		delete normal;
 		normal = nullptr;
 	}
 
-	if (emissive != nullptr) {
+	if (emissive != nullptr) 
+	{
 		delete emissive;
 		emissive = nullptr;
 	}
@@ -38,7 +42,8 @@ void ComponentMaterial::RenderToEditor()
 		ImGui::TextColored(ImVec4(.38, .54, 1, 1), "Name: %s", name.c_str());
 		ImGui::Text("");
 
-		if (diffuse != nullptr) {
+		if (diffuse != nullptr) 
+		{
 			ImGui::Text("Diffuse texture");
 			ImGui::Text("Width: %.2f", diffuse->GetWidth()); ImGui::SameLine();
 			ImGui::Text("Height: %.2f", diffuse->GetHeight());
@@ -47,7 +52,8 @@ void ComponentMaterial::RenderToEditor()
 			ImGui::Text("");
 		}
 		
-		if (specular != nullptr) {
+		if (specular != nullptr) 
+		{
 			ImGui::Text("Specular texture");
 			ImGui::Text("Width: %.2f", specular->GetWidth()); ImGui::SameLine();
 			ImGui::Text("Height: %.2f", specular->GetHeight());
@@ -56,7 +62,8 @@ void ComponentMaterial::RenderToEditor()
 			ImGui::Text("");
 		}
 		
-		if (normal != nullptr) {
+		if (normal != nullptr) 
+		{
 			ImGui::Text("Normal texture");
 			ImGui::Text("Width: %.2f", normal->GetWidth()); ImGui::SameLine();
 			ImGui::Text("Height: %.2f", normal->GetHeight());
@@ -65,7 +72,8 @@ void ComponentMaterial::RenderToEditor()
 			ImGui::Text("");
 		}
 
-		if (emissive != nullptr) {
+		if (emissive != nullptr) 
+		{
 			ImGui::Text("Normal texture");
 			ImGui::Text("Width: %.2f", emissive->GetWidth()); ImGui::SameLine();
 			ImGui::Text("Height: %.2f", emissive->GetHeight());
@@ -176,29 +184,34 @@ void ComponentMaterial::SerializeExport(Value& value, Document::AllocatorType& a
 	value.AddMember("specularColor", specularColorSerialized, allocator);
 
 	Value diffuseTextureSerialized(kObjectType);
-	if (diffuse != nullptr) {
+	if (diffuse != nullptr) 
+	{
 		diffuse->SerializeExport(diffuseTextureSerialized, allocator);
 	}
-	else {
+	else 
+	{
 		// MIGHT NOT BE NEEDED
 		//diffuseTextureSerialized.AddMember("MemberWhoseValueIsNULL", Value());
 	}
 	value.AddMember("diffuse", diffuseTextureSerialized, allocator);
 
 	Value specularTextureSerialized(kObjectType);
-	if (specular != nullptr) {
+	if (specular != nullptr) 
+	{
 		specular->SerializeExport(specularTextureSerialized, allocator);
 	}
 	value.AddMember("specular", specularTextureSerialized, allocator);
 
 	Value normalTextureSerialized(kObjectType);
-	if (normal != nullptr) {
+	if (normal != nullptr) 
+	{
 		normal->SerializeExport(normalTextureSerialized, allocator);
 	}
 	value.AddMember("normal", normalTextureSerialized, allocator);
 
 	Value emissiveTextureSerialized(kObjectType);
-	if (emissive != nullptr) {
+	if (emissive != nullptr) 
+	{
 		emissive->SerializeExport(emissiveTextureSerialized, allocator);
 	}
 	value.AddMember("emissive", emissiveTextureSerialized, allocator);
@@ -223,7 +236,8 @@ ComponentMaterial* ComponentMaterial::Deserialize(const Value& value)
 	newMaterial->specularColor = float3(specularColorSerialized[0].GetFloat(), specularColorSerialized[1].GetFloat(), specularColorSerialized[2].GetFloat());
 
 	const Value& diffuseSerialized = value["diffuse"];
-	if (!diffuseSerialized.ObjectEmpty()) {
+	if (!diffuseSerialized.ObjectEmpty()) 
+	{
 		float widthSerialized = diffuseSerialized["width"].GetFloat();
 		float heightSerialized = diffuseSerialized["height"].GetFloat();
 		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(diffuseSerialized["textureType"].GetInt());
@@ -233,7 +247,8 @@ ComponentMaterial* ComponentMaterial::Deserialize(const Value& value)
 	}
 
 	const Value& specularSerialized = value["specular"];
-	if (!specularSerialized.ObjectEmpty()) {
+	if (!specularSerialized.ObjectEmpty()) 
+	{
 		float widthSerialized = specularSerialized["width"].GetFloat();
 		float heightSerialized = specularSerialized["height"].GetFloat();
 		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(specularSerialized["textureType"].GetInt());
@@ -243,7 +258,8 @@ ComponentMaterial* ComponentMaterial::Deserialize(const Value& value)
 	}
 
 	const Value& normalSerialized = value["normal"];
-	if (!normalSerialized.ObjectEmpty()) {
+	if (!normalSerialized.ObjectEmpty()) 
+	{
 		float widthSerialized = normalSerialized["width"].GetFloat();
 		float heightSerialized = normalSerialized["height"].GetFloat();
 		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(normalSerialized["textureType"].GetInt());
@@ -253,7 +269,8 @@ ComponentMaterial* ComponentMaterial::Deserialize(const Value& value)
 	}
 
 	const Value& emissiveSerialized = value["emissive"];
-	if (!emissiveSerialized.ObjectEmpty()) {
+	if (!emissiveSerialized.ObjectEmpty()) 
+	{
 		float widthSerialized = emissiveSerialized["width"].GetFloat();
 		float heightSerialized = emissiveSerialized["height"].GetFloat();
 		Texture::TextureType textureTypeSerialized = static_cast<Texture::TextureType>(emissiveSerialized["textureType"].GetInt());

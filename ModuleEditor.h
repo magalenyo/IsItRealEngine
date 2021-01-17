@@ -37,23 +37,23 @@ public:
 	float2 GetSceneViewportPosition() const;
 
 public:
-	bool isReady = false;
-	UIMainMenu* mainMenu = nullptr;
-	UIConsole* console = nullptr;
-	UIConfiguration* configuration = nullptr;
-	UIProperties* properties = nullptr;
-	UISceneView* scene = nullptr;
-	UIHierarchy* hierarchy = nullptr;
+	bool isReady					= false;
+	UIMainMenu* mainMenu			= nullptr;
+	UIConsole* console				= nullptr;
+	UIConfiguration* configuration	= nullptr;
+	UIProperties* properties		= nullptr;
+	UISceneView* scene				= nullptr;
+	UIHierarchy* hierarchy			= nullptr;
 
 private:
 	std::vector<UIComponent*> components;				// The list of UIComponents of the Editor
 	update_status updateStatus = UPDATE_CONTINUE;		// The return type for the Update function
 
-	bool showMainMenu = true;
-	bool showConsole = true;
-	bool showConfiguration = true;
-	bool showProperties = true;
-	bool showScene = true;
-	bool showHierarchy = true;
+	bool showMainMenu				= true;
+	bool showConsole				= true;
+	bool showConfiguration			= true;
+	bool showProperties				= true;
+	bool showScene					= true;
+	bool showHierarchy				= true;
 };
 

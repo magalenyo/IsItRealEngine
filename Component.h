@@ -8,7 +8,8 @@ class GameObject;
 class Component
 {
 public:
-	enum ComponentType {
+	enum ComponentType 
+	{
 		TRANSFORM,
 		MESH,
 		MATERIAL,
@@ -23,7 +24,7 @@ public:
 	virtual void Enable() { enabled = true; }
 	virtual void Disable() { enabled = false; }
 	virtual void Update() {}
-	virtual void RenderToEditor() {}
+	virtual void RenderToEditor() {} 
 	virtual void Serialize(Value& value, Document::AllocatorType& allocator);
 	virtual Component* Deserialize() { return new Component(); }
 
@@ -34,8 +35,8 @@ public:
 
 protected:
 	std::string uid;
-	ComponentType type = ComponentType::UNDEFINED;
-	bool enabled = true;
-	GameObject* owner = nullptr;
+	ComponentType type		= ComponentType::UNDEFINED;
+	bool enabled			= true;
+	GameObject* owner		= nullptr;
 };
 

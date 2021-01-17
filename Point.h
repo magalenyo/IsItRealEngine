@@ -2,8 +2,7 @@
 // Point class    -----------
 // ----------------------------------------------------
 
-#ifndef __POINT_H__
-#define __POINT_H__
+#pragma once
 
 template<class TYPE>
 class Point
@@ -96,5 +95,3 @@ public:
 
 typedef Point<int> iPoint;
 typedef Point<float> fPoint;
-
-#endif // __POINT_H__

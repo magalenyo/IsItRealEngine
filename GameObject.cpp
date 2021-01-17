@@ -18,13 +18,15 @@ GameObject::GameObject(const std::string& name, GameObject* parent) : name(name)
 
 GameObject::~GameObject()
 {
-	for (Component* component : components) {
+	for (Component* component : components) 
+	{
 		delete component;
 		component = nullptr;
 	}
 	components.clear();
 
-	for (GameObject* gameObject : children) {
+	for (GameObject* gameObject : children) 
+	{
 		delete gameObject;
 		gameObject = nullptr;
 	}
@@ -79,7 +81,8 @@ void GameObject::SetParent(GameObject* gameObject)
 
 void GameObject::Reparent(GameObject* newParent)
 {
-	if (parent != newParent) {
+	if (parent != newParent) 
+	{
 		parent->RemoveChild(this);
 		SetParent(newParent);
 		newParent->AddGameObject(this);
@@ -88,7 +91,8 @@ void GameObject::Reparent(GameObject* newParent)
 
 void GameObject::RemoveChildFromParent()
 {
-	if (parent != nullptr) {
+	if (parent != nullptr) 
+	{
 		parent->RemoveChild(this);
 		SetParent(nullptr);
 	}
@@ -96,8 +100,10 @@ void GameObject::RemoveChildFromParent()
 
 void GameObject::MoveUpOnHiearchy()
 {
-	for (int i = 0; i < parent->children.size(); ++i) {
-		if (parent->children[i] == this) {
+	for (int i = 0; i < parent->children.size(); ++i) 
+	{
+		if (parent->children[i] == this) 
+		{
 			GameObject* aux = parent->children[i];
 			parent->children[i] = parent->children[i - 1];
 			parent->children[i - 1] = aux;
@@ -108,8 +114,10 @@ void GameObject::MoveUpOnHiearchy()
 
 void GameObject::MoveDownOnHierarchy()
 {
-	for (int i = 0; i < parent->children.size(); ++i) {
-		if (parent->children[i] == this) {
+	for (int i = 0; i < parent->children.size(); ++i) 
+	{
+		if (parent->children[i] == this) 
+		{
 			GameObject* aux = parent->children[i];
 			parent->children[i] = parent->children[i + 1];
 			parent->children[i + 1] = aux;
@@ -170,7 +178,8 @@ bool GameObject::IsLeaf() const
 
 bool GameObject::IsFirstChildOfParent() const
 {
-	if (parent->children[0] == this) {
+	if (parent->children[0] == this) 
+	{
 		return true;
 	}
 	return false;
@@ -178,7 +187,8 @@ bool GameObject::IsFirstChildOfParent() const
 
 bool GameObject::IsLastChildOfParent() const
 {
-	if (parent->children[parent->children.size() - 1] == this) {
+	if (parent->children[parent->children.size() - 1] == this) 
+	{
 		return true;
 	}
 	return false;
@@ -223,7 +233,8 @@ void GameObject::RenderToEditor()
 		}
 
 		ImGui::Separator();
-		if (enabled) {
+		if (enabled) 
+		{
 			for (Component* component : components) {
 				component->RenderToEditor();
 			}
@@ -243,7 +254,8 @@ void GameObject::Serialize(Value &value, Document::AllocatorType& allocator)
 	value.AddMember("name", StringRef(name.c_str()), allocator);
 	value.AddMember("enabled", enabled, allocator);
 	Value serializedComponentList(kArrayType);
-	for (Component* component : components) {
+	for (Component* component : components) 
+	{
 		Value serializedComponent(kObjectType);
 		component->Serialize(serializedComponent, allocator);
 		serializedComponentList.PushBack(serializedComponent, allocator);
@@ -251,7 +263,8 @@ void GameObject::Serialize(Value &value, Document::AllocatorType& allocator)
 	value.AddMember("components", serializedComponentList, allocator);
 
 	Value serializedGameObjectList(kArrayType);
-	for (GameObject* gameObject : children) {
+	for (GameObject* gameObject : children) 
+	{
 		Value serializedGameObject(kObjectType);
 		gameObject->Serialize(serializedGameObject, allocator);
 		serializedGameObjectList.PushBack(serializedGameObject, allocator);
@@ -270,14 +283,16 @@ GameObject* GameObject::Deserialize(Value& value, GameObject* parent)
 
 	std::vector<Component*> newComponents;
 	Value newComponentsSerialized = value["components"].GetArray();
-	if (newComponentsSerialized.Size() > 0) {
+	if (newComponentsSerialized.Size() > 0)
+	{
 
 	}
 	result->components = newComponents;
 
 	std::vector<GameObject*> newChildren;
 	Value newChildrenSerialized = value["children"].GetArray();
-	for (int i = 0; i < newChildrenSerialized.Size(); ++i) {
+	for (int i = 0; i < newChildrenSerialized.Size(); ++i) 
+	{
 		GameObject* newChild = GameObject::Deserialize(newChildrenSerialized[i], result);
 		newChildren.push_back(newChild);
 	}

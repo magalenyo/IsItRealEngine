@@ -22,7 +22,8 @@ ModuleTexture::~ModuleTexture()
 bool ModuleTexture::Init()
 {
 	LOG("ModuleTexture - INIT START");
-	if (ilGetInteger(IL_VERSION_NUM < IL_VERSION)) {
+	if (ilGetInteger(IL_VERSION_NUM < IL_VERSION))
+	{
 		LOG("ModuleTexture - INIT - DevIL version incorrect");
 		LOG("ModuleTexture - INIT END");
 		return false;
@@ -68,7 +69,8 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 		ILinfo imageInfo;
 		iluGetImageInfo(&imageInfo);
 		// if origin needs to be flipped, flip it
-		if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
+		if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
 			iluFlipImage();
 		}
 		// STORES IN GPU
@@ -99,14 +101,18 @@ int ModuleTexture::LoadTexture(const char* imagePath)
 
 bool ModuleTexture::IsTexture(const std::string& imagePath)
 {
-	if (imagePath.length() >= TEXTURE_EXTENSION_LENGTH) {
-		if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_PNG.length(), TEXTURE_EXTENSION_PNG.length(), TEXTURE_EXTENSION_PNG) == 0) {
+	if (imagePath.length() >= TEXTURE_EXTENSION_LENGTH)
+	{
+		if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_PNG.length(), TEXTURE_EXTENSION_PNG.length(), TEXTURE_EXTENSION_PNG) == 0) 
+		{
 			return true;
 		}
-		else if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_DDS.length(), TEXTURE_EXTENSION_DDS.length(), TEXTURE_EXTENSION_DDS) == 0) {
+		else if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_DDS.length(), TEXTURE_EXTENSION_DDS.length(), TEXTURE_EXTENSION_DDS) == 0) 
+		{
 			return true;
 		}
-		else if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_JPG.length(), TEXTURE_EXTENSION_JPG.length(), TEXTURE_EXTENSION_JPG) == 0) {
+		else if (imagePath.compare(imagePath.length() - TEXTURE_EXTENSION_JPG.length(), TEXTURE_EXTENSION_JPG.length(), TEXTURE_EXTENSION_JPG) == 0) 
+		{
 			return true;
 		}
 	}

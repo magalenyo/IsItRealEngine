@@ -10,8 +10,8 @@ public:
 	void Draw();
 
 private:
-	bool show_about = false;
-	bool show_license = false;
+	bool show_about		= false;
+	bool show_license	= false;
 
 	void RenderAbout(bool* p_open);	
 };

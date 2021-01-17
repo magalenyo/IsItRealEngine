@@ -63,7 +63,9 @@ void UIConsole::Draw()
 
     // Options, Filter
     if (ImGui::Button("Options"))
+    {
         ImGui::OpenPopup("Options");
+    }
     ImGui::Separator();
 
     // Reserve enough left-over height for 1 separator + 1 input text
@@ -71,7 +73,10 @@ void UIConsole::Draw()
     ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
     if (ImGui::BeginPopupContextWindow())
     {
-        if (ImGui::Selectable("Clear")) ClearLog();
+        if (ImGui::Selectable("Clear"))
+        {
+            ClearLog();
+        }
         ImGui::EndPopup();
     }
 
@@ -81,24 +86,37 @@ void UIConsole::Draw()
     {
         const char* item = Items[i];
         if (!Filter.PassFilter(item))
+        {
             continue;
+        }
 
         // Normally you would store more information in your item than just a string.
         // (e.g. make Items[] an array of structure, store color/type etc.)
         ImVec4 color;
         bool has_color = false;
-        if (strstr(item, "[error]")) { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
-        else if (strncmp(item, "# ", 2) == 0) { color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; }
+        if (strstr(item, "[error]"))
+        { 
+            color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true;
+        }
+        else if (strncmp(item, "# ", 2) == 0) 
+        {
+            color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; 
+        }
         if (has_color)
+        {
             ImGui::PushStyleColor(ImGuiCol_Text, color);
+        }
         ImGui::TextUnformatted(item);
         if (has_color)
+        {
             ImGui::PopStyleColor();
+        }
     }
 
-
     if (ScrollToBottom || (AutoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY()))
+    {
         ImGui::SetScrollHereY(1.0f);
+    }
     ScrollToBottom = false;
 
     ImGui::PopStyleVar();
@@ -115,7 +133,9 @@ void UIConsole::Draw()
 void UIConsole::ClearLog()
 {
     for (int i = 0; i < Items.Size; i++)
+    {
         free(Items[i]);
+    }
     Items.clear();
 }
 

@@ -40,10 +40,10 @@ public:
 private:
 	static const int BIND_VERTEX_ARRAY_END = 0;
 
-	unsigned int materialIndex = 0;
-	unsigned int numVertices = 0;
-	unsigned int numIndices = 0;
-	unsigned int numFaces = 0;
+	unsigned int materialIndex		= 0;
+	unsigned int numVertices		= 0;
+	unsigned int numIndices			= 0;
+	unsigned int numFaces			= 0;
 
 	unsigned int vbo;
 	unsigned int ebo;
@@ -52,9 +52,9 @@ private:
 	std::vector<float3> totalVertices;
 	std::vector<Triangle> triangles;
 
-	float3 furthestPosition = float3(0, 0, 0);
+	float3 furthestPosition			= float3(0, 0, 0);
 
-	std::string serializedName = "";
+	std::string serializedName		= "";
 
 	void DestroyBuffer(unsigned int buffer);
 };

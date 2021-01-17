@@ -1,5 +1,4 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#pragma once
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
@@ -54,8 +53,6 @@ public:
 private:
 	/* CONFIGURATION VARIABLES */
 	WindowType windowType;
-	SDL_Window* window = NULL; //The window we'll be rendering to
-	SDL_Surface* screenSurface = NULL; //The surface contained by the window
+	SDL_Window* window			= NULL; //The window we'll be rendering to
+	SDL_Surface* screenSurface	= NULL; //The surface contained by the window
 };
-
-#endif // __ModuleWindow_H__

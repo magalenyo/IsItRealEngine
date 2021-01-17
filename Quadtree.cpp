@@ -12,6 +12,7 @@ Quadtree::~Quadtree()
 {
 	if (root != nullptr)
 	{
+		root->Clear();
 		delete root;
 		root = nullptr;
 	}

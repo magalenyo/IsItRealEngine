@@ -49,11 +49,11 @@ public:
 
 private:
 	//const Uint8 *keyboard = NULL;
-	bool		windowEvents[WE_COUNT];
-	KeyState	keyboard[MAX_KEYS];
-	KeyState	mouseButtons[NUM_MOUSE_BUTTONS];
+	bool windowEvents[WE_COUNT];
+	KeyState keyboard[MAX_KEYS];
+	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
 
-	float2 mouseMotion = { 0, 0 };
-	float2 mouse = { 0, 0 };
-	float mouseWheelMotion = 0;
+	float2 mouseMotion		= { 0, 0 };
+	float2 mouse			= { 0, 0 };
+	float mouseWheelMotion	= 0;
 };

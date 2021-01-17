@@ -32,8 +32,8 @@ public:
 
 private:
 	unsigned int textureID;
-	float width = 1;
-	float height = 1;
+	float width		= 1;
+	float height	= 1;
 	TextureType type;
 	std::string texturePath;
 };

@@ -38,12 +38,12 @@ public:
 	Frustum GetCamera() const;
 
 private:
-	Frustum camera = Frustum();
-	float movementSpeed = 5.0f;
-	float rotationSpeed = 40.0f;
-	float zoomSpeed = 5.0f;
-	float positionFromFocusVertice = 4.0f;
-	float distanceFocus = 10.0f;
+	Frustum camera					= Frustum();
+	float movementSpeed				= 5.0f;
+	float rotationSpeed				= 40.0f;
+	float zoomSpeed					= 5.0f;
+	float positionFromFocusVertice	= 4.0f;
+	float distanceFocus				= 10.0f;
 
 	void ResetSpeed();
 	void IncreaseSpeed();
