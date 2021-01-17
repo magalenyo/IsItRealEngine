@@ -81,6 +81,11 @@ void UIHierarchy::Draw()
     ImGui::End();
 }
 
+void UIHierarchy::SetSelectedGameObject(GameObject* newSelected)
+{
+    selectedGameObject = newSelected;
+}
+
 void UIHierarchy::RenderRecursively(GameObject* gameObject)
 {
     if (gameObject != nullptr) {
@@ -164,6 +169,7 @@ void UIHierarchy::RenderActionsForGameObject(GameObject* gameObject)
             if (ImGui::Selectable("Delete GameObject")) {
                 LOG("Removing %s ...", gameObject->GetName().c_str());
                 App->scene->RemoveObjectFromScene(gameObject);
+                App->scene->ResetQuadtree();
                 selectedGameObject = gameObject->GetParent();
                 gameObject->RemoveChildFromParent();
                 delete gameObject;

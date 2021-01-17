@@ -6,7 +6,10 @@
 #include "ModuleInput.h"
 #include "ModuleTime.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
+#include "ModuleScene.h"
 #include "Math/float3x3.h"
+#include "Geometry/LineSegment.h"
 #include "MemoryLeakDetector.h"
 
 bool ModuleCamera::Init()
@@ -27,6 +30,24 @@ void ModuleCamera::Rotate(float3x3 rotationMatrix) {
 	camera.SetUp(rotationMatrix * camera.Up().Normalized());
 }
 
+GameObject* ModuleCamera::Pick() const
+{
+	float width = App->renderer->viewportWidth;
+	float height = App->renderer->viewportHeight;
+
+	const float2& mouse = App->input->GetMousePosition();
+
+	float normalizedX = -(1.0f - (float(mouse.x) * 2.0f) / width);
+	float normalizedY = 1.0f - (float(mouse.y) * 2.0f) / height;
+
+	LineSegment picking = camera.UnProjectLineSegment(normalizedX, normalizedY);
+
+	float distance;
+	GameObject* picked = App->scene->SendRay(picking, distance);
+
+	return picked;
+}
+
 update_status ModuleCamera::Update()
 {
 	const float deltaTime = App->time->DeltaTime();
@@ -34,18 +55,22 @@ update_status ModuleCamera::Update()
 	const float mouseWheelMotion = App->input->GetMouseWheelMotion();
 
 	/* START SPEED CONTROL */
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT)
+	{
 		IncreaseSpeed();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP) {
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP) 
+	{
 		ResetSpeed();
 	}
 	/* END SPEED CONTROL */
 
-	if (mouseWheelMotion < -FLT_EPSILON || mouseWheelMotion > FLT_EPSILON) {
+	if (mouseWheelMotion < -FLT_EPSILON || mouseWheelMotion > FLT_EPSILON) 
+	{
 		camera.SetPos(camera.Pos() + (camera.Front().Normalized() * mouseWheelMotion * 10 * zoomSpeed * App->time->DeltaTime()));
 	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_REPEAT) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_REPEAT) 
+	{
 		Rotate(float3x3::RotateAxisAngle(camera.WorldRight().Normalized(), -mouseMotion.y * rotationSpeed * DEGTORAD * deltaTime));
 		Rotate(float3x3::RotateY(-mouseMotion.x * rotationSpeed * DEGTORAD * deltaTime));
 
@@ -74,17 +99,27 @@ update_status ModuleCamera::Update()
 			camera.SetPos(camera.Pos() + (camera.WorldRight().Normalized() * movementSpeed * deltaTime));
 		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_F) == KeyState::KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_F) == KeyState::KEY_REPEAT) 
+	{
 		camera.SetPos(float3(0, 3, -8));
 		camera.SetFront(float3::unitZ);
 		camera.SetUp(float3::unitY);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) 
+	{
 		float3 oldFocusPoint = camera.Pos() + (camera.Front() * distanceFocus);
 		Rotate(float3x3::RotateAxisAngle(camera.WorldRight().Normalized(), -mouseMotion.y * rotationSpeed * DEGTORAD * deltaTime));
 		Rotate(float3x3::RotateY(-mouseMotion.x * rotationSpeed * DEGTORAD * deltaTime));
 		float3 newFocusPoint = camera.Pos() + (camera.Front() * distanceFocus);
 		camera.SetPos((oldFocusPoint - newFocusPoint) + camera.Pos());
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	{
+		GameObject* picked = Pick();
+		if (picked != nullptr)
+		{
+			App->editor->SetSelectedGameObject(picked);
+		}
 	}
 
 	return UPDATE_CONTINUE;

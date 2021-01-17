@@ -45,6 +45,7 @@ public:
 	bool GetWindowEvent(EventWindow ev) const { return windowEvents[ev]; }
 	const float GetMouseWheelMotion() const { return mouseWheelMotion; }
 	const float2& GetMouseMotion() const { return mouseMotion; }
+	const float2& GetMousePosition() const{ return mouse; }
 
 private:
 	//const Uint8 *keyboard = NULL;

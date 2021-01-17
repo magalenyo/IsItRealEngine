@@ -39,7 +39,7 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 	float3 currentPosition = float3(0, 0, 0);
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
-
+		totalVertices.push_back(float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 		*(vertices++) = mesh->mVertices[i].x;
 		*(vertices++) = mesh->mVertices[i].y;
 		*(vertices++) = mesh->mVertices[i].z;
@@ -76,6 +76,7 @@ void ComponentMesh::LoadEBO(const aiMesh* mesh)
 	{
 		//assert(mesh->mFaces[i].mNumIndices == 3); // note: assume triangles = 3 indices per face
 		if (mesh->mFaces[i].mNumIndices == 3) {
+			triangles.push_back(Triangle(totalVertices[mesh->mFaces[i].mIndices[0]], totalVertices[mesh->mFaces[i].mIndices[1]], totalVertices[mesh->mFaces[i].mIndices[2]]));
 			*(indices++) = mesh->mFaces[i].mIndices[0];
 			*(indices++) = mesh->mFaces[i].mIndices[1];
 			*(indices++) = mesh->mFaces[i].mIndices[2];
@@ -181,6 +182,11 @@ unsigned int ComponentMesh::GetTriangles() const
 unsigned int ComponentMesh::GetFaces() const
 {
 	return numFaces;
+}
+
+std::vector<Triangle> ComponentMesh::GetVectorTriangles() const
+{
+	return triangles;
 }
 
 float3 ComponentMesh::GetFurthestPosition()

@@ -27,6 +27,8 @@ public:
     GameObject* GetCamera();
     GameObject* GetRootNode() const;
     void RemoveObjectFromScene(GameObject* gameObject);
+    void ResetQuadtree();
+    GameObject* SendRay(LineSegment& picking, float& distance);
 
     std::vector<GameObject*> GetObjectsInScene();
 
@@ -39,9 +41,8 @@ private:
 
     Quadtree* quadtree = nullptr;
 
-
-
-
+    void TestRay(LineSegment& picking, float& distance, GameObject** picked);
+    
     // TODO EXTERNALIZE INTO A MODEL LOADER
     //std::vector<ComponentMaterial*> LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials);
     ComponentMaterial* LoadMaterials(const char* file_name, aiMaterial* const mMaterial);

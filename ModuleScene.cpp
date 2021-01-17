@@ -9,6 +9,9 @@
 #include "ComponentTransform.h"
 #include "Texture.h"
 #include "Model.h"
+#include "Geometry/LineSegment.h"
+#include "Geometry/Triangle.h"
+#include <map>
 
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
@@ -42,14 +45,7 @@ bool ModuleScene::Init()
 
 update_status ModuleScene::Update()
 {
-	quadtree->Clear();
-	for (GameObject* go : objectsInScene)
-	{
-		if (go->GetParent() != nullptr && go->GetParent() != root)
-		{
-			quadtree->AddGameObject(go);
-		}
-	}
+	ResetQuadtree();
 	for (GameObject* go : objectsInScene)
 	{
 		go->Update();
@@ -221,7 +217,61 @@ std::vector<GameObject*> ModuleScene::GetObjectsInScene()
 //	return result;
 //}
 
- //TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
+void ModuleScene::ResetQuadtree()
+{
+	quadtree->Clear();
+	for (GameObject* go : objectsInScene)
+	{
+		if (go->GetParent() != nullptr && go->GetParent() != root)
+		{
+			quadtree->AddGameObject(go);
+		}
+	}
+}
+
+GameObject* ModuleScene::SendRay(LineSegment& picking, float& distance)
+{
+	distance = inf;
+	GameObject* picked = nullptr;
+	TestRay(picking, distance, &picked);
+	return picked;
+}
+
+void ModuleScene::TestRay(LineSegment& picking, float& distance, GameObject** picked)
+{
+	std::map<float, GameObject*> objectsCollided;
+	quadtree->GetObjectsCollided(objectsCollided, picking);
+
+	for (std::map<float, GameObject*>::const_iterator it = objectsCollided.begin(); it != objectsCollided.end(); ++it)
+	{
+		GameObject* go = it->second;
+		std::vector<ComponentMesh*> meshes = go->GetComponents<ComponentMesh>();
+
+		for (ComponentMesh* mesh : meshes)
+		{
+			LineSegment pickingLocalSpace(picking);
+			pickingLocalSpace.Transform(go->GetComponent<ComponentTransform>()->GetGlobalModelMatrix().Inverted());
+
+			std::vector<Triangle> triangles = mesh->GetVectorTriangles();
+			for (Triangle triangle : triangles)
+			{
+				float posibleMinDistance;
+				float3 intersectionPoint;
+				if (pickingLocalSpace.Intersects(triangle, &posibleMinDistance, &intersectionPoint))
+				{
+					if (posibleMinDistance < distance)
+					{
+						distance = posibleMinDistance;
+						*picked = (GameObject*) go;
+					}
+				}
+			}
+		}
+	}
+
+}
+
+//TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
 ComponentMaterial* ModuleScene::LoadMaterials(const char* file_name, aiMaterial* const mMaterial)
 {
 	std::vector<ComponentMaterial*> result;

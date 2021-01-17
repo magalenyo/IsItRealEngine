@@ -145,6 +145,7 @@ update_status ModuleRender::Update()
 	RenderAxis();
 	RenderGrid();
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
+	RenderBoxes();
 	//RenderModel();
 	
 	// unbind FBO
@@ -165,7 +166,6 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
-	RenderBoxes();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	SDL_GL_SwapWindow(App->window->GetWindow());

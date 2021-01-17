@@ -107,7 +107,7 @@ update_status ModuleEditor::Update()
         hierarchy->Draw();
     }
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     return updateStatus;
 }
@@ -177,9 +177,18 @@ bool& ModuleEditor::GetShowHierarchyView()
 
 GameObject* ModuleEditor::GetSelectedGameObject()
 {
-    if (hierarchy != nullptr) {
+    if (hierarchy != nullptr) 
+    {
         return hierarchy->GetSelectedGameObject();
     }
     else return nullptr;
+}
+
+void ModuleEditor::SetSelectedGameObject(GameObject* newSelected)
+{
+    if (hierarchy != nullptr)
+    {
+        hierarchy->SetSelectedGameObject(newSelected);
+    }
 }
 

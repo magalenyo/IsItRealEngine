@@ -8,6 +8,7 @@ class UIHierarchy : public UIComponent
 public:
 	void Draw() override;
 	GameObject* GetSelectedGameObject() { return selectedGameObject; };
+	void SetSelectedGameObject(GameObject* newSelected);
 
 private:
 	void RenderRecursively(GameObject* gameObject);

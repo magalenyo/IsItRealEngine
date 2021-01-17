@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "GameObject.h"
 #include "Geometry/Frustum.h"
 #include "Math/float4x4.h"
 #include "assimp/scene.h"
@@ -47,4 +48,5 @@ private:
 	void ResetSpeed();
 	void IncreaseSpeed();
 	void Rotate(float3x3 rotationMatrix);
+	GameObject* Pick() const;
 };

@@ -31,6 +31,7 @@ public:
 	bool& GetShowSceneView();
 	bool& GetShowHierarchyView();
 	GameObject* GetSelectedGameObject();
+	void SetSelectedGameObject(GameObject* newSelected);
 
 public:
 	bool isReady = false;
