@@ -60,7 +60,7 @@ void SceneImporter::ExportScene(GameObject* scene)
 		document.Accept(writer);
 
 		std::ofstream myfile;
-		myfile.open("root.scene");
+		myfile.open(PATH_ROOT_SCENE);
 		myfile << buffer.GetString();
 		myfile.close();
 	}
