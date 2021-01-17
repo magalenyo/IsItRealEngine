@@ -50,7 +50,17 @@ private:
     GameObject* LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent);
 
 
-    std::string GetProcessedPath(const char* modelPath, const std::string& textureName);
-    bool ExistsTexture(const std::string& path);
+
+    std::string GetProcessedPath(const char* modelPath, const std::string& textureName);            // Returns the path to the directory where the texture is. ModelPath is the directory from which the fbx has been loaded and textureName is the name from the file.data
+                                                                                                    // Returns empty if the file has not been found
+
+    std::string SanitizeTextureName(const std::string& textureName);                                // Clears directories of the file_name, for eg: 
+                                                                                                    // input: \\textures\\street_environment.tcg
+                                                                                                    // returns street_environment.tcg
+
+    bool ExistsTexture(const std::string& path);                                                    // Returns true if the path corresponds to a file or directory
+
+
+    
 };
 
