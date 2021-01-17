@@ -148,24 +148,12 @@ update_status ModuleRender::Update()
 	RenderBoxes();
 	//RenderModel();
 	
-	// unbind FBO
-	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
-
-	// trigger mipmaps generation explicitly
-	// NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
-	// triggers mipmap generation automatically. However, the texture attached
-	// onto a FBO should generate mipmaps manually via glGenerateMipmap().
-	//TODO: Revisar esto
-	/*glBindTexture(GL_TEXTURE_2D, sceneTexture);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);*/
-
-
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
+	// unbind FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	SDL_GL_SwapWindow(App->window->GetWindow());

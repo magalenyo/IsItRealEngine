@@ -27,7 +27,6 @@ ComponentMaterial::~ComponentMaterial()
 		delete emissive;
 		emissive = nullptr;
 	}
-	// TODO delete each pointer of texture if needed
 }
 
 void ComponentMaterial::RenderToEditor()

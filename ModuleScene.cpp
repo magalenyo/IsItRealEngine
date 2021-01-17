@@ -162,68 +162,7 @@ std::vector<GameObject*> ModuleScene::GetObjectsInScene()
 //	}
 //}
 
-// TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
-//std::vector<ComponentMaterial*> ModuleScene::LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials)
-//{
-//	std::vector<ComponentMaterial*> result;
-//	aiString file;
-//	for (unsigned i = 0; i < mNumMaterials; ++i)
-//	{
-//		
-//		for (unsigned j = 0; j < mMaterials[i]->mNumProperties ; ++j)
-//		{
-//			LOG(mMaterials[i]->mProperties[j]->mKey.C_Str());
-//		}
-//
-//		aiString materialName;//The name of the material found in mesh file
-//		aiReturn ret;//Code which says whether loading something has been successful of not
-//		ret = mMaterials[i]->Get(AI_MATKEY_NAME, materialName);//Get the material name (pass by reference)e)
-//		float shininess = 0;
-//		mMaterials[i]->Get(AI_MATKEY_SHININESS, shininess);
-//
-//		ComponentMaterial* material = new ComponentMaterial(nullptr);
-//
-//		aiReturn returnTexture = mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file);
-//		if (returnTexture == AI_SUCCESS)
-//		{
-//			int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
-//			if (textureId != ModuleTexture::TEXTURE_ERROR) {
-//				//material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE));
-//				material->SetDiffuseTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::DIFFUSE));
-//			}
-//		}
-//
-//		returnTexture = mMaterials[i]->GetTexture(aiTextureType_SPECULAR, 0, &file);
-//		if (returnTexture == AI_SUCCESS)
-//		{
-//			int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
-//			if (textureId != ModuleTexture::TEXTURE_ERROR) {
-//				//material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR));
-//				material->SetSpecularTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::SPECULAR));
-//			}
-//		}
-//
-//		returnTexture = mMaterials[i]->GetTexture(aiTextureType_NORMALS, 0, &file);
-//		if (returnTexture == AI_SUCCESS)
-//		{
-//			int textureId = App->textures->LoadTexture(GetProcessedPath(file_name, file.data).c_str());
-//			if (textureId != ModuleTexture::TEXTURE_ERROR) {
-//				material->AddTexture(new Texture(textureId, App->textures->GetTextureWidth(), App->textures->GetTextureHeight(), Texture::TextureType::NORMAL));
-//			}
-//		}
-//
-//		if (material->HasTextures()) {
-//			result.push_back(material);
-//		}
-//		else {
-//			delete material;
-//		}
-//
-//	}
-//	return result;
-//}
 
- //TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
 ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, const aiMaterial* mMaterial)
 {
 	aiString file;
