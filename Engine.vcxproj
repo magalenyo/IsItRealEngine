@@ -110,7 +110,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./MathGeoLib-master/src;./glew-2.1.0/include;./SDL/include;./DevIL/include;./Assimp/include;./ImGui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./rapidjson-1.1.0/include;./MathGeoLib-master/src;./glew-2.1.0/include;./SDL/include;./DevIL/include;./Assimp/include;./ImGui;./ImGuizmo</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
