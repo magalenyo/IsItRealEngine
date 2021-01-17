@@ -45,7 +45,7 @@ private:
     
     // TODO EXTERNALIZE INTO A MODEL LOADER
     //std::vector<ComponentMaterial*> LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials);
-    ComponentMaterial* LoadMaterial(const char* file_name, aiMaterial* const mMaterial);
+    ComponentMaterial* LoadMaterial(const char* file_name, const aiMaterial* mMaterial);
     std::vector<ComponentMesh*> LoadMeshes(const aiScene* scene);
     GameObject* LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent);
 

@@ -32,6 +32,7 @@ bool ModuleScene::Init()
 	//Load("./resources/scene/Clock/Clock.fbx");
 	//Load("./resources/scene/Firetruck/Firetruck.fbx");
 	//Load("./resources/scene/Dollhouse/Dollhouse.fbx");
+	Load("./resources/scene/Dollhouse/DollhouseCustom.fbx");
 	//Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
 	//Load("./resources/scene/Zombunny/Zombunny.fbx");
 
@@ -223,9 +224,8 @@ std::vector<GameObject*> ModuleScene::GetObjectsInScene()
 //}
 
  //TODO REFACTOR THIS INSTEAD TO RETURN ONE COMPONENTMATERIAL
-ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, aiMaterial* const mMaterial)
+ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, const aiMaterial* mMaterial)
 {
-	std::vector<ComponentMaterial*> result;
 	aiString file;
 
 	aiString materialName;													//The name of the material found in mesh file
@@ -340,12 +340,12 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	// Add ComponentMesh and ComponentMaterial components
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
-		mesh->SetMaterialIndex(i);
 		mesh->SetSerializedName(App->sceneImporter->PATH_LIBRARY_MESHES + node->mName.C_Str() + App->sceneImporter->FORMAT_MESH);
 		FSMesh::ExportMesh(scene->mMeshes[node->mMeshes[i]], mesh->GetSerializedName());
 		go->AddComponent(mesh);
 		ComponentMaterial* material = LoadMaterial(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
 		material->SetParent(go);
+		mesh->SetMaterialIndex(i);
 		go->AddComponent(material);
 	}
 
