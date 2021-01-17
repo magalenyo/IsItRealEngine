@@ -1,10 +1,12 @@
 #pragma once
 #include "Module.h"
+#include "Quadtree.h"
 #include <string>
 #include <vector>
 #include "assimp/scene.h"
 
 class GameObject;
+class ComponentCamera;
 class ComponentMaterial;
 class ComponentMesh;
 
@@ -15,21 +17,32 @@ public:
     const std::string PATH_MODELS = "./resources/models/";
 
     bool Init() override;
+    update_status Update() override;
     bool CleanUp() override;
 
     void Load(const char* file_name);
     void LoadSingleTexture(const std::string& file_name);
     void LoadModel(std::string path);
-
+    Quadtree* GetQuadtree();
+    GameObject* GetCamera();
     GameObject* GetRootNode() const;
+    void RemoveObjectFromScene(GameObject* gameObject);
+    void ResetQuadtree();
+    GameObject* SendRay(LineSegment& picking, float& distance);
+
+    std::vector<GameObject*> GetObjectsInScene();
 
 private:
-
     const std::string MODEL_EXTENSION_FBX = ".fbx";
 
     GameObject* root = nullptr;
+    GameObject* camera = nullptr;
+    std::vector<GameObject*> objectsInScene;
 
+    Quadtree* quadtree = nullptr;
 
+    void TestRay(LineSegment& picking, float& distance, GameObject** picked);
+    
     // TODO EXTERNALIZE INTO A MODEL LOADER
     //std::vector<ComponentMaterial*> LoadMaterials(const char* file_name, aiMaterial** const mMaterials, unsigned int mNumMaterials);
     ComponentMaterial* LoadMaterial(const char* file_name, aiMaterial* const mMaterial);

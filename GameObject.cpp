@@ -1,10 +1,16 @@
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleRender.h"
 #include "GUIDGenerator.h"
 #include "imgui.h"
-#include "Component.h"
-
+#include "debugdraw.h"
 #include "MemoryLeakDetector.h"
-
+#include "Component.h"
+#include "ComponentCamera.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
+#include "Math/float3x3.h"
 
 GameObject::GameObject() : uid(GenerateUID()) {}
 
@@ -23,6 +29,31 @@ GameObject::~GameObject()
 		gameObject = nullptr;
 	}
 	children.clear();
+}
+
+void GameObject::Update()
+{
+	vec minPoint = vec(FLOAT_INF, FLOAT_INF, FLOAT_INF);
+	vec maxPoint = vec(-FLOAT_INF, -FLOAT_INF, -FLOAT_INF);
+	ComponentTransform* transform = GetComponent<ComponentTransform>();
+	float4x4 modelMatrix = transform->GetGlobalModelMatrix();
+
+	if (!children.empty())
+	{
+		for (GameObject* child : children)
+		{
+			child->calculateAABBbounds(minPoint, maxPoint);
+			modelMatrix = child->GetComponent<ComponentTransform>()->GetGlobalModelMatrix();
+		}
+
+		localaabb = AABB(minPoint, maxPoint);
+		//localaabb.SetFromCenterAndSize(transform->GetPosition(), transform->GetScale());
+	}
+		
+	obb = localaabb.Transform(modelMatrix);
+	aabb = obb.MinimalEnclosingAABB();
+
+	
 }
 
 void GameObject::AddComponent(Component* component)
@@ -87,6 +118,46 @@ void GameObject::MoveDownOnHierarchy()
 	}
 }
 
+void GameObject::Draw() const
+{
+	if (parent != nullptr)
+	{
+		if (enabled && parent->IsEnabled())
+		{
+			ComponentTransform* transform = GetComponent<ComponentTransform>();
+			std::vector<ComponentMesh*> meshes = GetComponents<ComponentMesh>();
+			std::vector<ComponentMaterial*> materials = GetComponents<ComponentMaterial>();
+
+			for (ComponentMesh* mesh : meshes)
+			{
+				mesh->Draw(materials, transform->GetGlobalModelMatrix());
+			}
+
+			ComponentCamera* camera = GetComponent<ComponentCamera>();
+			if (camera != nullptr)
+			{
+				camera->SetNewPosition(transform->GetPosition());
+				float3x3 rotationMatrix = float3x3::FromQuat(transform->GetRotation());
+				Frustum frustum = camera->GetFrustum();
+				frustum.SetFront(rotationMatrix * float3::unitZ);
+				frustum.SetUp(rotationMatrix * float3::unitY);
+				camera->SetFrustum(frustum);
+				dd::frustum((camera->GetFrustum().ProjectionMatrix() * camera->GetFrustum().ViewMatrix()).Inverted(), dd::colors::Red);
+			}
+		}
+		if (drawAABB)
+		{
+			dd::aabb(aabb.minPoint, aabb.maxPoint, dd::colors::Green);
+		}
+		if (drawOBB)
+		{
+			float3 points[8];
+			obb.GetCornerPoints(points);
+			dd::box(points, dd::colors::Orange);
+		}
+	}
+}
+
 bool GameObject::HasComponents() const
 {
 	return !components.empty();
@@ -125,24 +196,37 @@ std::vector<GameObject*> GameObject::GetChildren() const
 
 void GameObject::RenderToEditor()
 {
-	ImGui::Checkbox("Enabled", &enabled); ImGui::SameLine();
+	if (parent != nullptr) //To not show properties on ROOT (Scene) node
+	{
+		ImGui::Checkbox("Enabled", &enabled); ImGui::SameLine();
 
-	std::string editorTitle = name;
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 255, 255)));
-	ImGui::TextWrapped(editorTitle.c_str());
-	ImGui::PopStyleColor(1);
-
-
-	std::string editorUID = " [UID: " + uid + "]";
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(245, 66, 66)));
-	ImGui::TextWrapped(editorUID.c_str());
-	ImGui::PopStyleColor(1);
+		std::string editorTitle = name;
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(0, 255, 255)));
+		ImGui::TextWrapped(editorTitle.c_str());
+		ImGui::PopStyleColor(1);
 
 
-	ImGui::Separator();
-	if (enabled) {
-		for (Component* component : components) {
-			component->RenderToEditor();
+		std::string editorUID = " [UID: " + uid + "]";
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(ImColor(245, 66, 66)));
+		ImGui::TextWrapped(editorUID.c_str());
+		ImGui::PopStyleColor(1);
+
+		if(GetComponent<ComponentCamera>() == nullptr)
+		{
+			ImGui::Separator();
+			if (ImGui::CollapsingHeader("Draw Boxes"))
+			{
+				ImGui::Checkbox("Draw AABBs", &drawAABB);
+
+				ImGui::Checkbox("Draw OBBs", &drawOBB);
+			}
+		}
+
+		ImGui::Separator();
+		if (enabled) {
+			for (Component* component : components) {
+				component->RenderToEditor();
+			}
 		}
 	}
 
@@ -200,4 +284,38 @@ GameObject* GameObject::Deserialize(Value& value, GameObject* parent)
 	result->children = newChildren;
 
 	return result;
+}
+
+
+void GameObject::SetAABB(AABB localAABB)
+{
+	localaabb = localAABB;
+}
+
+void GameObject::calculateAABBbounds(vec& minPoint, vec& maxPoint)
+{
+	if(localaabb.minPoint.x < minPoint.x)
+	{
+		minPoint.x = localaabb.minPoint.x;
+	}
+	if (localaabb.minPoint.y < minPoint.y)
+	{
+		minPoint.y = localaabb.minPoint.y;
+	}
+	if (localaabb.minPoint.z < minPoint.z)
+	{
+		minPoint.z = localaabb.minPoint.z;
+	}
+	if (localaabb.maxPoint.x > maxPoint.x)
+	{
+		maxPoint.x = localaabb.maxPoint.x;
+	}
+	if (localaabb.maxPoint.y > maxPoint.y)
+	{
+		maxPoint.y = localaabb.maxPoint.y;
+	}
+	if (localaabb.maxPoint.z > maxPoint.z)
+	{
+		maxPoint.z = localaabb.maxPoint.z;
+	}
 }

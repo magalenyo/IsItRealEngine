@@ -14,6 +14,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
+#include "ImGuizmo.h"
 #include <string>
 
 #include "MemoryLeakDetector.h"
@@ -107,7 +108,7 @@ update_status ModuleEditor::Update()
         hierarchy->Draw();
     }
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     return updateStatus;
 }
@@ -119,6 +120,7 @@ update_status ModuleEditor::PreUpdate()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->window->GetWindow());
     ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
 
     return UPDATE_CONTINUE;
 }
@@ -177,9 +179,34 @@ bool& ModuleEditor::GetShowHierarchyView()
 
 GameObject* ModuleEditor::GetSelectedGameObject()
 {
-    if (hierarchy != nullptr) {
+    if (hierarchy != nullptr) 
+    {
         return hierarchy->GetSelectedGameObject();
     }
     else return nullptr;
+}
+
+void ModuleEditor::SetSelectedGameObject(GameObject* newSelected)
+{
+    if (hierarchy != nullptr)
+    {
+        hierarchy->SetSelectedGameObject(newSelected);
+    }
+}
+
+float2 ModuleEditor::GetSceneMousePosition() const
+{
+    if (scene != nullptr) {
+        return scene->GetMousePos();
+    }
+    else return float2(0, 0);
+}
+
+float2 ModuleEditor::GetSceneViewportPosition() const
+{
+    if (scene != nullptr) {
+        return scene->GetViewportPos();
+    }
+    else return float2(0, 0);
 }
 

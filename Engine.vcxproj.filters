@@ -197,6 +197,22 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="ModuleRenderScene.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGradient.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="FSTexture.cpp">
       <Filter>FileSystem</Filter>
@@ -529,6 +545,25 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="ModuleRenderScene.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGradient.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImSequencer.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImZoomSlider.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="FSTexture.h">
       <Filter>FileSystem</Filter>
@@ -582,6 +617,9 @@
     </Filter>
     <Filter Include="FileSystem">
       <UniqueIdentifier>{0fcfb3b4-4b9e-4095-8e32-f7c36d9b6d5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGuizmo">
+      <UniqueIdentifier>{5605522f-ed56-4d1b-bae6-89dd7bad538d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include <vector>
 #include "Math/float3.h"
 #include "Math/float4x4.h"
+#include "Geometry/Triangle.h"
 #include "Component.h"
 #include "ComponentMaterial.h"
 
@@ -30,6 +31,7 @@ public:
 	unsigned int GetNumIndices() const;
 	unsigned int GetTriangles() const;
 	unsigned int GetFaces() const;
+	std::vector<Triangle> GetVectorTriangles() const;
 	float3 GetFurthestPosition();
 	std::string GetSerializedName() const;
 
@@ -46,6 +48,9 @@ private:
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int vao;
+
+	std::vector<float3> totalVertices;
+	std::vector<Triangle> triangles;
 
 	float3 furthestPosition = float3(0, 0, 0);
 

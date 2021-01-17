@@ -74,7 +74,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./rapidjson-1.1.0/include;./MathGeoLib-master/src;./glew-2.1.0/include;./SDL/include;./DevIL/include;./Assimp/include;./ImGui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./rapidjson-1.1.0/include;./MathGeoLib-master/src;./glew-2.1.0/include;./SDL/include;./DevIL/include;./Assimp/include;./ImGui;./ImGuizmo</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(TEMP)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="DebugLogger.h" />
@@ -154,6 +155,11 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GUIDGenerator.h" />
+    <ClInclude Include="ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="ImGuizmo\ImGradient.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="ImGuizmo\ImZoomSlider.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
@@ -167,6 +173,7 @@
     <ClInclude Include="ModuleRenderScene.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="SceneImporter.h" />
+    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TimerMicro.h" />
     <ClInclude Include="Model.h" />
@@ -270,12 +277,17 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="FSMaterial.cpp" />
     <ClCompile Include="FSMesh.cpp" />
     <ClCompile Include="FSTexture.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUIDGenerator.cpp" />
+    <ClCompile Include="ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
@@ -342,6 +354,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="UIConfiguration.cpp" />
     <ClCompile Include="UIConsole.cpp" />

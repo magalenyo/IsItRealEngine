@@ -1,5 +1,7 @@
 #pragma once
 #include "Module.h"
+#include <vector>
+#include "Geometry/Frustum.h"
 
 class GameObject;
 
@@ -10,5 +12,6 @@ public:
 
 private:
 	void RenderGameObjectsRecursively(const GameObject* node) const;
+	std::vector<GameObject*> TestCulling(const std::vector<GameObject*> candidatesToCull, Frustum frustum) const;
 }; 
 

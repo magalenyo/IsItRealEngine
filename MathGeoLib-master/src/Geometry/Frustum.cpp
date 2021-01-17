@@ -415,7 +415,7 @@ vec Frustum::NearPlanePos(const float2 &point) const
 }
 
 vec Frustum::FarPlanePos(float x, float y) const
-{
+ {
 	assume(type == PerspectiveFrustum || type == OrthographicFrustum);
 
 	if (type == PerspectiveFrustum)

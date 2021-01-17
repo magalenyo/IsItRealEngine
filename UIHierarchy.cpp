@@ -81,6 +81,11 @@ void UIHierarchy::Draw()
     ImGui::End();
 }
 
+void UIHierarchy::SetSelectedGameObject(GameObject* newSelected)
+{
+    selectedGameObject = newSelected;
+}
+
 void UIHierarchy::RenderRecursively(GameObject* gameObject)
 {
     if (gameObject != nullptr) {
@@ -89,12 +94,12 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
 
         if (gameObject->IsLeaf()) {
             node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-            ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
-            
+            ImGui::TreeNodeEx(gameObject, node_flags, "%s", gameObject->GetName().c_str());
+
             RenderActionsForGameObject(gameObject);
         }
         else {
-            bool node_open = ImGui::TreeNodeEx( gameObject, node_flags, "%s", gameObject->GetName().c_str());
+            bool node_open = ImGui::TreeNodeEx(gameObject, node_flags, "%s", gameObject->GetName().c_str());
 
             RenderActionsForGameObject(gameObject);
 
@@ -106,7 +111,7 @@ void UIHierarchy::RenderRecursively(GameObject* gameObject)
                 ImGui::TreePop();
             }
         }
-        
+
     }
 }
 
@@ -163,6 +168,8 @@ void UIHierarchy::RenderActionsForGameObject(GameObject* gameObject)
 
             if (ImGui::Selectable("Delete GameObject")) {
                 LOG("Removing %s ...", gameObject->GetName().c_str());
+                App->scene->RemoveObjectFromScene(gameObject);
+                App->scene->ResetQuadtree();
                 selectedGameObject = gameObject->GetParent();
                 gameObject->RemoveChildFromParent();
                 delete gameObject;

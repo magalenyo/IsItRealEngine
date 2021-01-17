@@ -16,7 +16,22 @@ void ComponentTransform::RenderToEditor()
     ImGui::Text("Transform component");
     if (ImGui::CollapsingHeader("Transform"))
     {
-       
+        if (ImGui::IsKeyPressed(90)) // W key
+            current_guizmo_operation = ImGuizmo::TRANSLATE;
+        if (ImGui::IsKeyPressed(69)) // E key
+            current_guizmo_operation = ImGuizmo::ROTATE;
+        if (ImGui::IsKeyPressed(82)) // R key
+            current_guizmo_operation = ImGuizmo::SCALE;
+        if (ImGui::RadioButton("Translate", current_guizmo_operation == ImGuizmo::TRANSLATE))
+            current_guizmo_operation = ImGuizmo::TRANSLATE;
+        
+        if (ImGui::RadioButton("Rotate", current_guizmo_operation == ImGuizmo::ROTATE))
+            current_guizmo_operation = ImGuizmo::ROTATE;
+        
+        if (ImGui::RadioButton("Scale", current_guizmo_operation == ImGuizmo::SCALE))
+            current_guizmo_operation = ImGuizmo::SCALE;
+        ImGui::Separator();
+
         bool changed;
         ImGui::Text("Position");
         ImGui::PushID("Tx"); changed = ImGui::DragFloat("x", &position.x, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
@@ -29,7 +44,7 @@ void ComponentTransform::RenderToEditor()
             changed = true;
         }
         ImGui::Text("");
-
+        
         ImGui::Text("Scale");
         ImGui::PushID("Sx"); changed |= ImGui::DragFloat("x", &scale.x, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Sy"); changed |= ImGui::DragFloat("y", &scale.y, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
@@ -57,10 +72,9 @@ void ComponentTransform::RenderToEditor()
         rotation.Set(rotation.FromEulerXYZ(euler.x, euler.y, euler.z));
         ImGui::Text("");
 
-        
-        if (changed) {
-            localMatrix = float4x4::FromTRS(position, rotation, scale);
-            RegenerateGlobalMatrix();
+        if (changed)
+        {
+            RecalculateMatrices(position, rotation, scale);
         }
     }
 
@@ -137,4 +151,23 @@ void ComponentTransform::Serialize(Value& value, Document::AllocatorType& alloca
 
     value.AddMember("globalMatrix", globalMatrixSerialized, allocator);
 
+}
+
+void ComponentTransform::RecalculateMatrices(float3 _position, Quat _rotation, float3 _scale)
+{
+    position = _position;
+    rotation = _rotation;
+    scale = _scale;
+    localMatrix = float4x4::FromTRS(_position, _rotation, _scale);
+    RegenerateGlobalMatrix();
+}
+
+ImGuizmo::OPERATION ComponentTransform::GetGizmoOperation() const
+{
+    return current_guizmo_operation;
+}
+
+ImGuizmo::MODE ComponentTransform::GetGizmoMode() const
+{
+    return current_guizmo_mode;
 }

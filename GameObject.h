@@ -1,9 +1,10 @@
 #pragma once
 
-#include <string>
 #include <vector>
-#include <typeinfo>
-
+#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
+#include <typeinfo> 
+// #include "assimp/scene.h"
 #include "FSJsonIncluders.h"
 
 class Component;
@@ -26,6 +27,12 @@ public:
 	void MoveUpOnHiearchy();								// PRE: Parent needs to have at least 2 children and this can't be the first one. Result: From parent's children, moves this one position UP in parent->children vector.
 	void MoveDownOnHierarchy();								// PRE: Parent needs to have at least 2 children and this can't be the last one. Result: From parent's children, moves this one position DOWN in parent->children vector.
 	
+	void Draw() const;
+
+	virtual void Enable() { enabled = true; }
+	virtual void Disable() { enabled = false; }
+	bool IsEnabled() { return enabled; }
+
 	bool HasComponents() const;								// Returns true if components list is not empty
 	bool IsLeaf() const;									// Returns true if this gameObject does not have any children
 	bool IsFirstChildOfParent() const;						// Returns true if this gameObject is the first in parent's children vector
@@ -44,6 +51,11 @@ public:
 	void Serialize(Value &value, Document::AllocatorType& allocator);
 	static GameObject* Deserialize(Value& value, GameObject* parent);
 
+	void SetAABB(AABB localAABB);
+
+	AABB GetAABB() const { return aabb; }
+	OBB GetOBB() { return obb; }
+
 private:
 	std::string uid;
 	std::string name = "Default name";
@@ -52,6 +64,15 @@ private:
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
+
+	AABB localaabb = { {0,0,0},{0,0,0} };
+	AABB aabb = { {0,0,0},{0,0,0} };
+	OBB obb = { aabb };
+
+	bool drawAABB = false;
+	bool drawOBB = false;
+
+	void calculateAABBbounds(vec& minPoint, vec& maxPoint);
 };
 
 template<class T>

@@ -3,12 +3,16 @@
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "Texture.h"
 #include "Model.h"
 #include "SceneImporter.h"
+#include "Geometry/LineSegment.h"
+#include "Geometry/Triangle.h"
+#include <map>
 
 #include "assimp/scene.h"
 #include "assimp/cimport.h"		// for aiImportFile
@@ -21,6 +25,7 @@
 
 bool ModuleScene::Init()
 {
+	quadtree = new Quadtree();
 	root = new GameObject("ROOT", nullptr);
 	//Load("./resources/models/turret cannon multicolored.fbx");
 	//Load("./resources/scene/Clock/ClockCustom.fbx");
@@ -33,13 +38,35 @@ bool ModuleScene::Init()
 	Load("./resources/models/BakerHouse.fbx");
 	//Load("E:/Unity/BattleDefense/Assets/Models/Environment/Clock.fbx");
 	//Load("./resources/Street_Environment/Street_environment_V01.FBX");
+
+	camera = new GameObject("Camera", root);
+	camera->AddComponent(new ComponentCamera(camera));
+	camera->AddComponent(new ComponentTransform(float3(0, 0, 0), float3(1, 1, 1), Quat::identity, camera));
+	camera->GetComponent<ComponentTransform>()->CalculateGlobalMatrix();
+
+	root->AddGameObject(camera);
+
 	return true;
+}
+
+update_status ModuleScene::Update()
+{
+	ResetQuadtree();
+	for (GameObject* go : objectsInScene)
+	{
+		go->Update();
+	}
+
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModuleScene::CleanUp()
 {
+	delete quadtree;
+	quadtree = nullptr;
 	delete root;
 	root = nullptr;
+	objectsInScene.clear();
 	return true;
 }
 
@@ -77,9 +104,42 @@ void ModuleScene::LoadModel(std::string path)
 	}
 }
 
+Quadtree* ModuleScene::GetQuadtree()
+{
+	return quadtree;
+}
+
+GameObject* ModuleScene::GetCamera()
+{	
+	if (camera != nullptr) 
+	{
+		return camera;
+	}
+	
+	return nullptr;
+}
+
 GameObject* ModuleScene::GetRootNode() const
 {
 	return root;
+}
+
+void ModuleScene::RemoveObjectFromScene(GameObject* gameObject)
+{
+	if (gameObject != camera)
+	{
+		std::vector<GameObject*>::iterator it = std::find(objectsInScene.begin(), objectsInScene.end(), gameObject);
+		for (GameObject* go : (*it)->GetChildren())
+		{
+			RemoveObjectFromScene(go);
+		}
+		objectsInScene.erase(remove(objectsInScene.begin(), objectsInScene.end(), gameObject));
+	}	
+}
+
+std::vector<GameObject*> ModuleScene::GetObjectsInScene()
+{
+	return objectsInScene;
 }
 
 //void ModuleScene::LoadSingleTexture(const std::string& file_name)
@@ -294,6 +354,8 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		go->AddGameObject(LoadRecursively(file_name, scene, node->mChildren[i], go));
 	}
 
+	objectsInScene.push_back(go);
+
 	return go;
 }
 
@@ -371,4 +433,58 @@ std::string ModuleScene::SanitizeTextureName(const std::string& textureName, boo
 bool ModuleScene::ExistsTexture(const std::string& path) {
 	struct stat buffer;
 	return (stat(path.c_str(), &buffer) == 0);
+}
+
+void ModuleScene::ResetQuadtree()
+{
+	quadtree->Clear();
+	for (GameObject* go : objectsInScene)
+	{
+		if (go->GetParent() != nullptr && go->GetParent() != root)
+		{
+			quadtree->AddGameObject(go);
+		}
+	}
+}
+
+GameObject* ModuleScene::SendRay(LineSegment& picking, float& distance)
+{
+	distance = inf;
+	GameObject* picked = nullptr;
+	TestRay(picking, distance, &picked);
+	return picked;
+}
+
+void ModuleScene::TestRay(LineSegment& picking, float& distance, GameObject** picked)
+{
+	std::map<float, GameObject*> objectsCollided;
+	quadtree->GetObjectsCollided(objectsCollided, picking);
+
+	for (std::map<float, GameObject*>::const_iterator it = objectsCollided.begin(); it != objectsCollided.end(); ++it)
+	{
+		GameObject* go = it->second;
+		std::vector<ComponentMesh*> meshes = go->GetComponents<ComponentMesh>();
+
+		for (ComponentMesh* mesh : meshes)
+		{
+			LineSegment pickingLocalSpace(picking);
+			pickingLocalSpace.Transform(go->GetComponent<ComponentTransform>()->GetGlobalModelMatrix().Inverted());
+
+			std::vector<Triangle> triangles = mesh->GetVectorTriangles();
+			for (Triangle triangle : triangles)
+			{
+				float posibleMinDistance;
+				float3 intersectionPoint;
+				if (pickingLocalSpace.Intersects(triangle, &posibleMinDistance, &intersectionPoint))
+				{
+					if (posibleMinDistance < distance)
+					{
+						distance = posibleMinDistance;
+						*picked = (GameObject*) go;
+					}
+				}
+			}
+		}
+	}
+
 }

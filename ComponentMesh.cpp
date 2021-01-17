@@ -40,9 +40,39 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 	glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW);
 	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	float3 currentPosition = float3(0, 0, 0);
+
+	vec minPoint = vec(FLOAT_INF, FLOAT_INF, FLOAT_INF);
+	vec maxPoint = vec(-FLOAT_INF, -FLOAT_INF, -FLOAT_INF);
+
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
+		aiVector3D vertex = mesh->mVertices[i];
+		if (vertex.x < minPoint.x)
+		{
+			minPoint.x = vertex.x;
+		}
+		if (vertex.y < minPoint.y)
+		{
+			minPoint.y = vertex.y;
+		}
+		if (vertex.z < minPoint.z)
+		{
+			minPoint.z = vertex.z;
+		}
+		if (vertex.x > maxPoint.x)
+		{
+			maxPoint.x = vertex.x;
+		}
+		if (vertex.y > maxPoint.y)
+		{
+			maxPoint.y = vertex.y;
+		}
+		if (vertex.z > maxPoint.z)
+		{
+			maxPoint.z = vertex.z;
+		}
 
+		totalVertices.push_back(float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 		*(vertices++) = mesh->mVertices[i].x;
 		*(vertices++) = mesh->mVertices[i].y;
 		*(vertices++) = mesh->mVertices[i].z;
@@ -65,6 +95,10 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 			currentPosition = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 		}
 	}
+
+	//Set AABB
+	owner->SetAABB(AABB(minPoint, maxPoint));
+
 	furthestPosition = currentPosition;
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	numVertices = mesh->mNumVertices;
@@ -84,6 +118,7 @@ void ComponentMesh::LoadEBO(const aiMesh* mesh)
 	{
 		//assert(mesh->mFaces[i].mNumIndices == 3); // note: assume triangles = 3 indices per face
 		if (mesh->mFaces[i].mNumIndices == 3) {
+			triangles.push_back(Triangle(totalVertices[mesh->mFaces[i].mIndices[0]], totalVertices[mesh->mFaces[i].mIndices[1]], totalVertices[mesh->mFaces[i].mIndices[2]]));
 			*(indices++) = mesh->mFaces[i].mIndices[0];
 			*(indices++) = mesh->mFaces[i].mIndices[1];
 			*(indices++) = mesh->mFaces[i].mIndices[2];
@@ -123,7 +158,7 @@ void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const
 	unsigned program = App->renderer->GetDefaultProgram();
 	const float4x4& view = App->camera->GetViewMatrix();
 	const float4x4& proj = App->camera->GetProjectionMatrix();
-
+	
 	unsigned int textureId = App->renderer->GetMissingTexture();
 	if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr) {
 		textureId = materials[materialIndex]->GetDiffuseTexture()->GetTextureID();
@@ -194,6 +229,11 @@ unsigned int ComponentMesh::GetTriangles() const
 unsigned int ComponentMesh::GetFaces() const
 {
 	return numFaces;
+}
+
+std::vector<Triangle> ComponentMesh::GetVectorTriangles() const
+{
+	return triangles;
 }
 
 float3 ComponentMesh::GetFurthestPosition()

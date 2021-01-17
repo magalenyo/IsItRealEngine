@@ -12,6 +12,7 @@ public:
 		TRANSFORM,
 		MESH,
 		MATERIAL,
+		CAMERA,
 		UNDEFINED
 	};
 
@@ -19,9 +20,9 @@ public:
 	Component(GameObject* owner, ComponentType type);
 	virtual ~Component();
 
-	virtual void Enable() {}
+	virtual void Enable() { enabled = true; }
+	virtual void Disable() { enabled = false; }
 	virtual void Update() {}
-	virtual void Disable() {}
 	virtual void RenderToEditor() {}
 	virtual void Serialize(Value& value, Document::AllocatorType& allocator);
 	virtual Component* Deserialize() { return new Component(); }
@@ -34,6 +35,6 @@ protected:
 	std::string uid;
 	ComponentType type = ComponentType::UNDEFINED;
 	bool enabled = true;
-	GameObject* owner;
+	GameObject* owner = nullptr;
 };
 

@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
+#include "ModuleScene.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry/Frustum.h"
@@ -144,8 +145,9 @@ update_status ModuleRender::Update()
 	RenderAxis();
 	RenderGrid();
 	App->debugDraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), viewportWidth, viewportHeight);
+	RenderBoxes();
 	//RenderModel();
-
+	
 	// unbind FBO
 	/*glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 
@@ -225,6 +227,11 @@ bool& ModuleRender::GetGLCullFaceState()
 	return activeGLCullFace;
 }
 
+bool& ModuleRender::GetDrawQuadtreeState()
+{
+	return activeDrawQuadtree;
+}
+
 void ModuleRender::TurnAxis(bool state)
 {
 	activeAxis = state;
@@ -260,6 +267,11 @@ void ModuleRender::OnSceneResize(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void ModuleRender::AddAABBQuadtree(AABB aabb)
+{
+	aabbsQuadtree.push_back(aabb);
+}
+
 void ModuleRender::RenderAxis()
 {
 	if (activeAxis) {
@@ -270,8 +282,22 @@ void ModuleRender::RenderAxis()
 void ModuleRender::RenderGrid()
 {
 	if (activeGrid) {
-		dd::xzSquareGrid(-25, 25, 0.0f, 1.0f, gridColor);
+		dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, gridColor);
 	}
+}
+
+void ModuleRender::RenderBoxes()
+{
+	if (activeDrawQuadtree)
+	{
+		App->scene->GetQuadtree()->Draw();
+		for (AABB aabb : aabbsQuadtree)
+		{
+			dd::aabb(aabb.minPoint, aabb.maxPoint, dd::colors::Yellow);
+		}
+	}
+	aabbsQuadtree.clear();
+	
 }
 
 void ModuleRender::LoadRenderConfiguration()
