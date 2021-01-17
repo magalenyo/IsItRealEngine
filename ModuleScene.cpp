@@ -28,9 +28,9 @@ bool ModuleScene::Init()
 {
 	quadtree = new Quadtree();
 	root = new GameObject("ROOT", nullptr);
-	Load("./resources/scene/Hearse/HearseCustom.fbx");
-	Load("./resources/scene/Zombunny/ZombunnyCustom.fbx");
-	Load("./resources/models/BakerHouse.fbx");
+	Load("./Assets/scene/Hearse/HearseCustom.fbx");
+	Load("./Assets/scene/Zombunny/ZombunnyCustom.fbx");
+	Load("./Assets/models/BakerHouse.fbx");
 
 	camera = new GameObject("Camera", root);
 	camera->AddComponent(new ComponentCamera(camera));

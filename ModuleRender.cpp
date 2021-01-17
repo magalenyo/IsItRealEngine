@@ -74,11 +74,9 @@ bool ModuleRender::Init()
 	unsigned fragmentShaderTexture = App->program->CompileShader(GL_FRAGMENT_SHADER, "./shaders/FragmentShaderTexture.glsl");
 	defaultProgram = App->program->CreateProgram(vertexShaderTexture, fragmentShaderTexture);
 
-	//loadedModel = new Model("./resources/models/BakerHouse.fbx");
-
 	gridColor = { 1.000000f, 1.000000f, 1.000000f };
 
-	missingTextureID = App->textures->LoadTexture("./resources/textures/missing_texture.png");
+	missingTextureID = App->textures->LoadTexture("./Assets/textures/missing_texture.png");
 	if (missingTextureID == ModuleTexture::TEXTURE_ERROR)
 	{
 		missingTextureID = 0;

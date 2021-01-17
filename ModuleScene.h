@@ -13,8 +13,8 @@ class ComponentMesh;
 class ModuleScene : public Module
 {
 public:
-    const std::string PATH_TEXTURES         = "./resources/textures/";
-    const std::string PATH_MODELS           = "./resources/models/";
+    const std::string PATH_TEXTURES         = "./Assets/textures/";
+    const std::string PATH_MODELS           = "./Assets/models/";
 
     bool Init() override;                                       // Initializes root GameObject with children for testing, and also initializes the Frustum Culling camera in the scene.
     update_status Update() override;
