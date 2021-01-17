@@ -30,6 +30,7 @@ public:
 	void SetParent(GameObject* parent);
 	
 	std::string GetUID() const { return uid; };
+	bool IsEnabled() const { return enabled; }
 
 protected:
 	std::string uid;

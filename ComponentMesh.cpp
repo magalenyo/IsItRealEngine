@@ -161,7 +161,7 @@ void ComponentMesh::Draw(const std::vector<ComponentMaterial*>& materials, const
 		const float4x4& proj = App->camera->GetProjectionMatrix();
 
 		unsigned int textureId = App->renderer->GetMissingTexture();
-		if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr) {
+		if (materialIndex < materials.size() && materials[materialIndex]->GetDiffuseTexture() != nullptr && materials[materialIndex]->IsEnabled()) {
 			textureId = materials[materialIndex]->GetDiffuseTexture()->GetTextureID();
 		}
 
