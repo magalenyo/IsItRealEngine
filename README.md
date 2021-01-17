@@ -115,7 +115,9 @@ This window prints all logged information in the engine.
 - Dear ImGui
 - DevIL
 - GLEW
+- ImGuizmo
 - MathGeoLib
+- RapidJSON
 - SDL
   
   
