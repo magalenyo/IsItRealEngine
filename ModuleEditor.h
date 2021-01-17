@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "UIComponent.h"
 #include <vector>
+#include "Math/float2.h"
 
 class UIMainMenu;
 class UIConsole;
@@ -32,6 +33,7 @@ public:
 	bool& GetShowHierarchyView();
 	GameObject* GetSelectedGameObject();
 	void SetSelectedGameObject(GameObject* newSelected);
+	float2 GetSceneviewPosition() const;
 
 public:
 	bool isReady = false;

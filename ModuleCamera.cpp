@@ -36,9 +36,10 @@ GameObject* ModuleCamera::Pick() const
 	float height = App->renderer->viewportHeight;
 
 	const float2& mouse = App->input->GetMousePosition();
+	const float2& mouse2 = App->editor->GetSceneviewPosition();
 
-	float normalizedX = -(1.0f - (float(mouse.x) * 2.0f) / width);
-	float normalizedY = 1.0f - (float(mouse.y) * 2.0f) / height;
+	float normalizedX = -(1.0f - (float(mouse2.x) * 2.0f) / width);
+	float normalizedY = 1.0f - (float(mouse2.y) * 2.0f) / height;
 
 	LineSegment picking = camera.UnProjectLineSegment(normalizedX, normalizedY);
 

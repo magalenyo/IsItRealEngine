@@ -192,3 +192,11 @@ void ModuleEditor::SetSelectedGameObject(GameObject* newSelected)
     }
 }
 
+float2 ModuleEditor::GetSceneviewPosition() const
+{
+    if (scene != nullptr) {
+        return scene->GetMousePos();
+    }
+    else return float2(0, 0);
+}
+
