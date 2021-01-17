@@ -14,6 +14,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
+#include "ImGuizmo.h"
 #include <string>
 
 #include "MemoryLeakDetector.h"
@@ -119,6 +120,7 @@ update_status ModuleEditor::PreUpdate()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(App->window->GetWindow());
     ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
 
     return UPDATE_CONTINUE;
 }

@@ -350,9 +350,6 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 {
 	GameObject* go = new GameObject(std::string(node->mName.C_Str()), parent);
 
-	vec minPoint = vec(FLOAT_INF, FLOAT_INF, FLOAT_INF);
-	vec maxPoint = vec(-FLOAT_INF, -FLOAT_INF, -FLOAT_INF);
-
 	// Add ComponentMesh and ComponentMaterial components
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
@@ -361,34 +358,6 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 		material->SetParent(go);
 		go->AddComponent(material);
 
-		for (unsigned int j = 0; j < scene->mMeshes[node->mMeshes[i]]->mNumVertices; ++j)
-		{
-			aiVector3D vertex = scene->mMeshes[node->mMeshes[i]]->mVertices[j];
-			if (vertex.x < minPoint.x)
-			{
-				minPoint.x = vertex.x;
-			}
-			if (vertex.y < minPoint.y)
-			{
-				minPoint.y = vertex.y;
-			}
-			if (vertex.z < minPoint.z)
-			{
-				minPoint.z = vertex.z;
-			}
-			if (vertex.x > maxPoint.x)
-			{
-				maxPoint.x = vertex.x;
-			}
-			if (vertex.y > maxPoint.y)
-			{
-				maxPoint.y = vertex.y;
-			}
-			if (vertex.z > maxPoint.z)
-			{
-				maxPoint.z = vertex.z;
-			}
-		}
 	}
 
 	// Add transformation component
@@ -418,16 +387,12 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	transform->CalculateGlobalMatrix();
 	go->AddComponent(transform);
 	
-	//Set AABB
-	go->SetAABB(AABB(minPoint, maxPoint));
-	
 	// Add Children
 	for (int i = 0; i < node->mNumChildren; i++) {
 		go->AddGameObject(LoadRecursively(file_name, scene, node->mChildren[i], go));
 	}
 
 	objectsInScene.push_back(go);
-	//quadtree->AddGameObject(go);
 
 	return go;
 }

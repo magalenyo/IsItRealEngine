@@ -16,6 +16,21 @@ void ComponentTransform::RenderToEditor()
     ImGui::Text("Transform component");
     if (ImGui::CollapsingHeader("Transform"))
     {
+        if (ImGui::IsKeyPressed(90)) // W key
+            current_guizmo_operation = ImGuizmo::TRANSLATE;
+        if (ImGui::IsKeyPressed(69)) // E key
+            current_guizmo_operation = ImGuizmo::ROTATE;
+        if (ImGui::IsKeyPressed(82)) // R key
+            current_guizmo_operation = ImGuizmo::SCALE;
+        if (ImGui::RadioButton("Translate", current_guizmo_operation == ImGuizmo::TRANSLATE))
+            current_guizmo_operation = ImGuizmo::TRANSLATE;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Rotate", current_guizmo_operation == ImGuizmo::ROTATE))
+            current_guizmo_operation = ImGuizmo::ROTATE;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Scale", current_guizmo_operation == ImGuizmo::SCALE))
+            current_guizmo_operation = ImGuizmo::SCALE;
+        ImGui::Separator();
 
         bool changed;
         ImGui::Text("Position");
@@ -57,10 +72,42 @@ void ComponentTransform::RenderToEditor()
         rotation.Set(rotation.FromEulerXYZ(euler.x, euler.y, euler.z));
         ImGui::Text("");
 
+        /*if (current_guizmo_operation != ImGuizmo::SCALE)
+        {
+            if (ImGui::RadioButton("Local", current_guizmo_mode == ImGuizmo::LOCAL))
+                current_guizmo_mode = ImGuizmo::LOCAL;
+            ImGui::SameLine();
+            if (ImGui::RadioButton("World", current_guizmo_mode == ImGuizmo::WORLD))
+                current_guizmo_mode = ImGuizmo::WORLD;
+        }
+        ImGui::Checkbox("##snap", &useSnap);
+        ImGui::SameLine();
 
-        if (changed) {
-            localMatrix = float4x4::FromTRS(position, rotation, scale);
-            RegenerateGlobalMatrix();
+        switch (current_guizmo_operation)
+        {
+        case ImGuizmo::TRANSLATE:
+            ImGui::InputFloat3("Snap", &snap[0]);
+            break;
+        case ImGuizmo::ROTATE:
+            ImGui::InputFloat("Angle Snap", &snap[0]);
+            break;
+        case ImGuizmo::SCALE:
+            ImGui::InputFloat("Scale Snap", &snap[0]);
+            break;
+        }
+        ImGui::Checkbox("Bound Sizing", &boundSizing);
+        if (boundSizing)
+        {
+            ImGui::PushID(3);
+            ImGui::Checkbox("", &boundSizingSnap);
+            ImGui::SameLine();
+            ImGui::InputFloat3("Snap", boundsSnap);
+            ImGui::PopID();
+        }*/
+
+        if (changed)
+        {
+            RecalculateMatrices(position, rotation, scale);
         }
     }
 
@@ -92,4 +139,33 @@ void ComponentTransform::RegenerateGlobalMatrix()
             gameObject->GetComponent<ComponentTransform>()->RegenerateGlobalMatrix();
         }
     }
+}
+
+void ComponentTransform::RecalculateMatrices(float3 _position, Quat _rotation, float3 _scale)
+{
+    position = _position;
+    rotation = _rotation;
+    scale = _scale;
+    localMatrix = float4x4::FromTRS(_position, _rotation, _scale);
+    RegenerateGlobalMatrix();
+}
+
+ImGuizmo::OPERATION ComponentTransform::GetGizmoOperation() const
+{
+    return current_guizmo_operation;
+}
+
+ImGuizmo::MODE ComponentTransform::GetGizmoMode() const
+{
+    return current_guizmo_mode;
+}
+
+bool ComponentTransform::GetUseSnap() const
+{
+    return useSnap;
+}
+
+float3 ComponentTransform::GetSnap()
+{
+    return float3(snap[0], snap[1], snap[2]);
 }

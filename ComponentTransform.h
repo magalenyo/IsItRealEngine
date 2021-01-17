@@ -3,6 +3,8 @@
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
 #include "Component.h"
+#include "imgui.h"
+#include "ImGuizmo.h"
 
 class ComponentTransform : public Component
 {
@@ -27,8 +29,15 @@ public:
 
 	float3 GetRotationMatrix() const { return rotation.ToEulerXYZ(); };
 	float4x4 GetGlobalModelMatrix() const { return globalMatrix; }
+	float4x4 GetLocalMatrix() const { return localMatrix; }
 	void CalculateGlobalMatrix();
 	void RegenerateGlobalMatrix();
+	void RecalculateMatrices(float3 _position, Quat _rotation, float3 _scale);
+
+	ImGuizmo::OPERATION GetGizmoOperation() const;
+	ImGuizmo::MODE GetGizmoMode() const;
+	bool GetUseSnap() const;
+	float3 GetSnap();
 
 private:
 
@@ -38,5 +47,15 @@ private:
 
 	float4x4 localMatrix = float4x4::identity;				// Local Model Matrix
 	float4x4 globalMatrix = float4x4::identity;				// Global Model Matrix
+
+	ImGuizmo::OPERATION current_guizmo_operation = ImGuizmo::TRANSLATE;
+	ImGuizmo::MODE current_guizmo_mode = ImGuizmo::WORLD;
+
+	bool useSnap = false;
+	float snap[3] = { 1.f, 1.f, 1.f };
+	float bounds[6] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+	float boundsSnap[3] = { 0.1f, 0.1f, 0.1f };
+	bool boundSizing = false;
+	bool boundSizingSnap = false;
 };
 

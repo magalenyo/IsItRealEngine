@@ -115,14 +115,14 @@ update_status ModuleCamera::Update()
 		float3 newFocusPoint = camera.Pos() + (camera.Front() * distanceFocus);
 		camera.SetPos((oldFocusPoint - newFocusPoint) + camera.Pos());
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 	{
 		GameObject* picked = Pick();
 		if (picked != nullptr)
 		{
 			if (picked->GetParent() != nullptr)
 			{
-				App->editor->SetSelectedGameObject(picked->GetParent());
+				App->editor->SetSelectedGameObject(picked/*->GetParent()*/);
 			}
 		}
 	}

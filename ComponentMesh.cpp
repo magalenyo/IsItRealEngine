@@ -37,8 +37,38 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 	glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW);
 	float* vertices = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	float3 currentPosition = float3(0, 0, 0);
+
+	vec minPoint = vec(FLOAT_INF, FLOAT_INF, FLOAT_INF);
+	vec maxPoint = vec(-FLOAT_INF, -FLOAT_INF, -FLOAT_INF);
+
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
+		aiVector3D vertex = mesh->mVertices[i];
+		if (vertex.x < minPoint.x)
+		{
+			minPoint.x = vertex.x;
+		}
+		if (vertex.y < minPoint.y)
+		{
+			minPoint.y = vertex.y;
+		}
+		if (vertex.z < minPoint.z)
+		{
+			minPoint.z = vertex.z;
+		}
+		if (vertex.x > maxPoint.x)
+		{
+			maxPoint.x = vertex.x;
+		}
+		if (vertex.y > maxPoint.y)
+		{
+			maxPoint.y = vertex.y;
+		}
+		if (vertex.z > maxPoint.z)
+		{
+			maxPoint.z = vertex.z;
+		}
+
 		totalVertices.push_back(float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 		*(vertices++) = mesh->mVertices[i].x;
 		*(vertices++) = mesh->mVertices[i].y;
@@ -57,6 +87,10 @@ void ComponentMesh::LoadVBO(const aiMesh* mesh)
 			currentPosition = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 		}
 	}
+
+	//Set AABB
+	owner->SetAABB(AABB(minPoint, maxPoint));
+
 	furthestPosition = currentPosition;
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	numVertices = mesh->mNumVertices;
