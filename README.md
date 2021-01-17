@@ -140,4 +140,4 @@ Project License: [MIT](https://github.com/magalenyo/RealDisunity/blob/main/LICEN
 - Sometimes the Guizmos provoke an unexpected error that we haven't been able to solve and closes the program.
 - There is an unresolved issue that happens when you delete from the scene the second object that you loaded after the engine starts and causes all the geometries to stop drawing themselves properly.
 - The export in serialization is partially done since ComponentCamera remains untouched, but the serialization of the scene exports correctly all the GameObjects in the root node and its components. The import is not fully operational and we have disabled the option to do so in the engine.
-
+- We also added our own custom fbx to test different features.
