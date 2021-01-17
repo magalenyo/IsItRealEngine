@@ -138,7 +138,7 @@ bool ModuleCamera::CleanUp()
 void ModuleCamera::ResetSpeed()
 {
 	movementSpeed = 5.0f;
-	rotationSpeed = 25.0f;
+	rotationSpeed = 40.0f;
 }
 
 void ModuleCamera::IncreaseSpeed()
