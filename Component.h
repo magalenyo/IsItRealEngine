@@ -24,8 +24,8 @@ public:
 	virtual void Enable() { enabled = true; }
 	virtual void Disable() { enabled = false; }
 	virtual void Update() {}
-	virtual void RenderToEditor() {} 
-	virtual void Serialize(Value& value, Document::AllocatorType& allocator);
+	virtual void RenderToEditor() {} //Sends to the editor information to draw
+	virtual void Serialize(Value& value, Document::AllocatorType& allocator); 
 	virtual Component* Deserialize() { return new Component(); }
 
 	void SetParent(GameObject* parent);

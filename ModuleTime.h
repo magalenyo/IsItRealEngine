@@ -11,19 +11,22 @@ public:
 	ModuleTime() {}
 	~ModuleTime() {}
 
-	bool Init() {
+	bool Init() 
+	{
 		lastTime = clock();
 		currentTime = lastTime;
 		return true;
 	}
 
-	update_status Update() {
+	update_status Update() 
+	{
 		lastTime = currentTime;
 		currentTime = clock();
 		return UPDATE_CONTINUE;
 	}
 
-	float DeltaTime() {
+	float DeltaTime() 
+	{
 		return (currentTime - lastTime) / 1000.0f;
 	}
 

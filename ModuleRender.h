@@ -45,7 +45,7 @@ public:
 
 	void OnSceneResize(int width, int height);
 	
-	void AddAABBQuadtree(AABB aabb);
+	void AddAABBQuadtree(AABB aabb); //Adds an AABB to a vector that represents the drawable part of the quadtree.
 	
 
 public:

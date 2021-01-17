@@ -48,5 +48,5 @@ private:
 	void ResetSpeed();
 	void IncreaseSpeed();
 	void Rotate(float3x3 rotationMatrix);
-	GameObject* Pick() const;
+	GameObject* Pick() const; //Starts the process to Mouse Picking an object in the scene and return that object if the function finds it
 };

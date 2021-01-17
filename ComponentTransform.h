@@ -30,9 +30,9 @@ public:
 	float3 GetRotationMatrix() const { return rotation.ToEulerXYZ(); };
 	float4x4 GetGlobalModelMatrix() const { return globalMatrix; }
 	float4x4 GetLocalMatrix() const { return localMatrix; }
-	void CalculateGlobalMatrix();
-	void RegenerateGlobalMatrix();
-	void RecalculateMatrices(float3 _position, Quat _rotation, float3 _scale);
+	void CalculateGlobalMatrix(); //Calculates the global matrix using the father's global matrix
+	void RegenerateGlobalMatrix(); //Recalculates the global matrix using all the matrices from father's children
+	void RecalculateMatrices(float3 _position, Quat _rotation, float3 _scale); //Recalculates the global matrix using all the matrices from father's children after seting a new local matrix
 
 	ImGuizmo::OPERATION GetGizmoOperation() const;
 	ImGuizmo::MODE GetGizmoMode() const;
