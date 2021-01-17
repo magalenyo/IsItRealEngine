@@ -16,6 +16,7 @@ public:
 	const std::string PATH_LIBRARY_ANIMATIONS = "./Library/Animations/";
 	const std::string FORMAT_DDS = ".dds";
 	const std::string FORMAT_MATERIAL = ".material";
+	const std::string FORMAT_MESH = ".mesh";
 
 	bool Init() override;
 	bool CleanUp() override;

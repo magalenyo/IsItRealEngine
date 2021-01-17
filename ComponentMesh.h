@@ -21,6 +21,7 @@ public:
 	void SetMaterialIndex(unsigned int newMaterialIndex);
 	void Draw(const std::vector<ComponentMaterial*>& materials, const float4x4& modelMatrix);
 	void RenderToEditor() override;
+	void SetSerializedName(const std::string& path);
 
 	bool CleanUp();
 
@@ -30,6 +31,7 @@ public:
 	unsigned int GetTriangles() const;
 	unsigned int GetFaces() const;
 	float3 GetFurthestPosition();
+	std::string GetSerializedName() const;
 
 	void Serialize(Value& value, Document::AllocatorType& allocator) override;
 
@@ -46,6 +48,8 @@ private:
 	unsigned int vao;
 
 	float3 furthestPosition = float3(0, 0, 0);
+
+	std::string serializedName = "";
 
 	void DestroyBuffer(unsigned int buffer);
 };

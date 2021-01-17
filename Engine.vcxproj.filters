@@ -207,6 +207,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="FSMesh.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -538,6 +541,9 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMesh.h">
+      <Filter>FileSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@
 #include "assimp/postprocess.h"	// for aiProcessPreset
 
 #include "FSTexture.h"
+#include "FSMesh.h"
 
 #include "MemoryLeakDetector.h"
 
@@ -279,10 +280,12 @@ GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* s
 	// Add ComponentMesh and ComponentMaterial components
 	for (int i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[node->mMeshes[i]], go);
+		mesh->SetMaterialIndex(i);
+		mesh->SetSerializedName(App->sceneImporter->PATH_LIBRARY_MESHES + node->mName.C_Str() + App->sceneImporter->FORMAT_MESH);
+		FSMesh::ExportMesh(scene->mMeshes[node->mMeshes[i]], mesh->GetSerializedName());
 		go->AddComponent(mesh);
 		ComponentMaterial* material = LoadMaterial(file_name, scene->mMaterials[mesh->GetMaterialIndex()]);
 		material->SetParent(go);
-		mesh->SetMaterialIndex(i);
 		go->AddComponent(material);
 	}
 

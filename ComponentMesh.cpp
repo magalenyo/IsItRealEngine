@@ -9,12 +9,14 @@
 #include "ComponentMaterial.h"
 #include "Texture.h"
 #include "imgui.h"
+#include "FSMesh.h"
 
 #include "MemoryLeakDetector.h"
 
 
 ComponentMesh::ComponentMesh(const aiMesh* mesh, GameObject* owner) : Component(owner, ComponentType::MESH)
 {
+
 	LoadVBO(mesh);
 	LoadEBO(mesh);
 	CreateVAO();
@@ -156,6 +158,11 @@ void ComponentMesh::RenderToEditor()
 	ImGui::PopID();
 }
 
+void ComponentMesh::SetSerializedName(const std::string& path)
+{
+	serializedName = path;
+}
+
 bool ComponentMesh::CleanUp()
 {
 	DestroyBuffer(vao);	// last created, first deleted
@@ -192,6 +199,11 @@ unsigned int ComponentMesh::GetFaces() const
 float3 ComponentMesh::GetFurthestPosition()
 {
 	return furthestPosition;
+}
+
+std::string ComponentMesh::GetSerializedName() const
+{
+	return serializedName;
 }
 
 void ComponentMesh::Serialize(Value& value, Document::AllocatorType& allocator)
