@@ -206,7 +206,7 @@ void UIConfiguration::Draw()
         ImGui::Text("Magnification filter");
         int currentMagnificationFilter = App->textures->GetMagnificationFilter();
         int magnificationFilter = App->textures->GetMagnificationFilter();
-        ImGui::RadioButton("Magnification GL_LINEAR", &magnificationFilter, GL_LINEAR); ImGui::SameLine();
+        ImGui::RadioButton("Magnification GL_LINEAR", &magnificationFilter, GL_LINEAR);
         ImGui::RadioButton("Magnification GL_NEAREST", &magnificationFilter, GL_NEAREST);
         if (currentMagnificationFilter != magnificationFilter) 
         {
@@ -216,7 +216,7 @@ void UIConfiguration::Draw()
         ImGui::Text("Minification filter");
         int currentMinificationFilter = App->textures->GetMinificationFilter();
         int minificationFilter = App->textures->GetMinificationFilter();
-        ImGui::RadioButton("Minification GL_LINEAR", &minificationFilter, GL_LINEAR); ImGui::SameLine();
+        ImGui::RadioButton("Minification GL_LINEAR", &minificationFilter, GL_LINEAR);
         ImGui::RadioButton("Minification GL_NEAREST", &minificationFilter, GL_NEAREST);
         if (currentMinificationFilter != minificationFilter) 
         {
@@ -227,15 +227,6 @@ void UIConfiguration::Draw()
         {
             App->textures->SetDefaultConfig();
         }
-
-        ImGui::Separator();
-
-        ImGui::Text("Textures location paths");
-        ImGui::SameLine(); HelpMarker("When loading the Texture, it will first try the default path. If not found, then will try in the default path. If not found, then will try in the textures path.");
-        ImGui::Text("");
-        ImGui::Text("Default: same directory as .exe");
-        ImGui::Text((std::string("Models path: ") + App->scene->PATH_MODELS).c_str());
-        ImGui::Text((std::string("Textures path: ") + App->scene->PATH_TEXTURES).c_str());
     }
 
     if (ImGui::CollapsingHeader("Input"))
