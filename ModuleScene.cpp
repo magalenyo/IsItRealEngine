@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
@@ -94,8 +95,7 @@ void ModuleScene::LoadModel(std::string path)
 	if (ModuleTexture::IsTexture(path)) 
 	{
 		LOG("File %s is a TEXTURE", path.c_str());
-		//loadedModel->LoadSingleTexture(path);
-		//TODO WHAT IT DOES?!
+		LoadSingleTexture(path);
 	}
 	else if (Model::CanLoadFBX(path)) 
 	{
@@ -146,24 +146,39 @@ std::vector<GameObject*> ModuleScene::GetObjectsInScene()
 	return objectsInScene;
 }
 
-//void ModuleScene::LoadSingleTexture(const std::string& file_name)
-//{
-//	LOG("Loading single texture: %s...", file_name.c_str())
-//	// The texture vector will not be cleared because textures can still be reutilized
-//	int textureId = App->textures->LoadTexture(file_name.c_str());
-//	if (textureId != ModuleTexture::TEXTURE_ERROR) {
-//		textures.push_back(textureId);
-//		for (ComponentMesh* mesh : meshes) {
-//			mesh->SetMaterialIndex(textures.size() - 1);
-//		}
-//		textureSizes.push_back(float2(App->textures->GetTextureWidth(), App->textures->GetTextureHeight()));
-//		LOG("Texture %s loaded", file_name.c_str())
-//	}
-//	else {
-//		LOG("Error loading texture in an already existing model %s: %s.", file_name.c_str(), aiGetErrorString());
-//		LOG("Try dropping the texture from a path with no special characters or accents.");
-//	}
-//}
+void ModuleScene::LoadSingleTexture(const std::string& file_name)
+{
+	LOG("Loading single texture: %s...", file_name.c_str())
+	GameObject* selected = App->editor->GetSelectedGameObject();
+	if (selected != nullptr) {
+		ComponentMaterial* material = selected->GetComponent<ComponentMaterial>();
+		if (material != nullptr) {
+			unsigned int textureId = App->textures->LoadTexture(file_name.c_str());
+			if (textureId != ModuleTexture::TEXTURE_ERROR) {
+				Texture* diffuse = material->GetDiffuseTexture();
+				if (diffuse != nullptr) {
+					diffuse->DeleteTextureID();
+					diffuse->SetTextureID(textureId);
+					LOG("Texture %s loaded", file_name.c_str())
+				}
+				else {
+					LOG("[ERROR] There is no diffuse texture for this material. New texture won't load");
+					glDeleteTextures(1, &textureId);
+				}
+			}
+			else {
+				LOG("[ERROR] Error loading texture in an already existing model %s: %s.", file_name.c_str(), aiGetErrorString());
+				LOG("Try dropping the texture from a path with no special characters or accents.");
+			}
+		}
+		else {
+			LOG("[ERROR] Cannot drop texture because there is no MATERIAL in GameObject");
+		}
+	}
+	else {
+		LOG("[ERROR] Cannot drop texture because there is no selected GameObject");
+	}
+}
 
 
 ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, const aiMaterial* mMaterial)

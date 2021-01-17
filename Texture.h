@@ -26,6 +26,7 @@ public:
 	float GetHeight() const;
 	unsigned int GetTextureID() const;
 	std::string GetTexturePath() const;
+	void DeleteTextureID();
 
 	void SerializeExport(Value& value, Document::AllocatorType& allocator);					// This method serializes material's data to be exported as a material file
 	static void SerializeEmpty(Value& value, Document::AllocatorType& allocator);			// This can be called statically in case the Texture is null, but returns the same structure than SerializeExport

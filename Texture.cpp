@@ -8,7 +8,7 @@ Texture::Texture(unsigned int textureID, float width, float height, TextureType 
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &textureID);
+	DeleteTextureID();
 }
 
 void Texture::SetWidth(float _width)
@@ -49,6 +49,11 @@ unsigned int Texture::GetTextureID() const
 std::string Texture::GetTexturePath() const
 {
 	return texturePath;
+}
+
+void Texture::DeleteTextureID()
+{
+	glDeleteTextures(1, &textureID);
 }
 
 void Texture::SerializeExport(Value& value, Document::AllocatorType& allocator)
