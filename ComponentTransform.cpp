@@ -1,5 +1,7 @@
 #include "ComponentTransform.h"
 #include "Component.h"
+#include "Application.h"
+#include "ModuleInput.h"
 #include "GUIDGenerator.h"
 #include "GameObject.h"
 #include "Math/float4x4.h"
@@ -12,24 +14,35 @@ ComponentTransform::ComponentTransform(float3 position, float3 scale, Quat rotat
 
 void ComponentTransform::RenderToEditor()
 {
+    if (App->input->GetKey(SDL_SCANCODE_T) == KeyState::KEY_REPEAT)
+    {
+        current_guizmo_operation = ImGuizmo::TRANSLATE;
+    }
+    if (App->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_REPEAT)
+    {
+        current_guizmo_operation = ImGuizmo::ROTATE;
+    }
+    if (App->input->GetKey(SDL_SCANCODE_Y) == KeyState::KEY_REPEAT)
+    {
+        current_guizmo_operation = ImGuizmo::SCALE;
+    }
     ImGui::PushID(GetUID().c_str());
     ImGui::Text("Transform component");
     if (ImGui::CollapsingHeader("Transform"))
     {
-        if (ImGui::IsKeyPressed(90)) // W key
-            current_guizmo_operation = ImGuizmo::TRANSLATE;
-        if (ImGui::IsKeyPressed(69)) // E key
-            current_guizmo_operation = ImGuizmo::ROTATE;
-        if (ImGui::IsKeyPressed(82)) // R key
-            current_guizmo_operation = ImGuizmo::SCALE;
         if (ImGui::RadioButton("Translate", current_guizmo_operation == ImGuizmo::TRANSLATE))
+        {
             current_guizmo_operation = ImGuizmo::TRANSLATE;
-        
+        }        
         if (ImGui::RadioButton("Rotate", current_guizmo_operation == ImGuizmo::ROTATE))
+        {
             current_guizmo_operation = ImGuizmo::ROTATE;
+        }
         
         if (ImGui::RadioButton("Scale", current_guizmo_operation == ImGuizmo::SCALE))
+        {
             current_guizmo_operation = ImGuizmo::SCALE;
+        }
         ImGui::Separator();
 
         bool changed;
@@ -37,7 +50,8 @@ void ComponentTransform::RenderToEditor()
         ImGui::PushID("Tx"); changed = ImGui::DragFloat("x", &position.x, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Ty"); changed |= ImGui::DragFloat("y", &position.y, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Tz"); changed |= ImGui::DragFloat("z", &position.z, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
-        if (ImGui::Button("Reset Position")) {
+        if (ImGui::Button("Reset Position")) 
+        {
             position.x = 0;
             position.y = 0;
             position.z = 0;
@@ -49,7 +63,8 @@ void ComponentTransform::RenderToEditor()
         ImGui::PushID("Sx"); changed |= ImGui::DragFloat("x", &scale.x, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Sy"); changed |= ImGui::DragFloat("y", &scale.y, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Sz"); changed |= ImGui::DragFloat("z", &scale.z, 0.005f, 0, FLT_MAX, "%.3f"); ImGui::PopID();
-        if (ImGui::Button("Reset Scale")) {
+        if (ImGui::Button("Reset Scale")) 
+        {
             scale.x = 1;
             scale.y = 1;
             scale.z = 1;
@@ -62,7 +77,8 @@ void ComponentTransform::RenderToEditor()
         ImGui::PushID("Rx"); changed |= ImGui::DragFloat("x", &euler.x, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Ry"); changed |= ImGui::DragFloat("y", &euler.y, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
         ImGui::PushID("Rz"); changed |= ImGui::DragFloat("z", &euler.z, 0.005f, -FLT_MAX, FLT_MAX, "%.3f"); ImGui::PopID();
-        if (ImGui::Button("Reset Rotation")) {
+        if (ImGui::Button("Reset Rotation")) 
+        {
             euler.x = 0;
             euler.y = 0;
             euler.z = 0;
@@ -84,16 +100,20 @@ void ComponentTransform::RenderToEditor()
 
 void ComponentTransform::CalculateGlobalMatrix()
 {
-    if (owner != nullptr) {
+    if (owner != nullptr) 
+    {
         ComponentTransform* parentTransform = owner->GetParent()->GetComponent<ComponentTransform>();
-        if (parentTransform != nullptr) {
+        if (parentTransform != nullptr) 
+        {
             globalMatrix = parentTransform->globalMatrix * localMatrix;
         }
-        else {
+        else 
+        {
             globalMatrix = localMatrix;
         }
     }
-    else {
+    else 
+    {
         globalMatrix = localMatrix;
     }
 }
@@ -101,8 +121,10 @@ void ComponentTransform::CalculateGlobalMatrix()
 void ComponentTransform::RegenerateGlobalMatrix()
 {
     CalculateGlobalMatrix();
-    if (owner != nullptr) {
-        for (GameObject* gameObject : owner->GetChildren()) {
+    if (owner != nullptr) 
+    {
+        for (GameObject* gameObject : owner->GetChildren())
+        {
             gameObject->GetComponent<ComponentTransform>()->RegenerateGlobalMatrix();
         }
     }
