@@ -7,11 +7,7 @@
 inline std::string GenerateUID() {
 	GUID guid;
 	CoCreateGuid(&guid);
-	//OLECHAR* guidString;
-	//StringFromCLSID(guid, &guidString);
-	//// use guidString...
-	//// ensure memory is freed
-	//::CoTaskMemFree(guidString);
+
 	char guid_cstr[37];
 	snprintf(guid_cstr, sizeof(guid_cstr),
 		"%08lX-%04hX-%04hX-%02hhX%02hhX-%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX",
@@ -21,6 +17,4 @@ inline std::string GenerateUID() {
 
 
 	return std::string(guid_cstr);
-
-	//return guidString;
 }
