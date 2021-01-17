@@ -42,13 +42,13 @@ public:
 
 	void AddGameObject(GameObject* gameObject);
 	bool CleanUp();
-	void Draw();
-	void Clear();
+	void Draw(); //Sends to the Module Render all the AABBs necessary to draw the Quadtree.
+	void Clear(); //Resets the quadtree to default.
 
 	template<class GEOMETRY> 
-	std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry);
+	std::vector<GameObject*> GetObjectsCollided(GEOMETRY geometry); //Returns a vector containing all objects that collided with the geometry passed by parameter.
 	template<class GEOMETRY>
-	void GetObjectsCollided(std::map<float, GameObject*>& GObjectsCollided, GEOMETRY geometry);
+	void GetObjectsCollided(std::map<float, GameObject*>& GObjectsCollided, GEOMETRY geometry); //Saves in the map passed by parameter all objects that collided with the geometry passed by parameter in relation to its distance to the camera, ordering them from nearest to farthes.
 	
 
 private:

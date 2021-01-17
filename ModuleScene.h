@@ -27,8 +27,8 @@ public:
     GameObject* GetCamera();
     GameObject* GetRootNode() const;
     void RemoveObjectFromScene(GameObject* gameObject);
-    void ResetQuadtree();
-    GameObject* SendRay(LineSegment& picking, float& distance);
+    void ResetQuadtree(); //Rebuilds the quadtree.
+    GameObject* SendRay(LineSegment& picking, float& distance); //Sends the ray passed by parameter to test if it collides with any object on the scene, and if so, returns it.
 
     std::vector<GameObject*> GetObjectsInScene();
 
@@ -41,7 +41,7 @@ private:
 
     Quadtree* quadtree                      = nullptr;
 
-    void TestRay(LineSegment& picking, float& distance, GameObject** picked);
+    void TestRay(LineSegment& picking, float& distance, GameObject** picked); //Searchs if there is and object in the scene that collides with the ray passed by parameter.
     
     ComponentMaterial* LoadMaterial(const char* file_name, const aiMaterial* mMaterial);
     std::vector<ComponentMesh*> LoadMeshes(const aiScene* scene);
