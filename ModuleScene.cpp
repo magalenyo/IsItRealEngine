@@ -80,7 +80,7 @@ void ModuleScene::Load(const char* file_name)
 	}
 }
 
-void ModuleScene::LoadModel(std::string path)
+void ModuleScene::LoadDroppedFile(std::string path)
 {
 	LOG("File %s dropped", path.c_str());
 	if (ModuleTexture::IsTexture(path)) 
@@ -239,23 +239,6 @@ ComponentMaterial* ModuleScene::LoadMaterial(const char* file_name, const aiMate
 	material->SetShininess(shininess);
 
 	return material;
-}
-
-std::vector<ComponentMesh*> ModuleScene::LoadMeshes(const aiScene* scene)
-{
-	std::vector<ComponentMesh*> result;
-	float3 furthestPosition = float3(0, 0, 0);
-	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
-	{
-		ComponentMesh* mesh = new ComponentMesh(scene->mMeshes[i], nullptr);
-		result.push_back(mesh);
-		if (mesh->GetFurthestPosition().z > furthestPosition.z) 
-		{
-			furthestPosition = mesh->GetFurthestPosition();
-		}
-	}
-	App->camera->FocusCamera(furthestPosition);
-	return result;
 }
 
 GameObject* ModuleScene::LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent)

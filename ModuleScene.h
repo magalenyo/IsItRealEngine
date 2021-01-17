@@ -16,21 +16,21 @@ public:
     const std::string PATH_TEXTURES         = "./resources/textures/";
     const std::string PATH_MODELS           = "./resources/models/";
 
-    bool Init() override;
+    bool Init() override;                                       // Initializes root GameObject with children for testing, and also initializes the Frustum Culling camera in the scene.
     update_status Update() override;
-    bool CleanUp() override;
+    bool CleanUp() override;                                    // Deletes Quadtree and Root node
 
-    void Load(const char* file_name);
-    void LoadSingleTexture(const std::string& file_name);
-    void LoadModel(std::string path);
-    Quadtree* GetQuadtree();
-    GameObject* GetCamera();
-    GameObject* GetRootNode() const;
-    void RemoveObjectFromScene(GameObject* gameObject);
-    void ResetQuadtree(); //Rebuilds the quadtree.
-    GameObject* SendRay(LineSegment& picking, float& distance); //Sends the ray passed by parameter to test if it collides with any object on the scene, and if so, returns it.
+    void Load(const char* file_name);                           // Loads a GameObject with Root as parent if the FBX from the given file_name can be loaded. Calls to LoadRecursively
+    void LoadSingleTexture(const std::string& file_name);       // Loads a texture from the given path and adds it to the currently selected GameObject diffuse texture
+    void LoadDroppedFile(std::string path);                     // Loads the drop file from the given path. If it's an image, loads it to the currently selected GameObject. If it's an FBX, loads it with Root as parent.
+    Quadtree* GetQuadtree();                                    // Returns this quadtree
+    GameObject* GetCamera();                                    // Returns this camera
+    GameObject* GetRootNode() const;                            // Returns root node
+    void RemoveObjectFromScene(GameObject* gameObject);         // Removes given GameObject from objectsInScene vector
+    void ResetQuadtree();                                       // Rebuilds quadtree from objectsInScene
+    GameObject* SendRay(LineSegment& picking, float& distance); // Sends the ray passed by parameter to test if it collides with any object on the scene, and if so, returns it
 
-    std::vector<GameObject*> GetObjectsInScene();
+    std::vector<GameObject*> GetObjectsInScene();               // Returns vector objectsInScene
 
 private:
     const std::string MODEL_EXTENSION_FBX   = ".fbx";
@@ -41,11 +41,11 @@ private:
 
     Quadtree* quadtree                      = nullptr;
 
-    void TestRay(LineSegment& picking, float& distance, GameObject** picked); //Searchs if there is and object in the scene that collides with the ray passed by parameter.
+    void TestRay(LineSegment& picking, float& distance, GameObject** picked);                       //Searches if there is and object in the scene that collides with the ray passed by parameter.
     
-    ComponentMaterial* LoadMaterial(const char* file_name, const aiMaterial* mMaterial);
-    std::vector<ComponentMesh*> LoadMeshes(const aiScene* scene);
-    GameObject* LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent);
+    
+    GameObject* LoadRecursively(const char* file_name, const aiScene* scene, const aiNode* node, GameObject* parent);   // Creates a GameObject and all its hierarchy from the scene of the fbx. This is called for every children.
+    ComponentMaterial* LoadMaterial(const char* file_name, const aiMaterial* mMaterial);                                // Loads a material from the aiMaterial. Creates Texture diffuseTexture, specularTexture, normalTexture, emissiveTexture from the material and exports the material as a JSON file
 
 
 

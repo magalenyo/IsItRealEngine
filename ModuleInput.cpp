@@ -148,7 +148,7 @@ update_status ModuleInput::PreUpdate()
 		case SDL_DROPFILE:
 			char* dropped_filedir = event.drop.file;
 			std::string dropped_file = event.drop.file;
-			App->scene->LoadModel(dropped_file);
+			App->scene->LoadDroppedFile(dropped_file);
 			SDL_free(dropped_filedir);
 		
 			break;
