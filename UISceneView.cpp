@@ -18,6 +18,28 @@ void UISceneView::Draw()
         // Get the size of the child (i.e. the whole draw size of the windows).
         ImVec2 wsize = ImGui::GetWindowSize();
 
+        //Center Game Buttons
+        ImGui::SameLine((wsize.x / 2) - 100);
+        if (ImGui::Button("Play"))
+        {
+
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Pause"))
+        {
+
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Stop"))
+        {
+
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Step"))
+        {
+
+        }
+
         if (App->renderer->viewportWidth != wsize.x || App->renderer->viewportHeight != wsize.y) {
             App->renderer->OnSceneResize(wsize.x, wsize.y);
             App->camera->OnWindowResized(wsize.x, wsize.y);
