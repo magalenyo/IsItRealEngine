@@ -120,7 +120,10 @@ update_status ModuleCamera::Update()
 		GameObject* picked = Pick();
 		if (picked != nullptr)
 		{
-			App->editor->SetSelectedGameObject(picked);
+			if (picked->GetParent() != nullptr)
+			{
+				App->editor->SetSelectedGameObject(picked->GetParent());
+			}
 		}
 	}
 
