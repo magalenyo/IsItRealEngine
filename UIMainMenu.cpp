@@ -101,7 +101,7 @@ void UIMainMenu::Draw()
 
             if (ImGui::MenuItem("Load SCENE")) 
             {
-                App->sceneImporter->ImportScene(App->sceneImporter->PATH_ROOT_SCENE);
+                //App->sceneImporter->ImportScene(App->sceneImporter->PATH_ROOT_SCENE);
             }
 
             if (ImGui::MenuItem("Quit")) 
@@ -115,7 +115,7 @@ void UIMainMenu::Draw()
         {
             if (ImGui::MenuItem("Github")) 
             {
-                ShellExecute(0, 0, "https://github.com/magalenyo/IsItRealEngine", 0, 0, SW_SHOW);
+                ShellExecute(0, 0, "https://github.com/magalenyo/RealDisunity", 0, 0, SW_SHOW);
             }
             ImGui::EndMenu();
         }
@@ -165,7 +165,7 @@ void UIMainMenu::RenderAbout(bool* p_open)
     ImGui::Separator();
     ImGui::Text("Authors: Miguel Ángel Bueno Rivera - magalenyo on GitHub");
     ImGui::Text("         Isaac Fernández Fontao - isaacfdez on GitHub");
-    ImGui::Text("Github Repository: https://github.com/magalenyo/IsItRealEngine");
+    ImGui::Text("Github Repository: https://github.com/magalenyo/RealDisunity");
     ImGui::Text("");
 
     if (ImGui::CollapsingHeader("MIT License"))
